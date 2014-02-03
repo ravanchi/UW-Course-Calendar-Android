@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.alirezatr.uwcalendar" >
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:debuggable="false"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.alirezatr.uwcalendar.SubjectsActivity"
+            android:label="@string/app_name"
+            android:configChanges="orientation|screenSize" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.alirezatr.uwcalendar.CoursesActivity"
+            android:label="Courses"
+            android:parentActivityName="com.alirezatr.uwcalendar.SubjectsActivity"
+            android:configChanges="orientation|screenSize" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.alirezatr.uwcalendar.SubjectsActivity" />
+            </activity>
+        <activity
+            android:name="com.alirezatr.uwcalendar.CourseActivity"
+            android:label="Course"
+            android:parentActivityName="com.alirezatr.uwcalendar.SubjectsActivity"
+            android:configChanges="orientation|screenSize" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.alirezatr.uwcalendar.SubjectsActivity" />
+        </activity>
+    </application>
+
+</manifest>
