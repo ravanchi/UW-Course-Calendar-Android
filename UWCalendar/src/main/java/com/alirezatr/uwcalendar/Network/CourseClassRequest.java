@@ -1,5 +1,7 @@
-package com.alirezatr.uwcalendar;
+package com.alirezatr.uwcalendar.Network;
 
+import com.alirezatr.uwcalendar.Models.CourseClass;
+import com.alirezatr.uwcalendar.Listeners.CourseClassListener;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -11,10 +13,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import static com.alirezatr.uwcalendar.RequestKeys.apiKey;
-import static com.alirezatr.uwcalendar.RequestKeys.coursesRequestUrl;
+import static com.alirezatr.uwcalendar.Network.RequestKeys.apiKey;
+import static com.alirezatr.uwcalendar.Network.RequestKeys.coursesRequestUrl;
 
 /**
  * Created by ali on 1/20/2014.

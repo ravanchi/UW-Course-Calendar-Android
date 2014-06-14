@@ -1,7 +1,11 @@
-package com.alirezatr.uwcalendar;
+package com.alirezatr.uwcalendar.Network;
 
 import android.content.Context;
 
+import com.alirezatr.uwcalendar.Listeners.CourseClassListener;
+import com.alirezatr.uwcalendar.Listeners.CourseListener;
+import com.alirezatr.uwcalendar.Listeners.CoursesListener;
+import com.alirezatr.uwcalendar.Listeners.SubjectsListener;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 

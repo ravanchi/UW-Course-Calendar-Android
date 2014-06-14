@@ -2,7 +2,6 @@ package com.alirezatr.uwcalendar;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,12 +9,16 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alirezatr.uwcalendar.Listeners.CourseClassListener;
+import com.alirezatr.uwcalendar.Listeners.CourseListener;
+import com.alirezatr.uwcalendar.Models.Course;
+import com.alirezatr.uwcalendar.Models.CourseClass;
+import com.alirezatr.uwcalendar.Network.NetworkManager;
 
 import java.util.ArrayList;
 

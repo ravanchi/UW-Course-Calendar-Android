@@ -1,4 +1,4 @@
-package com.alirezatr.uwcalendar;
+package com.alirezatr.uwcalendar.Models;
 
 /**
  * Created by ali on 1/20/2014.

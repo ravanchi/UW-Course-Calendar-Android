@@ -1,7 +1,9 @@
-package com.alirezatr.uwcalendar;
+package com.alirezatr.uwcalendar.Network;
 
-import static com.alirezatr.uwcalendar.RequestKeys.*;
+import static com.alirezatr.uwcalendar.Network.RequestKeys.*;
 
+import com.alirezatr.uwcalendar.Models.Course;
+import com.alirezatr.uwcalendar.Listeners.CoursesListener;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;

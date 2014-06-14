@@ -1,4 +1,4 @@
-package com.alirezatr.uwcalendar;
+package com.alirezatr.uwcalendar.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,28 +9,30 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.TwoLineListItem;
 
+import com.alirezatr.uwcalendar.Models.Subject;
+
 import java.util.ArrayList;
 
 /**
  * Created by ali on 1/20/2014.
  */
-public class CoursesAdapter extends BaseAdapter {
+public class SubjectsAdapter extends BaseAdapter {
     private Context context;
-    private ArrayList<Course> courses;
+    private ArrayList<Subject> subjects;
 
-    public CoursesAdapter(Context context, ArrayList<Course> courses) {
+    public SubjectsAdapter(Context context, ArrayList<Subject> subjects) {
         this.context = context;
-        this.courses = courses;
+        this.subjects = subjects;
     }
 
     @Override
     public int getCount() {
-        return courses.size();
+        return subjects.size();
     }
 
     @Override
-    public Course getItem(int position) {
-        return courses.get(position);
+    public Subject getItem(int position) {
+        return subjects.get(position);
     }
 
     @Override
@@ -53,10 +55,9 @@ public class CoursesAdapter extends BaseAdapter {
         TextView text1 = twoLineListItem.getText1();
         TextView text2 = twoLineListItem.getText2();
 
-        //text1.setText(courses.get(position).getSubject() + courses.get(position).getCatalogNumber() + ": " + courses.get(position).getTitle());
-        text1.setText(courses.get(position).getSubject() + courses.get(position).getCatalogNumber());
+        text1.setText(subjects.get(position).getSubject());
         text1.setTextColor(Color.BLACK);
-        text2.setText(courses.get(position).getTitle());
+        text2.setText(subjects.get(position).getDescription());
         text2.setTextColor(Color.DKGRAY);
 
         return twoLineListItem;

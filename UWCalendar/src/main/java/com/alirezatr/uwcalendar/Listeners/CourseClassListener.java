@@ -1,4 +1,6 @@
-package com.alirezatr.uwcalendar;
+package com.alirezatr.uwcalendar.Listeners;
+
+import com.alirezatr.uwcalendar.Models.CourseClass;
 
 import java.util.ArrayList;
 

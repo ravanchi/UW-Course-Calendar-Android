@@ -11,6 +11,11 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.alirezatr.uwcalendar.Adapters.SubjectsAdapter;
+import com.alirezatr.uwcalendar.Listeners.SubjectsListener;
+import com.alirezatr.uwcalendar.Models.Subject;
+import com.alirezatr.uwcalendar.Network.NetworkManager;
+
 import java.util.ArrayList;
 
 public class SubjectsActivity extends ListActivity {

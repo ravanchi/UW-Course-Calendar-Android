@@ -12,6 +12,11 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.alirezatr.uwcalendar.Adapters.CoursesAdapter;
+import com.alirezatr.uwcalendar.Listeners.CoursesListener;
+import com.alirezatr.uwcalendar.Models.Course;
+import com.alirezatr.uwcalendar.Network.NetworkManager;
+
 import java.util.ArrayList;
 
 /**

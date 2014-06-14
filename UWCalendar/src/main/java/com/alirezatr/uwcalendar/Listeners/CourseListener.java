@@ -1,6 +1,6 @@
-package com.alirezatr.uwcalendar;
+package com.alirezatr.uwcalendar.Listeners;
 
-import java.util.ArrayList;
+import com.alirezatr.uwcalendar.Models.Course;
 
 /**
  * Created by ali on 1/20/2014.
