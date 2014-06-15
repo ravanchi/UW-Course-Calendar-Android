@@ -7,11 +7,10 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:debuggable="false"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.alirezatr.uwcalendar.SubjectsActivity"
+            android:name=".activities.SubjectsActivity"
             android:label="@string/app_name"
             android:configChanges="orientation|screenSize" >
             <intent-filter>
@@ -21,18 +20,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.alirezatr.uwcalendar.CoursesActivity"
+            android:name=".activities.CoursesActivity"
             android:label="Courses"
-            android:parentActivityName="com.alirezatr.uwcalendar.SubjectsActivity"
+            android:parentActivityName=".activities.SubjectsActivity"
             android:configChanges="orientation|screenSize" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.alirezatr.uwcalendar.SubjectsActivity" />
             </activity>
         <activity
-            android:name="com.alirezatr.uwcalendar.CourseActivity"
+            android:name=".activities.CourseActivity"
             android:label="Course"
-            android:parentActivityName="com.alirezatr.uwcalendar.SubjectsActivity"
+            android:parentActivityName=".activities.SubjectsActivity"
             android:configChanges="orientation|screenSize" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -1,4 +1,4 @@
-package com.alirezatr.uwcalendar;
+package com.alirezatr.uwcalendar.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -14,17 +14,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alirezatr.uwcalendar.Listeners.CourseClassListener;
-import com.alirezatr.uwcalendar.Listeners.CourseListener;
-import com.alirezatr.uwcalendar.Models.Course;
-import com.alirezatr.uwcalendar.Models.CourseClass;
-import com.alirezatr.uwcalendar.Network.NetworkManager;
+import com.alirezatr.uwcalendar.R;
+import com.alirezatr.uwcalendar.listeners.ClassesListener;
+import com.alirezatr.uwcalendar.listeners.CourseListener;
+import com.alirezatr.uwcalendar.models.*;
+import com.alirezatr.uwcalendar.models.Class;
+import com.alirezatr.uwcalendar.network.NetworkManager;
 
 import java.util.ArrayList;
 
-/**
- * Created by ali on 1/20/2014.
- */
 public class CourseActivity extends Activity {
     private NetworkManager networkManager;
     private ProgressDialog dialog;
@@ -101,11 +99,11 @@ public class CourseActivity extends Activity {
     }
 
     public void loadCourseClass(String subject, String catalog_number) {
-        networkManager.getCourseClass(subject, catalog_number, new CourseClassListener() {
+        networkManager.getCourseClass(subject, catalog_number, new ClassesListener() {
             @Override
-            public void onSuccess(ArrayList<CourseClass> courseClass) {
+            public void onSuccess(ArrayList<Class> clases) {
                 LinearLayout layout = (LinearLayout) findViewById(R.id.linLayout);
-                for(CourseClass classes: courseClass) {
+                for(com.alirezatr.uwcalendar.models.Class classes: clases) {
                     if (classes.getRoom() != null || classes.getInstructor() != null || classes.getLocation() != null) {
                         LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                         TextView tv = new TextView(getApplicationContext());
@@ -118,7 +116,7 @@ public class CourseActivity extends Activity {
                             classes.setRoom("");
                         }
                         tv.setText(classes.getSection() + " " + classes.getInstructor() + "\n" + classes.getWeekdays() + " " +
-                                classes.getStart_time() + " - " + classes.getEnd_time() + " " + classes.getLocation()+classes.getRoom());
+                                classes.getStartTime() + " - " + classes.getEndTime() + " " + classes.getLocation()+classes.getRoom());
                         layout.addView(tv);
                     }
                 }

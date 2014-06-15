@@ -1,4 +1,4 @@
-package com.alirezatr.uwcalendar.Adapters;
+package com.alirezatr.uwcalendar.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,13 +9,10 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.TwoLineListItem;
 
-import com.alirezatr.uwcalendar.Models.Course;
+import com.alirezatr.uwcalendar.models.Course;
 
 import java.util.ArrayList;
 
-/**
- * Created by ali on 1/20/2014.
- */
 public class CoursesAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Course> courses;
@@ -55,7 +52,6 @@ public class CoursesAdapter extends BaseAdapter {
         TextView text1 = twoLineListItem.getText1();
         TextView text2 = twoLineListItem.getText2();
 
-        //text1.setText(courses.get(position).getSubject() + courses.get(position).getCatalogNumber() + ": " + courses.get(position).getTitle());
         text1.setText(courses.get(position).getSubject() + courses.get(position).getCatalogNumber());
         text1.setTextColor(Color.BLACK);
         text2.setText(courses.get(position).getTitle());

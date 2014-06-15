@@ -1,17 +1,14 @@
-package com.alirezatr.uwcalendar.Network;
+package com.alirezatr.uwcalendar.network;
 
 import android.content.Context;
 
-import com.alirezatr.uwcalendar.Listeners.CourseClassListener;
-import com.alirezatr.uwcalendar.Listeners.CourseListener;
-import com.alirezatr.uwcalendar.Listeners.CoursesListener;
-import com.alirezatr.uwcalendar.Listeners.SubjectsListener;
+import com.alirezatr.uwcalendar.listeners.ClassesListener;
+import com.alirezatr.uwcalendar.listeners.CourseListener;
+import com.alirezatr.uwcalendar.listeners.CoursesListener;
+import com.alirezatr.uwcalendar.listeners.SubjectsListener;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-/**
- * Created by ali on 1/20/2014.
- */
 public class NetworkManager {
     private Context context;
     private RequestQueue requestQueue;
@@ -33,8 +30,7 @@ public class NetworkManager {
         CourseRequest request = new CourseRequest(subject, catalog_number, completionHandler, requestQueue);
     }
 
-    public void getCourseClass(String subject, String catalog_number, CourseClassListener completionHandler) {
+    public void getCourseClass(String subject, String catalog_number, ClassesListener completionHandler) {
         CourseClassRequest request = new CourseClassRequest(subject, catalog_number, completionHandler, requestQueue);
     }
-
 }

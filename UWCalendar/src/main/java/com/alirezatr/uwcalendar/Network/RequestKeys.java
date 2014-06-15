@@ -1,4 +1,4 @@
-package com.alirezatr.uwcalendar.Network;
+package com.alirezatr.uwcalendar.network;
 
 /**
  * Created by ali on 1/20/2014.

@@ -1,9 +1,9 @@
-package com.alirezatr.uwcalendar.Network;
+package com.alirezatr.uwcalendar.network;
 
-import static com.alirezatr.uwcalendar.Network.RequestKeys.*;
+import static com.alirezatr.uwcalendar.network.RequestKeys.*;
 
-import com.alirezatr.uwcalendar.Models.Subject;
-import com.alirezatr.uwcalendar.Listeners.SubjectsListener;
+import com.alirezatr.uwcalendar.models.Subject;
+import com.alirezatr.uwcalendar.listeners.SubjectsListener;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -16,9 +16,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Created by ali on 1/20/2014.
- */
 public class SubjectsRequest {
     private SubjectsListener completionHandler;
     private String url = subjectsRequestUrl + "?key=" + apiKey;

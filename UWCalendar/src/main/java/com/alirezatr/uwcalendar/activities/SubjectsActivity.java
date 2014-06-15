@@ -1,4 +1,4 @@
-package com.alirezatr.uwcalendar;
+package com.alirezatr.uwcalendar.activities;
 
 import android.app.ActionBar;
 import android.app.ListActivity;
@@ -11,10 +11,11 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.alirezatr.uwcalendar.Adapters.SubjectsAdapter;
-import com.alirezatr.uwcalendar.Listeners.SubjectsListener;
-import com.alirezatr.uwcalendar.Models.Subject;
-import com.alirezatr.uwcalendar.Network.NetworkManager;
+import com.alirezatr.uwcalendar.R;
+import com.alirezatr.uwcalendar.adapters.SubjectsAdapter;
+import com.alirezatr.uwcalendar.listeners.SubjectsListener;
+import com.alirezatr.uwcalendar.models.Subject;
+import com.alirezatr.uwcalendar.network.NetworkManager;
 
 import java.util.ArrayList;
 
@@ -81,5 +82,4 @@ public class SubjectsActivity extends ListActivity {
         }
         return true;
     }
-
 }
