@@ -1,4 +1,4 @@
-package com.alirezatr.uwcalendar;
+package com.alirezatr.uwcalendar.activities;
 
 import android.app.ActionBar;
 import android.app.ListActivity;
@@ -12,11 +12,14 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.alirezatr.uwcalendar.R;
+import com.alirezatr.uwcalendar.adapters.CoursesAdapter;
+import com.alirezatr.uwcalendar.listeners.CoursesListener;
+import com.alirezatr.uwcalendar.models.Course;
+import com.alirezatr.uwcalendar.network.NetworkManager;
+
 import java.util.ArrayList;
 
-/**
- * Created by ali on 1/20/2014.
- */
 public class CoursesActivity extends ListActivity{
     private NetworkManager networkManager;
     private ProgressDialog dialog;

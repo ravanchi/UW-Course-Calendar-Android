@@ -1,7 +1,9 @@
-package com.alirezatr.uwcalendar;
+package com.alirezatr.uwcalendar.network;
 
-import static com.alirezatr.uwcalendar.RequestKeys.*;
+import static com.alirezatr.uwcalendar.network.RequestKeys.*;
 
+import com.alirezatr.uwcalendar.models.Course;
+import com.alirezatr.uwcalendar.listeners.CoursesListener;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -14,38 +16,37 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Created by ali on 1/20/2014.
- */
-public class SubjectsRequest {
-    private SubjectsListener completionHandler;
-    private String url = subjectsRequestUrl + "?key=" + apiKey;
+public class CoursesRequest {
+    private CoursesListener completionHandler;
+    private String url = coursesRequestUrl;
 
-    public SubjectsRequest(SubjectsListener completionHandler, RequestQueue requestQueue) {
+    public CoursesRequest(String subject, CoursesListener completionHandler, RequestQueue requestQueue) {
+        this.url = url + subject + ".json?key=" + apiKey;
         this.completionHandler = completionHandler;
         JsonObjectRequest newRequest = new JsonObjectRequest(Request.Method.GET, url, null, successListener(), errorListener());
         requestQueue.add(newRequest);
     }
 
-    private static ArrayList<Subject> parseResponse(JSONArray dataArray) throws JSONException {
+    private static ArrayList<Course> parseResponse(JSONArray dataArray) throws JSONException {
         int dataArrayLength = dataArray.length();
 
-        ArrayList<Subject> subjectList = new ArrayList<Subject>(dataArrayLength);
+        ArrayList<Course> courseList = new ArrayList<Course>(dataArrayLength);
         if(dataArrayLength != 0) {
-            Subject subjectModel;
-            JSONObject subjectData;
+            Course courseModel;
+            JSONObject courseData;
 
             for(int i = 0; i < dataArrayLength; i++) {
                 try {
-                    subjectData = dataArray.getJSONObject(i);
-                    subjectModel = new Subject(subjectData.getString(subject), subjectData.getString(description));
-                    subjectList.add(subjectModel);
+                    courseData = dataArray.getJSONObject(i);
+                    courseModel = new Course(courseData.getString("course_id"), courseData.getString("subject"), courseData.getString("catalog_number"),
+                            courseData.getString("title"), courseData.getString("description"));
+                    courseList.add(courseModel);
                 } catch(JSONException exception) {
                     throw exception;
                 }
             }
         }
-        return subjectList;
+        return courseList;
     }
 
     private Response.Listener<JSONObject> successListener() {

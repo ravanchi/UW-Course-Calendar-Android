@@ -1,4 +1,4 @@
-package com.alirezatr.uwcalendar;
+package com.alirezatr.uwcalendar.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,11 +9,10 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.TwoLineListItem;
 
+import com.alirezatr.uwcalendar.models.Subject;
+
 import java.util.ArrayList;
 
-/**
- * Created by ali on 1/20/2014.
- */
 public class SubjectsAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Subject> subjects;
