@@ -1,12 +1,11 @@
-package com.alirezatr.uwcalendar;
+package com.alirezatr.uwcalendar.models;
 
-/**
- * Created by ali on 1/20/2014.
- */
-public class CourseClass {
+public class Class {
     private String section;
-    private String enrollment_capacity;
-    private String enrollment_total;
+    private int enrollment_capacity;
+    private int enrollment_total;
+    private int waiting_capacity;
+    private String waiting_total;
 
     private String start_time;
     private String end_time;
@@ -15,8 +14,8 @@ public class CourseClass {
     private String room;
     private String instructor;
 
-    public CourseClass(String section, String enrollment_capacity, String enrollment_total, String start_time, String end_time,
-                       String weekdays, String location, String room, String instructor) {
+    public Class(String section, int enrollment_capacity, int enrollment_total, String start_time, String end_time,
+                 String weekdays, String location, String room, String instructor) {
         this.section = section;
         this.enrollment_capacity = enrollment_capacity;
         this.enrollment_total = enrollment_total;
@@ -30,13 +29,13 @@ public class CourseClass {
 
     public String getSection() { return this.section; }
 
-    public String getEnrollment_capacity() { return this.enrollment_capacity; }
+    public int getEnrollmentCapacity() { return this.enrollment_capacity; }
 
-    public String getEnrollment_total() { return this.enrollment_total; }
+    public int getEnrollmentTotal() { return this.enrollment_total; }
 
-    public String getStart_time() { return start_time; }
+    public String getStartTime() { return start_time; }
 
-    public String getEnd_time() { return end_time; }
+    public String getEndTime() { return end_time; }
 
     public String getWeekdays() { return weekdays; }
 

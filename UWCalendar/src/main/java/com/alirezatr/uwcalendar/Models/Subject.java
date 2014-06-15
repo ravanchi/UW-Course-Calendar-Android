@@ -1,11 +1,9 @@
-package com.alirezatr.uwcalendar;
+package com.alirezatr.uwcalendar.models;
 
-/**
- * Created by ali on 1/20/2014.
- */
 public class Subject {
     private String subject;
     private String description;
+    private String unit;
 
     public Subject(String subject, String description) {
         this.subject = subject;

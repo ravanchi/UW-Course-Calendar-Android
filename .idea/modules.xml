@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/UW-Course-Calendar.iml" filepath="$PROJECT_DIR$/UW-Course-Calendar.iml" />
       <module fileurl="file://$PROJECT_DIR$/UWCalendar/UWCalendar.iml" filepath="$PROJECT_DIR$/UWCalendar/UWCalendar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UWCourseCalendar.iml" filepath="$PROJECT_DIR$/UWCourseCalendar.iml" />
     </modules>
   </component>
 </project>

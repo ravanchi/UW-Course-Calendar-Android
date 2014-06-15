@@ -1,21 +1,25 @@
-package com.alirezatr.uwcalendar;
+package com.alirezatr.uwcalendar.models;
 
 import java.util.List;
 
-/**
- * Created by ali on 1/20/2014.
- */
 public class Course {
     private String course_id;
     private String subject;
     private String catalog_number;
     private String title;
+    private double units;
     private String description;
-
     private List<String> instructions;
     private String prerequisites;
     private String antirequisites;
+    private String corequisites;
+    private String crosslistings;
+    private List<String> terms_offered;
     private String notes;
+    private String calendar_year;
+    private String url;
+    private String academic_level;
+    private List<Class> classes;
 
     public Course(String course_id, String subject, String catalog_number, String title, String description) {
         this.course_id = course_id;
@@ -33,6 +37,8 @@ public class Course {
         this.antirequisites = antirequisites;
         this.notes = notes;
     }
+
+    public String getCourseId() { return this.course_id; }
 
     public String getSubject() { return this.subject; }
 
