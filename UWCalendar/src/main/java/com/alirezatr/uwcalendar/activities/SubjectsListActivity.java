@@ -19,7 +19,7 @@ import com.alirezatr.uwcalendar.network.NetworkManager;
 
 import java.util.ArrayList;
 
-public class SubjectsActivity extends ListActivity {
+public class SubjectsListActivity extends ListActivity {
     private NetworkManager networkManager;
     public ProgressDialog dialog;
 
@@ -60,7 +60,7 @@ public class SubjectsActivity extends ListActivity {
         super.onListItemClick(l, v, position, id);
         Object o = this.getListAdapter().getItem(position);
         Subject subject = (Subject) o;
-        Intent intent = new Intent(getListView().getContext(), CoursesActivity.class);
+        Intent intent = new Intent(getListView().getContext(), CoursesListActivity.class);
         intent.putExtra("subject", subject.getSubject());
         getListView().getContext().startActivity(intent);
     }

@@ -20,7 +20,7 @@ import com.alirezatr.uwcalendar.network.NetworkManager;
 
 import java.util.ArrayList;
 
-public class CoursesActivity extends ListActivity{
+public class CoursesListActivity extends ListActivity{
     private NetworkManager networkManager;
     private ProgressDialog dialog;
     private String subject;
