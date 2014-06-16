@@ -31,6 +31,6 @@ public class NetworkManager {
     }
 
     public void getCourseClass(String subject, String catalog_number, ClassesListener completionHandler) {
-        CourseClassRequest request = new CourseClassRequest(subject, catalog_number, completionHandler, requestQueue);
+        ClassRequest request = new ClassRequest(subject, catalog_number, completionHandler, requestQueue);
     }
 }
