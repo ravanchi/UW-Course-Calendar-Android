@@ -5,27 +5,27 @@ import com.alirezatr.uwcalendar.network.CourseRequest;
 import com.alirezatr.uwcalendar.network.CoursesRequest;
 import com.alirezatr.uwcalendar.network.SubjectsRequest;
 
-import static com.alirezatr.uwcalendar.network.RequestKeys.apiKey;
-import static com.alirezatr.uwcalendar.network.RequestKeys.classRequestUrl;
-import static com.alirezatr.uwcalendar.network.RequestKeys.coursesRequestUrl;
-import static com.alirezatr.uwcalendar.network.RequestKeys.requestFormat;
-import static com.alirezatr.uwcalendar.network.RequestKeys.subjectsRequestUrl;
+import static com.alirezatr.uwcalendar.network.RequestKeys.API_KEY;
+import static com.alirezatr.uwcalendar.network.RequestKeys.CLASS_REQUEST_URL;
+import static com.alirezatr.uwcalendar.network.RequestKeys.COURSES_REQUEST_URL;
+import static com.alirezatr.uwcalendar.network.RequestKeys.REQUEST_FORMAT;
+import static com.alirezatr.uwcalendar.network.RequestKeys.SUBJECTS_REQUEST_URL;
 
 public class StringUtils {
 
     public static String generateURL(Class<?> requestClass, String subject, String catalog_number) {
         if(requestClass.equals(CourseRequest.class)) {
-            return coursesRequestUrl + subject + "/" + catalog_number + "." + requestFormat + "?key=" + apiKey;
+            return COURSES_REQUEST_URL + subject + "/" + catalog_number + "." + REQUEST_FORMAT + "?key=" + API_KEY;
         }
         if(requestClass.equals(CoursesRequest.class)) {
-            return coursesRequestUrl + subject + "." + requestFormat + "?key=" + apiKey;
+            return COURSES_REQUEST_URL + subject + "." + REQUEST_FORMAT + "?key=" + API_KEY;
         }
         if(requestClass.equals(ClassRequest.class)) {
             //TODO: Add the ability to change terms
-            return classRequestUrl + "1139" + "/" + subject + "/" + catalog_number + "/schedule." + requestFormat + "?key=" + apiKey;
+            return CLASS_REQUEST_URL + "1139" + "/" + subject + "/" + catalog_number + "/schedule." + REQUEST_FORMAT + "?key=" + API_KEY;
         }
         if(requestClass.equals(SubjectsRequest.class)) {
-            return subjectsRequestUrl + "?key=" + apiKey;
+            return SUBJECTS_REQUEST_URL + "?key=" + API_KEY;
         }
         return "";
     }

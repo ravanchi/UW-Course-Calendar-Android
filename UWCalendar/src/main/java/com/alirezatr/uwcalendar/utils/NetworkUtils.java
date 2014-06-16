@@ -11,8 +11,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.alirezatr.uwcalendar.network.RequestKeys.description;
-import static com.alirezatr.uwcalendar.network.RequestKeys.subject;
+import static com.alirezatr.uwcalendar.network.RequestKeys.*;
 
 public class NetworkUtils {
 
@@ -27,7 +26,7 @@ public class NetworkUtils {
             for(int i = 0; i < dataArrayLength; i++) {
                 try {
                     subjectData = dataArray.getJSONObject(i);
-                    subjectModel = new Subject(subjectData.getString(subject), subjectData.getString(description));
+                    subjectModel = new Subject(subjectData.getString(SUBJECT), subjectData.getString(DESCRIPTION));
                     subjectList.add(subjectModel);
                 } catch(JSONException exception) {
                     throw exception;
@@ -38,19 +37,20 @@ public class NetworkUtils {
     }
 
     public static Course parseCourse(JSONObject dataObject) throws JSONException {
-        Course courseModel = null;
+        Course courseModel;
         JSONObject courseData;
         JSONArray instructions;
 
         try {
             courseData = dataObject;
             List<String> instructionList = new ArrayList<String>();
-            instructions = courseData.getJSONArray("instructions");
+            instructions = courseData.getJSONArray(INSTRUCTIONS);
             for(int i = 0; i < instructions.length(); i++) {
                 instructionList.add(instructions.getString(i));
             }
-            courseModel = new Course(courseData.getString("course_id"), courseData.getString("subject"), courseData.getString("catalog_number"),
-                    courseData.getString("title"), courseData.getString("description"), instructionList, courseData.getString("prerequisites"), courseData.getString("antirequisites"), courseData.getString("notes"));
+            courseModel = new Course(courseData.getString(COURSE_ID), courseData.getString(SUBJECT), courseData.getString(CATALOG_NUMBER),
+                    courseData.getString(TITLE), courseData.getString(DESCRIPTION), instructionList, courseData.getString(PREREQUISITES),
+                    courseData.getString(ANTIREQUISITES), courseData.getString(NOTES));
         } catch(JSONException exception) {
             throw exception;
         }
@@ -68,8 +68,8 @@ public class NetworkUtils {
             for(int i = 0; i < dataArrayLength; i++) {
                 try {
                     courseData = dataArray.getJSONObject(i);
-                    courseModel = new Course(courseData.getString("course_id"), courseData.getString("subject"), courseData.getString("catalog_number"),
-                            courseData.getString("title"), courseData.getString("description"));
+                    courseModel = new Course(courseData.getString(COURSE_ID), courseData.getString(SUBJECT), courseData.getString(CATALOG_NUMBER),
+                            courseData.getString(TITLE), courseData.getString(DESCRIPTION));
                     courseList.add(courseModel);
                 } catch(JSONException exception) {
                     throw exception;
@@ -99,16 +99,16 @@ public class NetworkUtils {
             for(int i = 0; i < dataArrayLength; i++) {
                 try {
                     courseData = dataArray.getJSONObject(i);
-                    classData = courseData.getJSONArray("classes");
+                    classData = courseData.getJSONArray(CLASSES);
 
-                    building = classData.getJSONObject(0).getJSONObject("location").getString("building");
-                    rooms = classData.getJSONObject(0).getJSONObject("location").getString("room");
-                    instructor = classData.getJSONObject(0).getJSONArray("instructors").optString(0);
-                    start_time = classData.getJSONObject(0).getJSONObject("date").getString("start_time");
-                    end_time = classData.getJSONObject(0).getJSONObject("date").getString("end_time");
-                    weekdays = classData.getJSONObject(0).getJSONObject("date").getString("weekdays");
+                    building = classData.getJSONObject(0).getJSONObject(LOCATION).getString(BUILDING);
+                    rooms = classData.getJSONObject(0).getJSONObject(LOCATION).getString(ROOM);
+                    instructor = classData.getJSONObject(0).getJSONArray(INSTRUCTORS).optString(0);
+                    start_time = classData.getJSONObject(0).getJSONObject(DATE).getString(START_TIME);
+                    end_time = classData.getJSONObject(0).getJSONObject(DATE).getString(END_TIME);
+                    weekdays = classData.getJSONObject(0).getJSONObject(DATE).getString(WEEKDAYS);
 
-                    classModel = new Class(courseData.getString("section"), courseData.getInt("enrollment_capacity"), courseData.getInt("enrollment_total"),
+                    classModel = new Class(courseData.getString(SECTION), courseData.getInt(ENROLLMENT_CAPACITY), courseData.getInt(ENROLLMENT_TOTAL),
                             start_time, end_time, weekdays, building, rooms, instructor);
                     classList.add(classModel);
                 } catch(JSONException exception) {

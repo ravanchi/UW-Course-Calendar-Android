@@ -38,7 +38,7 @@ public class CoursesActivity extends ListActivity{
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            subject = extras.getString("subject");
+            subject = extras.getString("SUBJECT");
             actionBar.setTitle(subject);
             actionBar.setSubtitle("Waterloo Calendar");
             loadCourses(subject);
@@ -53,7 +53,7 @@ public class CoursesActivity extends ListActivity{
             public void onSuccess(ArrayList<Course> courses) {
                 if(courses.size() == 0) {
                     dialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "No courses to load for this subject", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "No courses to load for this SUBJECT", Toast.LENGTH_LONG).show();
                 } else {
                     setListAdapter(new CoursesAdapter(getApplicationContext(), courses));
                     dialog.dismiss();
@@ -74,7 +74,7 @@ public class CoursesActivity extends ListActivity{
         Object o = this.getListAdapter().getItem(position);
         Course course = (Course) o;
         Intent intent = new Intent(getListView().getContext(), CourseActivity.class);
-        intent.putExtra("subject", course.getSubject());
+        intent.putExtra("SUBJECT", course.getSubject());
         intent.putExtra("catalog_number", course.getCatalogNumber());
         getListView().getContext().startActivity(intent);
     }

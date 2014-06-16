@@ -61,7 +61,7 @@ public class SubjectsActivity extends ListActivity {
         Object o = this.getListAdapter().getItem(position);
         Subject subject = (Subject) o;
         Intent intent = new Intent(getListView().getContext(), CoursesActivity.class);
-        intent.putExtra("subject", subject.getSubject());
+        intent.putExtra("SUBJECT", subject.getSubject());
         getListView().getContext().startActivity(intent);
     }
 
