@@ -42,7 +42,7 @@ public class CourseActivity extends Activity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            subject = extras.getString("subject");
+            subject = extras.getString("SUBJECT");
             catalog_number = extras.getString("catalog_number");
             actionBar.setTitle(subject + catalog_number);
             actionBar.setSubtitle("Waterloo Calendar");
