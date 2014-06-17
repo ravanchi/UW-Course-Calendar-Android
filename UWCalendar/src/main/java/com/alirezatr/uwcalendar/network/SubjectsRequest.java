@@ -1,6 +1,6 @@
 package com.alirezatr.uwcalendar.network;
 
-import static com.alirezatr.uwcalendar.network.RequestKeys.*;
+import static com.alirezatr.uwcalendar.network.RequestKeys.DATA;
 
 import com.alirezatr.uwcalendar.listeners.SubjectsListener;
 import com.alirezatr.uwcalendar.utils.NetworkUtils;
@@ -23,6 +23,7 @@ public class SubjectsRequest {
         this.completionHandler = completionHandler;
         JsonObjectRequest newRequest = new JsonObjectRequest(Request.Method.GET, url, null, successListener(), errorListener());
         requestQueue.add(newRequest);
+        requestQueue.start();
     }
 
     private Response.Listener<JSONObject> successListener() {
@@ -30,8 +31,8 @@ public class SubjectsRequest {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    JSONArray dataArray = response.getJSONArray("data");
-                    completionHandler.onSuccess(NetworkUtils.parseSubjects(dataArray));
+                    JSONArray dataArray = response.getJSONArray(DATA);
+                    completionHandler.onSuccess(NetworkUtils.parseSubjectList(dataArray));
                 } catch (JSONException exception) {
                     completionHandler.onError(exception);
                 }

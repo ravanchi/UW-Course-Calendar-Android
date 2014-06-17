@@ -30,7 +30,7 @@ public class SubjectsActivity extends ListActivity {
 
         ActionBar actionBar = getActionBar();
         actionBar.setTitle("Subjects");
-        actionBar.setSubtitle("Waterloo Calendar");
+        actionBar.setSubtitle(getResources().getString(R.string.app_name));
 
         networkManager = new NetworkManager(this);
         dialog = new ProgressDialog(this);
@@ -58,8 +58,7 @@ public class SubjectsActivity extends ListActivity {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        Object o = this.getListAdapter().getItem(position);
-        Subject subject = (Subject) o;
+        Subject subject = (Subject) this.getListAdapter().getItem(position);
         Intent intent = new Intent(getListView().getContext(), CoursesActivity.class);
         intent.putExtra("SUBJECT", subject.getSubject());
         getListView().getContext().startActivity(intent);
