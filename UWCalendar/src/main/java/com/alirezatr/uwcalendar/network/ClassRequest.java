@@ -1,5 +1,7 @@
 package com.alirezatr.uwcalendar.network;
 
+import static com.alirezatr.uwcalendar.network.RequestKeys.DATA;
+
 import com.alirezatr.uwcalendar.listeners.ClassesListener;
 import com.alirezatr.uwcalendar.utils.NetworkUtils;
 import com.alirezatr.uwcalendar.utils.StringUtils;
@@ -21,6 +23,7 @@ public class ClassRequest {
         this.completionHandler = completionHandler;
         JsonObjectRequest newRequest = new JsonObjectRequest(Request.Method.GET, url, null, successListener(), errorListener());
         requestQueue.add(newRequest);
+        requestQueue.start();
     }
 
     private Response.Listener<JSONObject> successListener() {
@@ -28,8 +31,8 @@ public class ClassRequest {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    JSONArray dataArray = response.getJSONArray("data");
-                    completionHandler.onSuccess(NetworkUtils.parseClass(dataArray));
+                    JSONArray dataArray = response.getJSONArray(DATA);
+                    completionHandler.onSuccess(NetworkUtils.parseClassList(dataArray));
                 } catch (JSONException exception) {
                     completionHandler.onError(exception);
                 }

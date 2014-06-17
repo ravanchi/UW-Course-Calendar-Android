@@ -12,6 +12,7 @@ public class RequestKeys {
     public static final String COURSES_REQUEST_URL = "https://api.uwaterloo.ca/v2/courses/";
     public static final String CLASS_REQUEST_URL = "https://api.uwaterloo.ca/v2/terms/";
 
+    public static final String DATA = "data";
     public static final String SUBJECT = "subject";
     public static final String DESCRIPTION = "description";
     public static final String INSTRUCTIONS = "instructions";

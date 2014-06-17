@@ -56,14 +56,14 @@ public class CourseActivity extends Activity {
         networkManager.getCourse(subject, catalog_number, new CourseListener() {
             @Override
             public void onSuccess(Course course) {
-                TextView description = (TextView) findViewById(R.id.description);
+                TextView description = (TextView) findViewById(R.id.course_description);
                 description.setText(course.getDescription());
 
-                TextView instructions = (TextView) findViewById(R.id.instructions);
+                TextView instructions = (TextView) findViewById(R.id.course_instructions);
                 instructions.setText(course.getInstructions().toString());
 
-                TextView prerequisites = (TextView) findViewById(R.id.prerequisites);
-                TextView prerequisitesTitle = (TextView) findViewById(R.id.prerequisites_title);
+                TextView prerequisites = (TextView) findViewById(R.id.course_prerequisites);
+                TextView prerequisitesTitle = (TextView) findViewById(R.id.course_prerequisites_title);
                 prerequisitesTitle.setText("Prerequisites");
                 if (course.getPrerequisites() == "null") {
                     prerequisites.setText("none");
@@ -72,8 +72,8 @@ public class CourseActivity extends Activity {
                     prerequisites.setText(course.getPrerequisites());
                 }
 
-                TextView antirequisites = (TextView) findViewById(R.id.antirequisites);
-                TextView antirequisitesTitle = (TextView) findViewById(R.id.antirequisites_title);
+                TextView antirequisites = (TextView) findViewById(R.id.course_antirequisites);
+                TextView antirequisitesTitle = (TextView) findViewById(R.id.course_antirequisites_title);
                 antirequisitesTitle.setText("Antirequisites");
                 if (course.getAntirequisites() == "null") {
                     antirequisites.setText("none");
@@ -83,7 +83,7 @@ public class CourseActivity extends Activity {
                 }
 
                 if (course.getNotes() != "null") {
-                    TextView notes = (TextView) findViewById(R.id.notes);
+                    TextView notes = (TextView) findViewById(R.id.course_notes);
                     notes.setText(course.getNotes());
                 }
 
