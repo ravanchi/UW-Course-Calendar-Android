@@ -19,7 +19,7 @@ public class SubjectsRequest {
     private SubjectsListener completionHandler;
 
     public SubjectsRequest(SubjectsListener completionHandler, RequestQueue requestQueue) {
-        String url = StringUtils.generateURL(SubjectsRequest.class, null, null);
+        String url = StringUtils.generateUrl(SubjectsRequest.class, null, null);
         this.completionHandler = completionHandler;
         JsonObjectRequest newRequest = new JsonObjectRequest(Request.Method.GET, url, null, successListener(), errorListener());
         requestQueue.add(newRequest);
