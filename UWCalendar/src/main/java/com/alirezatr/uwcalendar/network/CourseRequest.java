@@ -18,7 +18,7 @@ public class CourseRequest {
     private CourseListener completionHandler;
 
     public CourseRequest(String subject, String catalog_number, CourseListener completionHandler, RequestQueue requestQueue) {
-        String url = StringUtils.generateURL(CourseRequest.class, subject, catalog_number);
+        String url = StringUtils.generateUrl(CourseRequest.class, subject, catalog_number);
         this.completionHandler = completionHandler;
         JsonObjectRequest newRequest = new JsonObjectRequest(Request.Method.GET, url, null, successListener(), errorListener());
         requestQueue.add(newRequest);

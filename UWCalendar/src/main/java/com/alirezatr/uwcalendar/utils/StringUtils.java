@@ -13,7 +13,7 @@ import static com.alirezatr.uwcalendar.network.RequestKeys.SUBJECTS_REQUEST_URL;
 
 public class StringUtils {
 
-    public static String generateURL(Class<?> requestClass, String subject, String catalog_number) {
+    public static String generateUrl(Class<?> requestClass, String subject, String catalog_number) {
         if(requestClass.equals(CourseRequest.class)) {
             return COURSES_REQUEST_URL + subject + "/" + catalog_number + "." + REQUEST_FORMAT + "?key=" + API_KEY;
         }

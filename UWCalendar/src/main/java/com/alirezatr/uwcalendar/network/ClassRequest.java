@@ -19,7 +19,7 @@ public class ClassRequest {
     private ClassesListener completionHandler;
 
     public ClassRequest(String subject, String catalog_number, ClassesListener completionHandler, RequestQueue requestQueue) {
-        String url = StringUtils.generateURL(ClassRequest.class, subject, catalog_number);
+        String url = StringUtils.generateUrl(ClassRequest.class, subject, catalog_number);
         this.completionHandler = completionHandler;
         JsonObjectRequest newRequest = new JsonObjectRequest(Request.Method.GET, url, null, successListener(), errorListener());
         requestQueue.add(newRequest);
