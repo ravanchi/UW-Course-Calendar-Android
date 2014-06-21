@@ -1,15 +1,12 @@
 package com.alirezatr.uwcalendar.utils;
 
-import com.alirezatr.uwcalendar.models.Course;
 import com.alirezatr.uwcalendar.models.Class;
-import com.alirezatr.uwcalendar.models.Subject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.alirezatr.uwcalendar.network.RequestKeys.*;
 

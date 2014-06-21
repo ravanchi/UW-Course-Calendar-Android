@@ -4,7 +4,6 @@ import static com.alirezatr.uwcalendar.network.RequestKeys.DATA;
 
 import com.alirezatr.uwcalendar.listeners.CourseListener;
 import com.alirezatr.uwcalendar.models.Course;
-import com.alirezatr.uwcalendar.utils.NetworkUtils;
 import com.alirezatr.uwcalendar.utils.StringUtils;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -18,7 +17,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 public class CourseRequest {
     private CourseListener completionHandler;
@@ -26,7 +24,7 @@ public class CourseRequest {
     Type courseType = new TypeToken<Course>(){}.getType();
 
     public CourseRequest(String subject, String catalog_number, CourseListener completionHandler, RequestQueue requestQueue) {
-        String url = StringUtils.generateUrl(CourseRequest.class, subject, catalog_number);
+        String url = StringUtils.generateUrl(RequestType.COURSE, subject, catalog_number);
         this.completionHandler = completionHandler;
         JsonObjectRequest newRequest = new JsonObjectRequest(Request.Method.GET, url, null, successListener(), errorListener());
         requestQueue.add(newRequest);
@@ -37,14 +35,14 @@ public class CourseRequest {
         return new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                try {
-                    JSONObject dataObject = response.getJSONObject(DATA);
-                    Course courses = gson.fromJson(dataObject.toString(),
-                            courseType);
-                    completionHandler.onSuccess(courses);
-                } catch (JSONException exception) {
-                    completionHandler.onError(exception);
-                }
+            try {
+                JSONObject dataObject = response.getJSONObject(DATA);
+                Course courses = gson.fromJson(dataObject.toString(),
+                        courseType);
+                completionHandler.onSuccess(courses);
+            } catch (JSONException exception) {
+                completionHandler.onError(exception);
+            }
             }
         };
     }

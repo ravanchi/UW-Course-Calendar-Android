@@ -26,7 +26,7 @@ public class SubjectsRequest {
     Type subjectListType = new TypeToken<ArrayList<Subject>>(){}.getType();
 
     public SubjectsRequest(SubjectsListener completionHandler, RequestQueue requestQueue) {
-        String url = StringUtils.generateUrl(SubjectsRequest.class, null, null);
+        String url = StringUtils.generateUrl(RequestType.SUBJECTS_LIST);
         this.completionHandler = completionHandler;
         JsonObjectRequest newRequest = new JsonObjectRequest(Request.Method.GET, url, null, successListener(), errorListener());
         requestQueue.add(newRequest);
@@ -37,13 +37,13 @@ public class SubjectsRequest {
         return new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                try {
-                    JSONArray dataArray = response.getJSONArray(DATA);
-                    ArrayList<Subject> subjectList = gson.fromJson(dataArray.toString(), subjectListType);
-                    completionHandler.onSuccess(subjectList);
-                } catch (JSONException exception) {
-                    completionHandler.onError(exception);
-                }
+            try {
+                JSONArray dataArray = response.getJSONArray(DATA);
+                ArrayList<Subject> subjectList = gson.fromJson(dataArray.toString(), subjectListType);
+                completionHandler.onSuccess(subjectList);
+            } catch (JSONException exception) {
+                completionHandler.onError(exception);
+            }
             }
         };
     }
