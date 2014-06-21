@@ -3,23 +3,30 @@ package com.alirezatr.uwcalendar.network;
 import static com.alirezatr.uwcalendar.network.RequestKeys.DATA;
 
 import com.alirezatr.uwcalendar.listeners.CoursesListener;
-import com.alirezatr.uwcalendar.utils.NetworkUtils;
+import com.alirezatr.uwcalendar.models.Course;
 import com.alirezatr.uwcalendar.utils.StringUtils;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
 public class CoursesRequest {
     private CoursesListener completionHandler;
+    private Gson gson = new Gson();
+    Type coursesListType = new TypeToken<ArrayList<Course>>(){}.getType();
 
     public CoursesRequest(String subject, CoursesListener completionHandler, RequestQueue requestQueue) {
-        String url = StringUtils.generateUrl(CoursesRequest.class, subject, null);
+        String url = StringUtils.generateUrl(RequestType.COURSES_LIST, subject);
         this.completionHandler = completionHandler;
         JsonObjectRequest newRequest = new JsonObjectRequest(Request.Method.GET, url, null, successListener(), errorListener());
         requestQueue.add(newRequest);
@@ -30,12 +37,14 @@ public class CoursesRequest {
         return new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                try {
-                    JSONArray dataArray = response.getJSONArray(DATA);
-                    completionHandler.onSuccess(NetworkUtils.parseCourseList(dataArray));
-                } catch (JSONException exception) {
-                    completionHandler.onError(exception);
-                }
+            try {
+                JSONArray dataArray = response.getJSONArray(DATA);
+                ArrayList<Course> coursesList = gson.fromJson(dataArray.toString(),
+                        coursesListType);
+                completionHandler.onSuccess(coursesList);
+            } catch (JSONException exception) {
+                completionHandler.onError(exception);
+            }
             }
         };
     }

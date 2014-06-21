@@ -19,7 +19,7 @@ public class ClassRequest {
     private ClassesListener completionHandler;
 
     public ClassRequest(String subject, String catalog_number, ClassesListener completionHandler, RequestQueue requestQueue) {
-        String url = StringUtils.generateUrl(ClassRequest.class, subject, catalog_number);
+        String url = StringUtils.generateUrl(RequestType.CLASS, subject, catalog_number);
         this.completionHandler = completionHandler;
         JsonObjectRequest newRequest = new JsonObjectRequest(Request.Method.GET, url, null, successListener(), errorListener());
         requestQueue.add(newRequest);
@@ -30,12 +30,12 @@ public class ClassRequest {
         return new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                try {
-                    JSONArray dataArray = response.getJSONArray(DATA);
-                    completionHandler.onSuccess(NetworkUtils.parseClassList(dataArray));
-                } catch (JSONException exception) {
-                    completionHandler.onError(exception);
-                }
+            try {
+                JSONArray dataArray = response.getJSONArray(DATA);
+                completionHandler.onSuccess(NetworkUtils.parseClassList(dataArray));
+            } catch (JSONException exception) {
+                completionHandler.onError(exception);
+            }
             }
         };
     }
