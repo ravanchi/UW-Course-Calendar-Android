@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.TwoLineListItem;
 
+import com.alirezatr.uwcalendar.R;
 import com.alirezatr.uwcalendar.models.Course;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class CoursesAdapter extends BaseAdapter {
         if(convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             twoLineListItem = (TwoLineListItem) inflater.inflate(android.R.layout.simple_list_item_2, null);
+            convertView = inflater.inflate(android.R.layout.simple_list_item_2, null);
         }
         else {
             twoLineListItem = (TwoLineListItem) convertView;

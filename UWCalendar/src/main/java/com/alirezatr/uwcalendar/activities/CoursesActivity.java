@@ -13,14 +13,21 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.alirezatr.uwcalendar.R;
+import com.alirezatr.uwcalendar.adapters.AlphabetListAdapter;
 import com.alirezatr.uwcalendar.adapters.CoursesAdapter;
 import com.alirezatr.uwcalendar.listeners.CoursesListener;
 import com.alirezatr.uwcalendar.models.Course;
+import com.alirezatr.uwcalendar.models.Subject;
 import com.alirezatr.uwcalendar.network.NetworkManager;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.regex.Pattern;
 
 public class CoursesActivity extends ListActivity{
+    private AlphabetListAdapter adapter = new AlphabetListAdapter();
+    private List<Object[]> alphabet = new ArrayList<Object[]>();
     private NetworkManager networkManager;
     private ProgressDialog dialog;
     private String subject;
@@ -45,6 +52,55 @@ public class CoursesActivity extends ListActivity{
         }
     }
 
+        private void setAdapter(ArrayList<Course> courses) {
+        List rows = new ArrayList();
+        int start = 0;
+        int end = 0;
+        String previousLetter = null;
+        Object[] tmpIndexItem = null;
+        Pattern numberPattern = Pattern.compile("[0-9]");
+        Course course;
+
+        for(int i = 0; i < courses.size(); i++) {
+            course = courses.get(i);
+            String firstLetter = course.getTitle().substring(0, 1);
+
+            if (numberPattern.matcher(firstLetter).matches()) {
+                firstLetter = "#";
+            }
+
+            if (previousLetter != null && !firstLetter.equals(previousLetter)) {
+                end = rows.size() - 1;
+                tmpIndexItem = new Object[3];
+                tmpIndexItem[0] = previousLetter.toUpperCase(Locale.UK);
+                tmpIndexItem[1] = start;
+                tmpIndexItem[2] = end;
+                alphabet.add(tmpIndexItem);
+
+                start = end + 1;
+            }
+
+//            if (!firstLetter.equals(previousLetter)) {
+//                rows.add(new AlphabetListAdapter.Section(firstLetter));
+//                sections.put(firstLetter, start);
+//            }
+
+            rows.add(new AlphabetListAdapter.Item(course.getTitle(), course.getDescription()));
+            previousLetter = firstLetter;
+        }
+
+        if(previousLetter != null) {
+            tmpIndexItem = new Object[3];
+            tmpIndexItem[0] = previousLetter.toUpperCase(Locale.UK);
+            tmpIndexItem[1] = start;
+            tmpIndexItem[2] = rows.size() - 1;
+            alphabet.add(tmpIndexItem);
+        }
+
+        adapter.setRows(rows);
+        setListAdapter(adapter);
+    }
+
     public void loadCourses(String subject) {
         dialog.setMessage("Loading courses");
         dialog.show();
@@ -55,7 +111,8 @@ public class CoursesActivity extends ListActivity{
                     dialog.dismiss();
                     Toast.makeText(getApplicationContext(), "No courses to load for this SUBJECT", Toast.LENGTH_LONG).show();
                 } else {
-                    setListAdapter(new CoursesAdapter(getApplicationContext(), courses));
+                    setAdapter(courses);
+                    //setListAdapter(new CoursesAdapter(getApplicationContext(), courses));
                     dialog.dismiss();
                 }
             }

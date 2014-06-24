@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.alirezatr.uwcalendar.R;
+import com.alirezatr.uwcalendar.adapters.AlphabetListAdapter;
 import com.alirezatr.uwcalendar.adapters.SubjectsAdapter;
 import com.alirezatr.uwcalendar.listeners.SubjectsListener;
 import com.alirezatr.uwcalendar.models.Subject;
@@ -54,15 +55,16 @@ public class SubjectsActivity extends ListActivity {
             }
         });
     }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        Subject subject = (Subject) this.getListAdapter().getItem(position);
-        Intent intent = new Intent(getListView().getContext(), CoursesActivity.class);
-        intent.putExtra("SUBJECT", subject.getSubject());
-        getListView().getContext().startActivity(intent);
-    }
+//
+//    @Override
+//    public void onListItemClick(ListView l, View v, int position, long id) {
+//        super.onListItemClick(l, v, position, id);
+//        AlphabetListAdapter.Item rowItem = (AlphabetListAdapter.Item) this.getListAdapter().getItem
+//                (position);
+//        Intent intent = new Intent(getListView().getContext(), CoursesActivity.class);
+//        intent.putExtra("SUBJECT", rowItem.subject.getSubject());
+//        getListView().getContext().startActivity(intent);
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
