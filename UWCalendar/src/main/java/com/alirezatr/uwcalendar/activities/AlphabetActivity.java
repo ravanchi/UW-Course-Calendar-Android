@@ -4,13 +4,11 @@ import android.app.ActionBar;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.alirezatr.uwcalendar.R;
 import com.alirezatr.uwcalendar.adapters.AlphabetListAdapter;
@@ -18,6 +16,7 @@ import com.alirezatr.uwcalendar.adapters.AlphabetListAdapter.Item;
 import com.alirezatr.uwcalendar.listeners.SubjectsListener;
 import com.alirezatr.uwcalendar.models.Subject;
 import com.alirezatr.uwcalendar.network.NetworkManager;
+import com.alirezatr.uwcalendar.utils.FilterUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +29,8 @@ public class AlphabetActivity extends ListActivity {
     private List<Object[]> alphabet = new ArrayList<Object[]>();
     private HashMap<String, Integer> sections = new HashMap<String, Integer>();
     private NetworkManager networkManager;
-    public ProgressDialog dialog;
+    ProgressDialog mProgressDialog;
+    TextView mNetworkError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,9 @@ public class AlphabetActivity extends ListActivity {
         actionBar.setSubtitle(getResources().getString(R.string.app_name));
 
         networkManager = new NetworkManager(this);
-        dialog = new ProgressDialog(this);
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setCanceledOnTouchOutside(false);
         loadSubjects();
     }
 
@@ -59,7 +61,7 @@ public class AlphabetActivity extends ListActivity {
 
     private void setAdapter(ArrayList<Subject> subjects) {
         List rows = new ArrayList();
-        ArrayList<String> blacklist = filterSubjects();
+        ArrayList<String> blacklist = FilterUtils.getRestrictedSubjects();
         int start = 0;
         int end = 0;
         String previousLetter = null;
@@ -113,123 +115,24 @@ public class AlphabetActivity extends ListActivity {
     }
 
     public void loadSubjects() {
-        dialog.setMessage("Loading subjects");
-        dialog.show();
+        mNetworkError = (TextView) findViewById(R.id.network_fail);
+        mProgressDialog.setMessage("Loading Subjects");
+        mProgressDialog.show();
+
         networkManager.getSubjects(new SubjectsListener() {
             @Override
             public void onSuccess(ArrayList<Subject> subjects) {
                 setAdapter(subjects);
-                dialog.dismiss();
+                ListView mListView = (ListView) findViewById(android.R.id.list);
+                mListView.setVisibility(View.VISIBLE);
+                mProgressDialog.dismiss();
             }
 
             @Override
             public void onError(Exception error) {
-                dialog.dismiss();
-                Toast.makeText(getApplicationContext(), "Error loading subjects, please try again later", Toast.LENGTH_LONG).show();
+                mNetworkError.setVisibility(View.VISIBLE);
+                mProgressDialog.dismiss();
             }
         });
-    }
-
-    private ArrayList<String> filterSubjects() {
-        ArrayList<String> blacklist = new ArrayList<String>();
-        blacklist.add("AADMS");
-        blacklist.add("AB");
-        blacklist.add("ACC");
-        blacklist.add("ACINTY");
-        blacklist.add("ADMGT");
-        blacklist.add("AES");
-        blacklist.add("ARCHL");
-        blacklist.add("ART");
-        blacklist.add("ASIAN");
-        blacklist.add("BE");
-        blacklist.add("BOT");
-        blacklist.add("CCIV");
-        blacklist.add("CDNST");
-        blacklist.add("CEDEV");
-        blacklist.add("CM");
-        blacklist.add("CMW");
-        blacklist.add("COMST");
-        blacklist.add("COMPT");
-        blacklist.add("CONST");
-        blacklist.add("COOP");
-        blacklist.add("COGSCI");
-        blacklist.add("CT");
-        blacklist.add("CULMG");
-        blacklist.add("CULT");
-        blacklist.add("DANCE");
-        blacklist.add("DES");
-        blacklist.add("DEVIS");
-        blacklist.add("DM");
-        blacklist.add("ELE");
-        blacklist.add("ELPE");
-        blacklist.add("EVSY");
-        blacklist.add("FILM");
-        blacklist.add("FINAN");
-        blacklist.add("FRCS");
-        blacklist.add("GEMCC");
-        blacklist.add("GEOE");
-        blacklist.add("GEOL");
-        blacklist.add("GGOV");
-        blacklist.add("GLOBAL");
-        blacklist.add("GS");
-        blacklist.add("HEBRW");
-        blacklist.add("HRCS");
-        blacklist.add("HS");
-        blacklist.add("HUNGN");
-        blacklist.add("IFS");
-        blacklist.add("INTERN");
-        blacklist.add("INTTS");
-        blacklist.add("ISS");
-        blacklist.add("GRAD");
-        blacklist.add("JS");
-        blacklist.add("KPE");
-        blacklist.add("LANG");
-        blacklist.add("LATM");
-        blacklist.add("LATAM");
-        blacklist.add("LED");
-        blacklist.add("LSC");
-        blacklist.add("MEDST");
-        blacklist.add("MENV");
-        blacklist.add("MES");
-        blacklist.add("MI");
-        blacklist.add("MISC");
-        blacklist.add("MSE");
-        blacklist.add("NATST");
-        blacklist.add("NES");
-        blacklist.add("PAS");
-        blacklist.add("PDENG");
-        blacklist.add("PDARCH");
-        blacklist.add("PDPHRM");
-        blacklist.add("PED");
-        blacklist.add("PERST");
-        blacklist.add("PHS");
-        blacklist.add("PS");
-        blacklist.add("POLSH");
-        blacklist.add("QIC");
-        blacklist.add("RELC");
-        blacklist.add("SEQ");
-        blacklist.add("SOCIN");
-        blacklist.add("SIPAR");
-        blacklist.add("SOCWL");
-        blacklist.add("SPD");
-        blacklist.add("SUSM");
-        blacklist.add("SWREN");
-        blacklist.add("TAX");
-        blacklist.add("THTRE");
-        blacklist.add("TN");
-        blacklist.add("TOUR");
-        blacklist.add("TPM");
-        blacklist.add("TPPE");
-        blacklist.add("TS");
-        blacklist.add("UKRAN");
-        blacklist.add("UN");
-        blacklist.add("UNIV");
-        blacklist.add("URBAN");
-        blacklist.add("UU");
-        blacklist.add("WATER");
-        blacklist.add("WHMIS");
-        blacklist.add("ZOOL");
-
-        return blacklist;
     }
 }

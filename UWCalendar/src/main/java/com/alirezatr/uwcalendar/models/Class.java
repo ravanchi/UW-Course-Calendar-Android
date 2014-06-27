@@ -6,7 +6,6 @@ public class Class {
     private int enrollment_total;
     private int waiting_capacity;
     private String waiting_total;
-
     private String start_time;
     private String end_time;
     private String weekdays;
@@ -15,10 +14,12 @@ public class Class {
     private String instructor;
 
     public Class(String section, int enrollment_capacity, int enrollment_total, String start_time, String end_time,
-                 String weekdays, String location, String room, String instructor) {
+                 String weekdays, String location, String room, String instructor, int waiting_capacity, String waiting_total) {
         this.section = section;
         this.enrollment_capacity = enrollment_capacity;
         this.enrollment_total = enrollment_total;
+        this.waiting_capacity = waiting_capacity;
+        this.waiting_total = waiting_total;
         this.start_time = start_time;
         this.end_time = end_time;
         this.weekdays = weekdays;
@@ -48,4 +49,8 @@ public class Class {
     public void setRoom(String room) { this.room = room; }
 
     public String getInstructor() { return this.instructor; }
+
+    public int getWaitingCapacity() { return this.waiting_capacity; }
+
+    public String getWaitingTotal() { return this.waiting_total; }
 }
