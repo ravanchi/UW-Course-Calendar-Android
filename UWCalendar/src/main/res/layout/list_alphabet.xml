@@ -4,11 +4,11 @@
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical">
-    <ListView
+    <com.alirezatr.uwcalendar.views.PinnedSectionListView
         android:id="@android:id/list"
         android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:fastScrollEnabled="true"/>
 
     <LinearLayout
