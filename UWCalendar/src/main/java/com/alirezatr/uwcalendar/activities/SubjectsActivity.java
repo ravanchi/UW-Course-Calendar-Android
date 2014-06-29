@@ -41,6 +41,7 @@ public class SubjectsActivity extends ListActivity {
         ActionBar actionBar = getActionBar();
         actionBar.setTitle(getResources().getString(R.string.subjects));
         actionBar.setSubtitle(getResources().getString(R.string.app_name));
+        actionBar.setDisplayHomeAsUpEnabled(false);
 
         ImageView view = (ImageView)findViewById(android.R.id.home);
         view.setPadding(0, 0, 10, 0);
