@@ -25,4 +25,6 @@ public class RequestKeys {
     public static final String SECTION = "section";
     public static final String ENROLLMENT_CAPACITY = "enrollment_capacity";
     public static final String ENROLLMENT_TOTAL = "enrollment_total";
+    public static final String WAITING_TOTAL = "waiting_total";
+    public static final String WAITING_CAPACITY = "waiting_capacity";
 }

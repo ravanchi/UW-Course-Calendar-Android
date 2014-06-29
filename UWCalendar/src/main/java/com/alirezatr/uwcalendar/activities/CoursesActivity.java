@@ -5,36 +5,47 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alirezatr.uwcalendar.R;
-import com.alirezatr.uwcalendar.adapters.CoursesAdapter;
+import com.alirezatr.uwcalendar.adapters.CoursesListAdapter;
+import com.alirezatr.uwcalendar.adapters.SubjectsListAdapter;
 import com.alirezatr.uwcalendar.listeners.CoursesListener;
 import com.alirezatr.uwcalendar.models.Course;
+import com.alirezatr.uwcalendar.models.Subject;
 import com.alirezatr.uwcalendar.network.NetworkManager;
+import com.alirezatr.uwcalendar.utils.FilterUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.regex.Pattern;
 
-public class CoursesActivity extends ListActivity{
+public class CoursesActivity extends ListActivity {
+    private CoursesListAdapter adapter = new CoursesListAdapter();
+    private List<Object[]> alphabet = new ArrayList<Object[]>();
+    private HashMap<String, Integer> sections = new HashMap<String, Integer>();
     private NetworkManager networkManager;
-    private ProgressDialog dialog;
     private String subject;
+    ProgressDialog mProgressDialog;
+    TextView mNetworkError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.list_alphabet);
 
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         networkManager = new NetworkManager(this);
-        dialog = new ProgressDialog(this);
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setCanceledOnTouchOutside(false);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -45,25 +56,70 @@ public class CoursesActivity extends ListActivity{
         }
     }
 
+    private void setAdapter(ArrayList<Course> courses) {
+        List rows = new ArrayList();
+        int start = 0;
+        int end;
+        String previousDigit = null;
+        Object[] tmpIndexItem;
+        Course course;
+
+        for(int i = 0; i < courses.size(); i++) {
+            course = courses.get(i);
+            String firstDigit = course.getCatalogNumber().substring(0, 1);
+
+            if (previousDigit != null && !firstDigit.equals(previousDigit)) {
+                end = rows.size() - 1;
+                tmpIndexItem = new Object[2];
+                tmpIndexItem[0] = start;
+                tmpIndexItem[1] = end;
+                alphabet.add(tmpIndexItem);
+
+                start = end + 1;
+            }
+
+            if (!firstDigit.equals(previousDigit)) {
+                rows.add(new CoursesListAdapter.Section(subject + firstDigit + "00s"));
+                sections.put(subject + firstDigit + "00's", start);
+            }
+
+            rows.add(new CoursesListAdapter.Item(subject + course.getCatalogNumber() + " - " + course.getTitle(), course.getDescription()));
+            previousDigit = firstDigit;
+        }
+
+        if(previousDigit != null) {
+            tmpIndexItem = new Object[2];
+            tmpIndexItem[0] = start;
+            tmpIndexItem[1] = rows.size() - 1;
+            alphabet.add(tmpIndexItem);
+        }
+
+        adapter.setRows(rows);
+        setListAdapter(adapter);
+    }
+
     public void loadCourses(String subject) {
-        dialog.setMessage("Loading courses");
-        dialog.show();
+        mNetworkError = (TextView) findViewById(R.id.network_fail);
+        mProgressDialog.setMessage(getResources().getString(R.string.loading_courses));
+        mProgressDialog.show();
         networkManager.getCourses(subject, new CoursesListener() {
             @Override
             public void onSuccess(ArrayList<Course> courses) {
                 if(courses.size() == 0) {
-                    dialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "No courses to load for this SUBJECT", Toast.LENGTH_LONG).show();
+                    mNetworkError.setVisibility(View.VISIBLE);
+                    mProgressDialog.dismiss();
                 } else {
-                    setListAdapter(new CoursesAdapter(getApplicationContext(), courses));
-                    dialog.dismiss();
+                    setAdapter(courses);
+                    ListView mListView = (ListView) findViewById(android.R.id.list);
+                    mListView.setVisibility(View.VISIBLE);
+                    mProgressDialog.dismiss();
                 }
             }
 
             @Override
             public void onError(Exception error) {
-                dialog.dismiss();
-                Toast.makeText(getApplicationContext(), "Error loading courses, please try again later", Toast.LENGTH_LONG).show();
+                mNetworkError.setVisibility(View.VISIBLE);
+                mProgressDialog.dismiss();
             }
         });
     }
@@ -77,26 +133,5 @@ public class CoursesActivity extends ListActivity{
         intent.putExtra("SUBJECT", course.getSubject());
         intent.putExtra("catalog_number", course.getCatalogNumber());
         getListView().getContext().startActivity(intent);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_load:
-                loadCourses(subject);
-                break;
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                break;
-            default:
-                break;
-        }
-        return true;
     }
 }

@@ -1,0 +1,111 @@
+package com.alirezatr.uwcalendar.utils;
+
+import java.util.ArrayList;
+
+public class FilterUtils {
+    public static ArrayList<String> restrictedSubjects = new ArrayList<String>();
+
+    public static ArrayList<String> getRestrictedSubjects() {
+        if(restrictedSubjects.isEmpty()) {
+            restrictedSubjects.add("AADMS");
+            restrictedSubjects.add("AB");
+            restrictedSubjects.add("ACC");
+            restrictedSubjects.add("ACINTY");
+            restrictedSubjects.add("ADMGT");
+            restrictedSubjects.add("AES");
+            restrictedSubjects.add("ARCHL");
+            restrictedSubjects.add("ART");
+            restrictedSubjects.add("ASIAN");
+            restrictedSubjects.add("BE");
+            restrictedSubjects.add("BOT");
+            restrictedSubjects.add("CCIV");
+            restrictedSubjects.add("CDNST");
+            restrictedSubjects.add("CEDEV");
+            restrictedSubjects.add("CM");
+            restrictedSubjects.add("CMW");
+            restrictedSubjects.add("COMST");
+            restrictedSubjects.add("COMPT");
+            restrictedSubjects.add("CONST");
+            restrictedSubjects.add("COOP");
+            restrictedSubjects.add("COGSCI");
+            restrictedSubjects.add("CT");
+            restrictedSubjects.add("CULMG");
+            restrictedSubjects.add("CULT");
+            restrictedSubjects.add("DANCE");
+            restrictedSubjects.add("DES");
+            restrictedSubjects.add("DEVIS");
+            restrictedSubjects.add("DM");
+            restrictedSubjects.add("ELE");
+            restrictedSubjects.add("ELPE");
+            restrictedSubjects.add("EVSY");
+            restrictedSubjects.add("FILM");
+            restrictedSubjects.add("FINAN");
+            restrictedSubjects.add("FRCS");
+            restrictedSubjects.add("GEMCC");
+            restrictedSubjects.add("GEOE");
+            restrictedSubjects.add("GEOL");
+            restrictedSubjects.add("GGOV");
+            restrictedSubjects.add("GLOBAL");
+            restrictedSubjects.add("GS");
+            restrictedSubjects.add("HEBRW");
+            restrictedSubjects.add("HRCS");
+            restrictedSubjects.add("HS");
+            restrictedSubjects.add("HUNGN");
+            restrictedSubjects.add("IFS");
+            restrictedSubjects.add("INTERN");
+            restrictedSubjects.add("INTTS");
+            restrictedSubjects.add("ISS");
+            restrictedSubjects.add("GRAD");
+            restrictedSubjects.add("JS");
+            restrictedSubjects.add("KPE");
+            restrictedSubjects.add("LANG");
+            restrictedSubjects.add("LATM");
+            restrictedSubjects.add("LATAM");
+            restrictedSubjects.add("LED");
+            restrictedSubjects.add("LSC");
+            restrictedSubjects.add("MEDST");
+            restrictedSubjects.add("MENV");
+            restrictedSubjects.add("MES");
+            restrictedSubjects.add("MI");
+            restrictedSubjects.add("MISC");
+            restrictedSubjects.add("MSE");
+            restrictedSubjects.add("NATST");
+            restrictedSubjects.add("NES");
+            restrictedSubjects.add("PAS");
+            restrictedSubjects.add("PDENG");
+            restrictedSubjects.add("PDARCH");
+            restrictedSubjects.add("PDPHRM");
+            restrictedSubjects.add("PED");
+            restrictedSubjects.add("PERST");
+            restrictedSubjects.add("PHS");
+            restrictedSubjects.add("PS");
+            restrictedSubjects.add("POLSH");
+            restrictedSubjects.add("QIC");
+            restrictedSubjects.add("RELC");
+            restrictedSubjects.add("SEQ");
+            restrictedSubjects.add("SOCIN");
+            restrictedSubjects.add("SIPAR");
+            restrictedSubjects.add("SOCWL");
+            restrictedSubjects.add("SPD");
+            restrictedSubjects.add("SUSM");
+            restrictedSubjects.add("SWREN");
+            restrictedSubjects.add("TAX");
+            restrictedSubjects.add("THTRE");
+            restrictedSubjects.add("TN");
+            restrictedSubjects.add("TOUR");
+            restrictedSubjects.add("TPM");
+            restrictedSubjects.add("TPPE");
+            restrictedSubjects.add("TS");
+            restrictedSubjects.add("UKRAN");
+            restrictedSubjects.add("UN");
+            restrictedSubjects.add("UNIV");
+            restrictedSubjects.add("URBAN");
+            restrictedSubjects.add("UU");
+            restrictedSubjects.add("WATER");
+            restrictedSubjects.add("WHMIS");
+            restrictedSubjects.add("ZOOL");
+        }
+
+        return restrictedSubjects;
+    }
+}
