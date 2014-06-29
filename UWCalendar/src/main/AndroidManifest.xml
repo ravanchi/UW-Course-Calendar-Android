@@ -20,9 +20,7 @@
         </activity>
         <activity
             android:name=".activities.CoursesActivity"
-            android:label="Courses"
-            android:parentActivityName=".activities.SubjectsActivity"
-            android:configChanges="orientation|screenSize" >
+            android:label="Courses">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.alirezatr.uwcalendar.SubjectsActivity" />
