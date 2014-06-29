@@ -131,7 +131,6 @@ public class SubjectsActivity extends ListActivity {
         SubjectsListAdapter.Item rowItem = (SubjectsListAdapter.Item) this.getListAdapter().getItem
                 (position);
         Intent intent = new Intent(getListView().getContext(), CoursesActivity.class);
-        Log.d("UWCC:", rowItem.title);
         intent.putExtra("SUBJECT", rowItem.title);
         getListView().getContext().startActivity(intent);
     }

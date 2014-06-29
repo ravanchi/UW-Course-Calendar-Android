@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alirezatr.uwcalendar.R;
@@ -29,8 +30,9 @@ public class CoursesActivity extends ListActivity {
     private List<Object[]> alphabet = new ArrayList<Object[]>();
     private HashMap<String, Integer> sections = new HashMap<String, Integer>();
     private NetworkManager networkManager;
-    private ProgressDialog dialog;
     private String subject;
+    ProgressDialog mProgressDialog;
+    TextView mNetworkError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,9 @@ public class CoursesActivity extends ListActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         networkManager = new NetworkManager(this);
-        dialog = new ProgressDialog(this);
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setCanceledOnTouchOutside(false);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -75,7 +79,7 @@ public class CoursesActivity extends ListActivity {
             }
 
             if (!firstDigit.equals(previousDigit)) {
-                rows.add(new CoursesListAdapter.Section(subject + firstDigit + "00's"));
+                rows.add(new CoursesListAdapter.Section(subject + firstDigit + "00s"));
                 sections.put(subject + firstDigit + "00's", start);
             }
 
@@ -94,40 +98,28 @@ public class CoursesActivity extends ListActivity {
         setListAdapter(adapter);
     }
 
-//    private void setAdapter(ArrayList<Course> courses) {
-//        List rows = new ArrayList();
-//        Course course;
-//
-//        for(int i = 0; i < courses.size(); i++) {
-//            course = courses.get(i);
-//            rows.add(new SubjectsListAdapter.Item(course.getSubject() + course.getCatalogNumber(), course.getTitle()));
-//        }
-//
-//        adapter.setRows(rows);
-//        setListAdapter(adapter);
-//    }
-
     public void loadCourses(String subject) {
-        dialog.setMessage("Loading courses");
-        dialog.show();
+        mNetworkError = (TextView) findViewById(R.id.network_fail);
+        mProgressDialog.setMessage(getResources().getString(R.string.loading_courses));
+        mProgressDialog.show();
         networkManager.getCourses(subject, new CoursesListener() {
             @Override
             public void onSuccess(ArrayList<Course> courses) {
                 if(courses.size() == 0) {
-                    dialog.dismiss();
-                    //TODO: Show network error
+                    mNetworkError.setVisibility(View.VISIBLE);
+                    mProgressDialog.dismiss();
                 } else {
                     setAdapter(courses);
                     ListView mListView = (ListView) findViewById(android.R.id.list);
                     mListView.setVisibility(View.VISIBLE);
-                    dialog.dismiss();
+                    mProgressDialog.dismiss();
                 }
             }
 
             @Override
             public void onError(Exception error) {
-                dialog.dismiss();
-                Toast.makeText(getApplicationContext(), "Error loading courses, please try again later", Toast.LENGTH_LONG).show();
+                mNetworkError.setVisibility(View.VISIBLE);
+                mProgressDialog.dismiss();
             }
         });
     }
