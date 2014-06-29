@@ -9,11 +9,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alirezatr.uwcalendar.R;
-import com.alirezatr.uwcalendar.models.Subject;
 
 import java.util.List;
 
-public class AlphabetListAdapter extends BaseAdapter {
+public class SubjectsListAdapter extends BaseAdapter {
     private List rows;
 
     @Override
@@ -39,13 +38,13 @@ public class AlphabetListAdapter extends BaseAdapter {
             if(view == null) {
                 LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService
                         (Context.LAYOUT_INFLATER_SERVICE);
-                view = (LinearLayout) inflater.inflate(R.layout.row_item, null, false);
+                view = (LinearLayout) inflater.inflate(R.layout.subjects_row_item, null, false);
             }
 
             Item item = (Item) getItem(i);
-            TextView textView = (TextView) view.findViewById(R.id.textView1);
+            TextView textView = (TextView) view.findViewById(R.id.section_title);
             textView.setText(item.title);
-            TextView textView2 = (TextView) view.findViewById(R.id.textView2);
+            TextView textView2 = (TextView) view.findViewById(R.id.subjects_description);
             textView2.setText(item.description);
         }
         else {
@@ -56,7 +55,7 @@ public class AlphabetListAdapter extends BaseAdapter {
             }
 
             Section section = (Section) getItem(i);
-            TextView textView = (TextView) view.findViewById(R.id.textView1);
+            TextView textView = (TextView) view.findViewById(R.id.section_title);
             textView.setText(section.text);
         }
 

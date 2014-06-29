@@ -5,82 +5,134 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.alirezatr.uwcalendar.R;
-import com.alirezatr.uwcalendar.adapters.AlphabetListAdapter;
-import com.alirezatr.uwcalendar.adapters.SubjectsAdapter;
+import com.alirezatr.uwcalendar.adapters.SubjectsListAdapter;
+import com.alirezatr.uwcalendar.adapters.SubjectsListAdapter.Item;
 import com.alirezatr.uwcalendar.listeners.SubjectsListener;
 import com.alirezatr.uwcalendar.models.Subject;
 import com.alirezatr.uwcalendar.network.NetworkManager;
+import com.alirezatr.uwcalendar.utils.FilterUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.regex.Pattern;
 
 public class SubjectsActivity extends ListActivity {
+    private SubjectsListAdapter adapter = new SubjectsListAdapter();
+    private List<Object[]> alphabet = new ArrayList<Object[]>();
+    private HashMap<String, Integer> sections = new HashMap<String, Integer>();
     private NetworkManager networkManager;
-    public ProgressDialog dialog;
+    ProgressDialog mProgressDialog;
+    TextView mNetworkError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.list_alphabet);
 
         ActionBar actionBar = getActionBar();
-        actionBar.setTitle("Subjects");
+        actionBar.setTitle(getResources().getString(R.string.subjects));
         actionBar.setSubtitle(getResources().getString(R.string.app_name));
 
         networkManager = new NetworkManager(this);
-        dialog = new ProgressDialog(this);
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setCanceledOnTouchOutside(false);
         loadSubjects();
     }
 
     public void loadSubjects() {
-        dialog.setMessage("Loading subjects");
-        dialog.show();
+        mNetworkError = (TextView) findViewById(R.id.network_fail);
+        mProgressDialog.setMessage(getResources().getString(R.string.loading_subjects));
+        mProgressDialog.show();
+
         networkManager.getSubjects(new SubjectsListener() {
             @Override
             public void onSuccess(ArrayList<Subject> subjects) {
-                setListAdapter(new SubjectsAdapter(getApplicationContext(), subjects));
-                dialog.dismiss();
+                setAdapter(subjects);
+                ListView mListView = (ListView) findViewById(android.R.id.list);
+                mListView.setVisibility(View.VISIBLE);
+                mProgressDialog.dismiss();
             }
 
             @Override
             public void onError(Exception error) {
-                dialog.dismiss();
-                Toast.makeText(getApplicationContext(), "Error loading subjects, please try again later", Toast.LENGTH_LONG).show();
+                mNetworkError.setVisibility(View.VISIBLE);
+                mProgressDialog.dismiss();
             }
         });
     }
-//
-//    @Override
-//    public void onListItemClick(ListView l, View v, int position, long id) {
-//        super.onListItemClick(l, v, position, id);
-//        AlphabetListAdapter.Item rowItem = (AlphabetListAdapter.Item) this.getListAdapter().getItem
-//                (position);
-//        Intent intent = new Intent(getListView().getContext(), CoursesActivity.class);
-//        intent.putExtra("SUBJECT", rowItem.subject.getSubject());
-//        getListView().getContext().startActivity(intent);
-//    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
+    private void setAdapter(ArrayList<Subject> subjects) {
+        List rows = new ArrayList();
+        ArrayList<String> blacklist = FilterUtils.getRestrictedSubjects();
+        int start = 0;
+        int end;
+        String previousLetter = null;
+        Object[] tmpIndexItem;
+        Pattern numberPattern = Pattern.compile("[0-9]");
+        Subject subject;
+
+        for(int i = 0; i < subjects.size(); i++) {
+            subject = subjects.get(i);
+            if(blacklist.contains(subject.getSubject())) {
+                subjects.remove(subject);
+            }
+            else {
+                String firstLetter = subject.getSubject().substring(0, 1);
+
+                if (numberPattern.matcher(firstLetter).matches()) {
+                    firstLetter = "#";
+                }
+
+                if (previousLetter != null && !firstLetter.equals(previousLetter)) {
+                    end = rows.size() - 1;
+                    tmpIndexItem = new Object[3];
+                    tmpIndexItem[0] = previousLetter.toUpperCase(Locale.UK);
+                    tmpIndexItem[1] = start;
+                    tmpIndexItem[2] = end;
+                    alphabet.add(tmpIndexItem);
+
+                    start = end + 1;
+                }
+
+                if (!firstLetter.equals(previousLetter)) {
+                    rows.add(new SubjectsListAdapter.Section(firstLetter));
+                    sections.put(firstLetter, start);
+                }
+
+                rows.add(new Item(subject.getSubject(), subject.getDescription()));
+                previousLetter = firstLetter;
+            }
+        }
+
+        if(previousLetter != null) {
+            tmpIndexItem = new Object[3];
+            tmpIndexItem[0] = previousLetter.toUpperCase(Locale.UK);
+            tmpIndexItem[1] = start;
+            tmpIndexItem[2] = rows.size() - 1;
+            alphabet.add(tmpIndexItem);
+        }
+
+        adapter.setRows(rows);
+        setListAdapter(adapter);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_load:
-                loadSubjects();
-                break;
-            default:
-                break;
-        }
-        return true;
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        SubjectsListAdapter.Item rowItem = (SubjectsListAdapter.Item) this.getListAdapter().getItem
+                (position);
+        Intent intent = new Intent(getListView().getContext(), CoursesActivity.class);
+        Log.d("UWCC:", rowItem.title);
+        intent.putExtra("SUBJECT", rowItem.title);
+        getListView().getContext().startActivity(intent);
     }
 }

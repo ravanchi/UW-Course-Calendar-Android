@@ -5,4 +5,6 @@
     <string name="error_null_params">Empty or null parameter(s)</string>
     <string name="error_loading_subjects">Error loading subjects</string>
     <string name="try_again">Please try again</string>
+    <string name="loading_subjects">Loading Subjects</string>
+    <string name="subjects">Subjects</string>
 </resources>

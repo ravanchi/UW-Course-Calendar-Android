@@ -10,7 +10,7 @@
               android:paddingBottom="8dp">
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/section_title"
         android:textSize="19dp"
         android:layout_marginTop="1dp"
         android:layout_width="wrap_content"
@@ -18,8 +18,7 @@
         android:text="TextView"/>
 
     <TextView
-        android:id="@+id/textView2"
-        android:gravity="center"
+        android:id="@+id/subjects_description"
         android:layout_marginLeft="5dp"
         android:textSize="14dp"
         android:layout_width="wrap_content"

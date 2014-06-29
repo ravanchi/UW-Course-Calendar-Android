@@ -5,28 +5,29 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.alirezatr.uwcalendar.R;
-import com.alirezatr.uwcalendar.adapters.AlphabetListAdapter;
-import com.alirezatr.uwcalendar.adapters.CoursesAdapter;
+import com.alirezatr.uwcalendar.adapters.CoursesListAdapter;
+import com.alirezatr.uwcalendar.adapters.SubjectsListAdapter;
 import com.alirezatr.uwcalendar.listeners.CoursesListener;
 import com.alirezatr.uwcalendar.models.Course;
 import com.alirezatr.uwcalendar.models.Subject;
 import com.alirezatr.uwcalendar.network.NetworkManager;
+import com.alirezatr.uwcalendar.utils.FilterUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class CoursesActivity extends ListActivity {
-    private AlphabetListAdapter adapter = new AlphabetListAdapter();
+    private CoursesListAdapter adapter = new CoursesListAdapter();
+    private List<Object[]> alphabet = new ArrayList<Object[]>();
+    private HashMap<String, Integer> sections = new HashMap<String, Integer>();
     private NetworkManager networkManager;
     private ProgressDialog dialog;
     private String subject;
@@ -53,16 +54,58 @@ public class CoursesActivity extends ListActivity {
 
     private void setAdapter(ArrayList<Course> courses) {
         List rows = new ArrayList();
+        int start = 0;
+        int end;
+        String previousDigit = null;
+        Object[] tmpIndexItem;
         Course course;
 
         for(int i = 0; i < courses.size(); i++) {
             course = courses.get(i);
-            rows.add(new AlphabetListAdapter.Item(course.getTitle(), course.getDescription()));
+            String firstDigit = course.getCatalogNumber().substring(0, 1);
+
+            if (previousDigit != null && !firstDigit.equals(previousDigit)) {
+                end = rows.size() - 1;
+                tmpIndexItem = new Object[2];
+                tmpIndexItem[0] = start;
+                tmpIndexItem[1] = end;
+                alphabet.add(tmpIndexItem);
+
+                start = end + 1;
+            }
+
+            if (!firstDigit.equals(previousDigit)) {
+                rows.add(new CoursesListAdapter.Section(subject + firstDigit + "00's"));
+                sections.put(subject + firstDigit + "00's", start);
+            }
+
+            rows.add(new CoursesListAdapter.Item(subject + course.getCatalogNumber() + " - " + course.getTitle(), course.getDescription()));
+            previousDigit = firstDigit;
+        }
+
+        if(previousDigit != null) {
+            tmpIndexItem = new Object[2];
+            tmpIndexItem[0] = start;
+            tmpIndexItem[1] = rows.size() - 1;
+            alphabet.add(tmpIndexItem);
         }
 
         adapter.setRows(rows);
         setListAdapter(adapter);
     }
+
+//    private void setAdapter(ArrayList<Course> courses) {
+//        List rows = new ArrayList();
+//        Course course;
+//
+//        for(int i = 0; i < courses.size(); i++) {
+//            course = courses.get(i);
+//            rows.add(new SubjectsListAdapter.Item(course.getSubject() + course.getCatalogNumber(), course.getTitle()));
+//        }
+//
+//        adapter.setRows(rows);
+//        setListAdapter(adapter);
+//    }
 
     public void loadCourses(String subject) {
         dialog.setMessage("Loading courses");
@@ -72,9 +115,11 @@ public class CoursesActivity extends ListActivity {
             public void onSuccess(ArrayList<Course> courses) {
                 if(courses.size() == 0) {
                     dialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "No courses to load for this SUBJECT", Toast.LENGTH_LONG).show();
+                    //TODO: Show network error
                 } else {
                     setAdapter(courses);
+                    ListView mListView = (ListView) findViewById(android.R.id.list);
+                    mListView.setVisibility(View.VISIBLE);
                     dialog.dismiss();
                 }
             }
