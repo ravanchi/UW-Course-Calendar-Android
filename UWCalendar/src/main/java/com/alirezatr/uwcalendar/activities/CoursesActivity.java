@@ -5,7 +5,10 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,10 +40,14 @@ public class CoursesActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.layout.activity_open_translate, R.layout.activity_close_scale);
         setContentView(R.layout.list_alphabet);
 
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        ImageView view = (ImageView)findViewById(android.R.id.home);
+        view.setPadding(5, 0, 10, 0);
 
         networkManager = new NetworkManager(this);
         mProgressDialog = new ProgressDialog(this);
@@ -53,6 +60,23 @@ public class CoursesActivity extends ListActivity {
             actionBar.setTitle(subject);
             actionBar.setSubtitle("Waterloo Calendar");
             loadCourses(subject);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(R.layout.activity_open_scale, R.layout.activity_close_translate);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

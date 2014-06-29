@@ -5,8 +5,8 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -35,17 +35,27 @@ public class SubjectsActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.layout.activity_open_translate, R.layout.activity_close_scale);
         setContentView(R.layout.list_alphabet);
 
         ActionBar actionBar = getActionBar();
         actionBar.setTitle(getResources().getString(R.string.subjects));
         actionBar.setSubtitle(getResources().getString(R.string.app_name));
 
+        ImageView view = (ImageView)findViewById(android.R.id.home);
+        view.setPadding(0, 0, 10, 0);
+
         networkManager = new NetworkManager(this);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setCancelable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
         loadSubjects();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(R.layout.activity_open_scale, R.layout.activity_close_translate);
     }
 
     public void loadSubjects() {
