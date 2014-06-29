@@ -35,10 +35,11 @@ public class SubjectsActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.layout.activity_open_translate, R.layout.activity_close_scale);
-        setContentView(R.layout.list_alphabet);
+        overridePendingTransition(R.anim.activity_open_translate, R.anim.activity_close_scale);
+        setContentView(R.layout.main_list);
 
         ActionBar actionBar = getActionBar();
+        actionBar.setIcon(R.drawable.actionbar);
         actionBar.setTitle(getResources().getString(R.string.subjects));
         actionBar.setSubtitle(getResources().getString(R.string.app_name));
         actionBar.setDisplayHomeAsUpEnabled(false);
@@ -56,7 +57,7 @@ public class SubjectsActivity extends ListActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        overridePendingTransition(R.layout.activity_open_scale, R.layout.activity_close_translate);
+        overridePendingTransition(R.anim.activity_open_scale, R.anim.activity_close_translate);
     }
 
     public void loadSubjects() {

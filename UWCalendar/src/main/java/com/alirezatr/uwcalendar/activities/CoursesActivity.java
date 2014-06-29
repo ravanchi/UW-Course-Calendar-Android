@@ -5,28 +5,21 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alirezatr.uwcalendar.R;
 import com.alirezatr.uwcalendar.adapters.CoursesListAdapter;
-import com.alirezatr.uwcalendar.adapters.SubjectsListAdapter;
 import com.alirezatr.uwcalendar.listeners.CoursesListener;
 import com.alirezatr.uwcalendar.models.Course;
-import com.alirezatr.uwcalendar.models.Subject;
 import com.alirezatr.uwcalendar.network.NetworkManager;
-import com.alirezatr.uwcalendar.utils.FilterUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.regex.Pattern;
 
 public class CoursesActivity extends ListActivity {
     private CoursesListAdapter adapter = new CoursesListAdapter();
@@ -40,10 +33,11 @@ public class CoursesActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.layout.activity_open_translate, R.layout.activity_close_scale);
-        setContentView(R.layout.list_alphabet);
+        overridePendingTransition(R.anim.activity_open_translate, R.anim.activity_close_scale);
+        setContentView(R.layout.main_list);
 
         ActionBar actionBar = getActionBar();
+        actionBar.setIcon(R.drawable.actionbar);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         ImageView view = (ImageView)findViewById(android.R.id.home);
@@ -66,7 +60,7 @@ public class CoursesActivity extends ListActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        overridePendingTransition(R.layout.activity_open_scale, R.layout.activity_close_translate);
+        overridePendingTransition(R.anim.activity_open_scale, R.anim.activity_close_translate);
     }
 
     @Override
