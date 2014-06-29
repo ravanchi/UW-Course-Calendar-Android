@@ -9,10 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alirezatr.uwcalendar.R;
+import com.alirezatr.uwcalendar.views.PinnedSectionListView;
 
 import java.util.List;
 
-public class SubjectsListAdapter extends BaseAdapter {
+public class SubjectsListAdapter extends BaseAdapter implements PinnedSectionListView.PinnedSectionListAdapter {
     private List rows;
 
     @Override
@@ -75,6 +76,11 @@ public class SubjectsListAdapter extends BaseAdapter {
         else {
             return 0;
         }
+    }
+
+    @Override
+    public boolean isItemViewTypePinned(int viewType) {
+        return viewType == 1;
     }
 
     public static abstract class Row {}
