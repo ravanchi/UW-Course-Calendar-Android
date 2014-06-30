@@ -10,6 +10,7 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,34 +26,47 @@ import java.util.ArrayList;
 
 public class CourseActivity extends Activity {
     private NetworkManager networkManager;
-    private ProgressDialog dialog;
+    private ProgressDialog mProgressDialog;
     private String subject;
     private String catalog_number;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.activity_open_translate, R.anim.activity_close_scale);
         setContentView(R.layout.course);
 
         ActionBar actionBar = getActionBar();
+        actionBar.setIcon(R.drawable.actionbar);
+        actionBar.setSubtitle("Waterloo Calendar");
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        ImageView view = (ImageView)findViewById(android.R.id.home);
+        view.setPadding(5, 0, 10, 0);
+
         networkManager = new NetworkManager(this);
-        dialog = new ProgressDialog(this);
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setCanceledOnTouchOutside(false);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            subject = extras.getString("SUBJECT");
+            subject = extras.getString("subject");
             catalog_number = extras.getString("catalog_number");
             actionBar.setTitle(subject + catalog_number);
-            actionBar.setSubtitle("Waterloo Calendar");
             loadCourse(subject, catalog_number);
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.activity_open_scale, R.anim.activity_close_translate);
+    }
+
     public void loadCourse(final String subject, final String catalog_number) {
-        dialog.setMessage("Loading course");
-        dialog.show();
+        mProgressDialog.setMessage("Loading course");
+        mProgressDialog.show();
         networkManager.getCourse(subject, catalog_number, new CourseListener() {
             @Override
             public void onSuccess(Course course) {
@@ -92,7 +106,7 @@ public class CourseActivity extends Activity {
 
             @Override
             public void onError(Exception error) {
-                dialog.dismiss();
+                mProgressDialog.dismiss();
                 Toast.makeText(getApplicationContext(), "Error loading course, please try again later", Toast.LENGTH_LONG).show();
             }
         });
@@ -120,12 +134,12 @@ public class CourseActivity extends Activity {
                         layout.addView(tv);
                     }
                 }
-                dialog.dismiss();
+                mProgressDialog.dismiss();
             }
 
             @Override
             public void onError(Exception error) {
-                dialog.dismiss();
+                mProgressDialog.dismiss();
                 Toast.makeText(getApplicationContext(), "Error loading course, please try again later", Toast.LENGTH_LONG).show();
             }
         });
@@ -134,16 +148,11 @@ public class CourseActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_load:
-                loadCourse(subject, catalog_number);
-                break;
             case android.R.id.home:
-                Intent upIntent = NavUtils.getParentActivityIntent(this);
-                NavUtils.navigateUpTo(this, upIntent);
-                break;
+                onBackPressed();
+                return true;
             default:
-                break;
+                return super.onOptionsItemSelected(item);
         }
-        return true;
     }
 }

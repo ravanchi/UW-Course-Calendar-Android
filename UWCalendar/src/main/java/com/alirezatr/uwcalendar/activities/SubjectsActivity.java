@@ -120,7 +120,7 @@ public class SubjectsActivity extends ListActivity {
                     sections.put(firstLetter, start);
                 }
 
-                rows.add(new Item(subject.getSubject(), subject.getDescription()));
+                rows.add(new Item(subject));
                 previousLetter = firstLetter;
             }
         }
@@ -140,10 +140,9 @@ public class SubjectsActivity extends ListActivity {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        SubjectsListAdapter.Item rowItem = (SubjectsListAdapter.Item) this.getListAdapter().getItem
-                (position);
+        SubjectsListAdapter.Item rowItem = (SubjectsListAdapter.Item) this.getListAdapter().getItem(position);
         Intent intent = new Intent(getListView().getContext(), CoursesActivity.class);
-        intent.putExtra("SUBJECT", rowItem.title);
+        intent.putExtra("subject", rowItem.subject.getSubject());
         getListView().getContext().startActivity(intent);
     }
 }

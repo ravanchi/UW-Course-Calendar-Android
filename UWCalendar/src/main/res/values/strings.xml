@@ -6,6 +6,7 @@
     <string name="error_loading_subjects">Error loading subjects</string>
     <string name="try_again">Please try again</string>
     <string name="loading_subjects">Loading Subjects</string>
-    <string name="loading_courses">Loading Courses</string>
+    <string name="loading_courses">Loading %1$s Courses</string>
     <string name="subjects">Subjects</string>
+    <string name="subject">Subject</string>
 </resources>

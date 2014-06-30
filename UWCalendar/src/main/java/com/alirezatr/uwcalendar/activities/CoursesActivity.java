@@ -38,6 +38,7 @@ public class CoursesActivity extends ListActivity {
 
         ActionBar actionBar = getActionBar();
         actionBar.setIcon(R.drawable.actionbar);
+        actionBar.setSubtitle("Waterloo Calendar");
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         ImageView view = (ImageView)findViewById(android.R.id.home);
@@ -50,9 +51,8 @@ public class CoursesActivity extends ListActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            subject = extras.getString("SUBJECT");
+            subject = extras.getString("subject");
             actionBar.setTitle(subject);
-            actionBar.setSubtitle("Waterloo Calendar");
             loadCourses(subject);
         }
     }
@@ -101,7 +101,7 @@ public class CoursesActivity extends ListActivity {
                 sections.put(subject + firstDigit + "00's", start);
             }
 
-            rows.add(new CoursesListAdapter.Item(subject + course.getCatalogNumber() + " - " + course.getTitle(), course.getDescription()));
+            rows.add(new CoursesListAdapter.Item(course));
             previousDigit = firstDigit;
         }
 
@@ -118,7 +118,8 @@ public class CoursesActivity extends ListActivity {
 
     public void loadCourses(String subject) {
         mNetworkError = (TextView) findViewById(R.id.network_fail);
-        mProgressDialog.setMessage(getResources().getString(R.string.loading_courses));
+        String loadingString = getResources().getString(R.string.loading_courses);
+        mProgressDialog.setMessage(String.format(loadingString, subject));
         mProgressDialog.show();
         networkManager.getCourses(subject, new CoursesListener() {
             @Override
@@ -145,10 +146,10 @@ public class CoursesActivity extends ListActivity {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        Object o = this.getListAdapter().getItem(position);
-        Course course = (Course) o;
+        CoursesListAdapter.Item rowItem = (CoursesListAdapter.Item) this.getListAdapter().getItem(position);
+        Course course = rowItem.course;
         Intent intent = new Intent(getListView().getContext(), CourseActivity.class);
-        intent.putExtra("SUBJECT", course.getSubject());
+        intent.putExtra("subject", course.getSubject());
         intent.putExtra("catalog_number", course.getCatalogNumber());
         getListView().getContext().startActivity(intent);
     }

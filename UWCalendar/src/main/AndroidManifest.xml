@@ -25,7 +25,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.alirezatr.uwcalendar.SubjectsActivity" />
-            </activity>
+        </activity>
+        <activity
+            android:name=".activities.CourseActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="Course">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.alirezatr.uwcalendar.CoursesActivity" />
+        </activity>
     </application>
 
 </manifest>
