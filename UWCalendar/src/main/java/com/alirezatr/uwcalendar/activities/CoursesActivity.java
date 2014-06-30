@@ -5,28 +5,21 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alirezatr.uwcalendar.R;
 import com.alirezatr.uwcalendar.adapters.CoursesListAdapter;
-import com.alirezatr.uwcalendar.adapters.SubjectsListAdapter;
 import com.alirezatr.uwcalendar.listeners.CoursesListener;
 import com.alirezatr.uwcalendar.models.Course;
-import com.alirezatr.uwcalendar.models.Subject;
 import com.alirezatr.uwcalendar.network.NetworkManager;
-import com.alirezatr.uwcalendar.utils.FilterUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.regex.Pattern;
 
 public class CoursesActivity extends ListActivity {
     private CoursesListAdapter adapter = new CoursesListAdapter();
@@ -40,10 +33,12 @@ public class CoursesActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.layout.activity_open_translate, R.layout.activity_close_scale);
-        setContentView(R.layout.list_alphabet);
+        overridePendingTransition(R.anim.activity_open_translate, R.anim.activity_close_scale);
+        setContentView(R.layout.main_list);
 
         ActionBar actionBar = getActionBar();
+        actionBar.setIcon(R.drawable.actionbar);
+        actionBar.setSubtitle("Waterloo Calendar");
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         ImageView view = (ImageView)findViewById(android.R.id.home);
@@ -56,9 +51,8 @@ public class CoursesActivity extends ListActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            subject = extras.getString("SUBJECT");
+            subject = extras.getString("subject");
             actionBar.setTitle(subject);
-            actionBar.setSubtitle("Waterloo Calendar");
             loadCourses(subject);
         }
     }
@@ -66,7 +60,7 @@ public class CoursesActivity extends ListActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        overridePendingTransition(R.layout.activity_open_scale, R.layout.activity_close_translate);
+        overridePendingTransition(R.anim.activity_open_scale, R.anim.activity_close_translate);
     }
 
     @Override
@@ -107,7 +101,7 @@ public class CoursesActivity extends ListActivity {
                 sections.put(subject + firstDigit + "00's", start);
             }
 
-            rows.add(new CoursesListAdapter.Item(subject + course.getCatalogNumber() + " - " + course.getTitle(), course.getDescription()));
+            rows.add(new CoursesListAdapter.Item(course));
             previousDigit = firstDigit;
         }
 
@@ -124,7 +118,8 @@ public class CoursesActivity extends ListActivity {
 
     public void loadCourses(String subject) {
         mNetworkError = (TextView) findViewById(R.id.network_fail);
-        mProgressDialog.setMessage(getResources().getString(R.string.loading_courses));
+        String loadingString = getResources().getString(R.string.loading_courses);
+        mProgressDialog.setMessage(String.format(loadingString, subject));
         mProgressDialog.show();
         networkManager.getCourses(subject, new CoursesListener() {
             @Override
@@ -151,10 +146,10 @@ public class CoursesActivity extends ListActivity {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        Object o = this.getListAdapter().getItem(position);
-        Course course = (Course) o;
+        CoursesListAdapter.Item rowItem = (CoursesListAdapter.Item) this.getListAdapter().getItem(position);
+        Course course = rowItem.course;
         Intent intent = new Intent(getListView().getContext(), CourseActivity.class);
-        intent.putExtra("SUBJECT", course.getSubject());
+        intent.putExtra("subject", course.getSubject());
         intent.putExtra("catalog_number", course.getCatalogNumber());
         getListView().getContext().startActivity(intent);
     }

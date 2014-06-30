@@ -6,7 +6,6 @@
               android:layout_height="match_parent"
               android:background="@drawable/border"
               android:paddingBottom="2dp"
-
               android:paddingLeft="10dp"
               android:paddingTop="2dp">
 

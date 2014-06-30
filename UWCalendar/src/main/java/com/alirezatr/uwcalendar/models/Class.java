@@ -1,6 +1,8 @@
 package com.alirezatr.uwcalendar.models;
 
 public class Class {
+    private String subject;
+    private String catalog_number;
     private String section;
     private int enrollment_capacity;
     private int enrollment_total;

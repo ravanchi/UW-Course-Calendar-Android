@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alirezatr.uwcalendar.R;
+import com.alirezatr.uwcalendar.models.Course;
 import com.alirezatr.uwcalendar.views.PinnedSectionListView;
 
 import java.util.List;
@@ -44,9 +45,9 @@ public class CoursesListAdapter extends BaseAdapter implements PinnedSectionList
 
             Item item = (Item) getItem(i);
             TextView textView = (TextView) view.findViewById(R.id.courses_title);
-            textView.setText(item.title);
+            textView.setText(item.course.getSubject() + item.course.getCatalogNumber() + " - " + item.course.getTitle());
             TextView textView2 = (TextView) view.findViewById(R.id.courses_description);
-            textView2.setText(item.description);
+            textView2.setText(item.course.getDescription());
         }
         else {
             if(view == null) {
@@ -98,12 +99,10 @@ public class CoursesListAdapter extends BaseAdapter implements PinnedSectionList
     }
 
     public static final class Item extends Row {
-        public final String title;
-        public final String description;
+        public final Course course;
 
-        public Item(String title, String description) {
-            this.title = title;
-            this.description = description;
+        public Item(Course course) {
+            this.course = course;
         }
     }
 }
