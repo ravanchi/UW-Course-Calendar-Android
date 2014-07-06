@@ -17,7 +17,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/network_fail"
+            android:id="@+id/loading_fail"
             android:visibility="invisible"
             android:gravity="center"
             android:layout_width="match_parent"

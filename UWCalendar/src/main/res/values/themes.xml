@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="UWTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+    <style name="UWTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowBackground">@color/uw_gold_light</item>
     </style>
 </resources>
