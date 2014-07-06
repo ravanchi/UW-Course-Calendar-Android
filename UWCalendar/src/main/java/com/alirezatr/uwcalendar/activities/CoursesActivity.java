@@ -16,6 +16,7 @@ import com.alirezatr.uwcalendar.adapters.CoursesListAdapter;
 import com.alirezatr.uwcalendar.listeners.CoursesListener;
 import com.alirezatr.uwcalendar.models.Course;
 import com.alirezatr.uwcalendar.network.NetworkManager;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +39,7 @@ public class CoursesActivity extends ListActivity {
 
         ActionBar actionBar = getActionBar();
         actionBar.setIcon(R.drawable.actionbar);
-        actionBar.setSubtitle("Waterloo Calendar");
+        actionBar.setSubtitle(getResources().getString(R.string.app_name));
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         ImageView view = (ImageView)findViewById(android.R.id.home);
@@ -117,7 +118,7 @@ public class CoursesActivity extends ListActivity {
     }
 
     public void loadCourses(String subject) {
-        mNetworkError = (TextView) findViewById(R.id.network_fail);
+        mNetworkError = (TextView) findViewById(R.id.loading_fail);
         String loadingString = getResources().getString(R.string.loading_courses);
         mProgressDialog.setMessage(String.format(loadingString, subject));
         mProgressDialog.show();
@@ -149,8 +150,7 @@ public class CoursesActivity extends ListActivity {
         CoursesListAdapter.Item rowItem = (CoursesListAdapter.Item) this.getListAdapter().getItem(position);
         Course course = rowItem.course;
         Intent intent = new Intent(getListView().getContext(), CourseActivity.class);
-        intent.putExtra("subject", course.getSubject());
-        intent.putExtra("catalog_number", course.getCatalogNumber());
+        intent.putExtra("course", new Gson().toJson(course));
         getListView().getContext().startActivity(intent);
     }
 }

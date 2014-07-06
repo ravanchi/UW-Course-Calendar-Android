@@ -13,11 +13,14 @@ import android.widget.TextView;
 import com.alirezatr.uwcalendar.R;
 import com.alirezatr.uwcalendar.adapters.SubjectsListAdapter;
 import com.alirezatr.uwcalendar.adapters.SubjectsListAdapter.Item;
-import com.alirezatr.uwcalendar.listeners.SubjectsListener;
 import com.alirezatr.uwcalendar.models.Subject;
-import com.alirezatr.uwcalendar.network.NetworkManager;
 import com.alirezatr.uwcalendar.utils.FilterUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,9 +31,7 @@ public class SubjectsActivity extends ListActivity {
     private SubjectsListAdapter adapter = new SubjectsListAdapter();
     private List<Object[]> alphabet = new ArrayList<Object[]>();
     private HashMap<String, Integer> sections = new HashMap<String, Integer>();
-    private NetworkManager networkManager;
-    ProgressDialog mProgressDialog;
-    TextView mNetworkError;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,6 @@ public class SubjectsActivity extends ListActivity {
         ImageView view = (ImageView)findViewById(android.R.id.home);
         view.setPadding(0, 0, 10, 0);
 
-        networkManager = new NetworkManager(this);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setCancelable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
@@ -61,25 +61,38 @@ public class SubjectsActivity extends ListActivity {
     }
 
     public void loadSubjects() {
-        mNetworkError = (TextView) findViewById(R.id.network_fail);
+        final Type subjectListType = new TypeToken<ArrayList<Subject>>(){}.getType();
+        TextView mLoadingError = (TextView) findViewById(R.id.loading_fail);
+
         mProgressDialog.setMessage(getResources().getString(R.string.loading_subjects));
         mProgressDialog.show();
+        String json = null;
+        try {
+            InputStream is = getAssets().open("subjects.txt");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
 
-        networkManager.getSubjects(new SubjectsListener() {
-            @Override
-            public void onSuccess(ArrayList<Subject> subjects) {
-                setAdapter(subjects);
-                ListView mListView = (ListView) findViewById(android.R.id.list);
-                mListView.setVisibility(View.VISIBLE);
-                mProgressDialog.dismiss();
-            }
+            ListView mListView = (ListView) findViewById(android.R.id.list);
+            mListView.setVisibility(View.VISIBLE);
+            mProgressDialog.dismiss();
 
-            @Override
-            public void onError(Exception error) {
-                mNetworkError.setVisibility(View.VISIBLE);
-                mProgressDialog.dismiss();
-            }
-        });
+        } catch (IOException ex) {
+            mLoadingError.setVisibility(View.VISIBLE);
+            mProgressDialog.dismiss();
+            ex.printStackTrace();
+        }
+
+        if(json != null) {
+            ArrayList<Subject> subjectList = new Gson().fromJson(json, subjectListType);
+            setAdapter(subjectList);
+        }
+        else {
+            mLoadingError.setVisibility(View.VISIBLE);
+            mProgressDialog.dismiss();
+        }
     }
 
     private void setAdapter(ArrayList<Subject> subjects) {

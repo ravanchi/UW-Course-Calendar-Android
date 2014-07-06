@@ -1,146 +1,139 @@
 package com.alirezatr.uwcalendar.activities;
 
-import android.app.ActionBar;
-import android.app.Activity;
+import android.support.v7.app.ActionBar;
+import android.support.v4.app.FragmentTransaction;
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.view.Menu;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alirezatr.uwcalendar.R;
+import com.alirezatr.uwcalendar.adapters.TabsPagerAdapter;
+import com.alirezatr.uwcalendar.fragments.CourseInfoFragment;
+import com.alirezatr.uwcalendar.fragments.CourseScheduleFragment;
 import com.alirezatr.uwcalendar.listeners.ClassesListener;
 import com.alirezatr.uwcalendar.listeners.CourseListener;
-import com.alirezatr.uwcalendar.models.*;
 import com.alirezatr.uwcalendar.models.Class;
+import com.alirezatr.uwcalendar.models.Course;
 import com.alirezatr.uwcalendar.network.NetworkManager;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class CourseActivity extends Activity {
-    private NetworkManager networkManager;
+public class CourseActivity extends ActionBarActivity {
+    private ActionBar mActionBar;
+    private ViewPager mViewPager;
+    private TabsPagerAdapter mAdapter;
+    private NetworkManager mNetworkManager;
     private ProgressDialog mProgressDialog;
-    private String subject;
-    private String catalog_number;
+
+    private String[] mTabLabels = { "Information", "Schedule" };
+
+    private Course course;
+    private String courseJson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final Type courseType = new TypeToken<Course>(){}.getType();
+
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.activity_open_translate, R.anim.activity_close_scale);
         setContentView(R.layout.course);
 
-        ActionBar actionBar = getActionBar();
-        actionBar.setIcon(R.drawable.actionbar);
-        actionBar.setSubtitle("Waterloo Calendar");
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                getActionBar().setSelectedNavigationItem(position);
+            }
+        });
+        mActionBar = getSupportActionBar();
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            courseJson = extras.getString("course");
+            course = new Gson().fromJson(courseJson, courseType);
+            mActionBar.setTitle(course.getSubject() + course.getCatalogNumber());
+        }
+
+        mAdapter = new TabsPagerAdapter(getSupportFragmentManager(), courseJson);
+
+        mViewPager.setAdapter(mAdapter);
+
+        mActionBar.setIcon(R.drawable.actionbar);
+        mActionBar.setSubtitle(getResources().getString(R.string.app_name));
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        ActionBar.TabListener tabListener = new ActionBar.TabListener() {
+            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+                mViewPager.setCurrentItem(tab.getPosition());
+            }
+
+            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {}
+
+            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {}
+        };
+
+        for (String tab_name : mTabLabels) {
+            mActionBar.addTab(mActionBar.newTab().setText(tab_name).setTabListener(tabListener));
+        }
 
         ImageView view = (ImageView)findViewById(android.R.id.home);
         view.setPadding(5, 0, 10, 0);
 
-        networkManager = new NetworkManager(this);
+        mNetworkManager = new NetworkManager(this);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setCancelable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            subject = extras.getString("subject");
-            catalog_number = extras.getString("catalog_number");
-            actionBar.setTitle(subject + catalog_number);
-            loadCourse(subject, catalog_number);
+        if(course != null) {
+            loadCourse(course.getSubject(), course.getCatalogNumber());
         }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        overridePendingTransition(R.anim.activity_open_scale, R.anim.activity_close_translate);
-    }
-
     public void loadCourse(final String subject, final String catalog_number) {
-        mProgressDialog.setMessage("Loading course");
-        mProgressDialog.show();
-        networkManager.getCourse(subject, catalog_number, new CourseListener() {
+        mNetworkManager.getCourse(subject, catalog_number, new CourseListener() {
             @Override
             public void onSuccess(Course course) {
-                TextView description = (TextView) findViewById(R.id.course_description);
-                description.setText(course.getDescription());
-
-                TextView instructions = (TextView) findViewById(R.id.course_instructions);
-                instructions.setText(course.getInstructions().toString());
-
-                TextView prerequisites = (TextView) findViewById(R.id.course_prerequisites);
-                TextView prerequisitesTitle = (TextView) findViewById(R.id.course_prerequisites_title);
-                prerequisitesTitle.setText("Prerequisites");
-                if (course.getPrerequisites() == "null") {
-                    prerequisites.setText("none");
+                TabsPagerAdapter adapter = (TabsPagerAdapter) mViewPager.getAdapter();
+                CourseInfoFragment fragment = (CourseInfoFragment) adapter.getFragment(1);
+                if (fragment != null) {
+                    fragment.course = course;
+                    fragment.setView(course);
                 }
-                else {
-                    prerequisites.setText(course.getPrerequisites());
-                }
-
-                TextView antirequisites = (TextView) findViewById(R.id.course_antirequisites);
-                TextView antirequisitesTitle = (TextView) findViewById(R.id.course_antirequisites_title);
-                antirequisitesTitle.setText("Antirequisites");
-                if (course.getAntirequisites() == "null") {
-                    antirequisites.setText("none");
-                }
-                else {
-                    antirequisites.setText(course.getAntirequisites());
-                }
-
-                if (course.getNotes() != "null") {
-                    TextView notes = (TextView) findViewById(R.id.course_notes);
-                    notes.setText(course.getNotes());
-                }
-
                 loadCourseClass(subject, catalog_number);
             }
 
             @Override
             public void onError(Exception error) {
-                mProgressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), "Error loading course, please try again later", Toast.LENGTH_LONG).show();
+                error.printStackTrace();
             }
         });
     }
 
     public void loadCourseClass(String subject, String catalog_number) {
-        networkManager.getCourseClass(subject, catalog_number, new ClassesListener() {
+        mNetworkManager.getCourseClass(subject, catalog_number, new ClassesListener() {
             @Override
-            public void onSuccess(ArrayList<Class> clases) {
-                LinearLayout layout = (LinearLayout) findViewById(R.id.linLayout);
-                for(com.alirezatr.uwcalendar.models.Class classes: clases) {
-                    if (classes.getRoom() != null || classes.getInstructor() != null || classes.getLocation() != null) {
-                        LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        TextView tv = new TextView(getApplicationContext());
-                        tv.setPadding(30, 5, 30, 0);
-                        tv.setTextColor(Color.DKGRAY);
-                        if(classes.getLocation() == "null"){
-                            classes.setLocation("");
-                        }
-                        if(classes.getRoom() == "null") {
-                            classes.setRoom("");
-                        }
-                        tv.setText(classes.getSection() + " " + classes.getInstructor() + "\n" + classes.getWeekdays() + " " +
-                                classes.getStartTime() + " - " + classes.getEndTime() + " " + classes.getLocation()+classes.getRoom());
-                        layout.addView(tv);
+            public void onSuccess(ArrayList<Class> classes) {
+                LinearLayout layout = (LinearLayout) findViewById(R.id.linlayout);
+                for (Class courseClass : classes) {
+                    TabsPagerAdapter adapter = (TabsPagerAdapter) mViewPager.getAdapter();
+                    CourseScheduleFragment fragment = (CourseScheduleFragment) adapter.getFragment(2);
+                    if (fragment != null) {
+                        fragment.setView(courseClass, getApplicationContext(), layout);
                     }
                 }
-                mProgressDialog.dismiss();
             }
 
             @Override
             public void onError(Exception error) {
-                mProgressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), "Error loading course, please try again later", Toast.LENGTH_LONG).show();
+                error.printStackTrace();
             }
         });
     }

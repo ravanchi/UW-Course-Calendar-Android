@@ -42,6 +42,7 @@ public class NetworkManager {
             public void onSuccess(JSONObject response) {
                 try {
                     JSONArray dataArray = response.getJSONArray(DATA);
+                    String data = dataArray.toString();
                     ArrayList<Subject> subjectList = gson.fromJson(dataArray.toString(), subjectListType);
                     completionHandler.onSuccess(subjectList);
                 } catch (JSONException exception) {
