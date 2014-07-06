@@ -11,7 +11,7 @@ import android.widget.ImageView;
 
 import com.alirezatr.uwcalendar.R;
 import com.alirezatr.uwcalendar.adapters.TabsPagerAdapter;
-import com.alirezatr.uwcalendar.fragments.CourseInfoFragment;
+import com.alirezatr.uwcalendar.fragments.CourseDetailFragment;
 import com.alirezatr.uwcalendar.fragments.CourseScheduleFragment;
 import com.alirezatr.uwcalendar.listeners.ClassesListener;
 import com.alirezatr.uwcalendar.listeners.CourseListener;
@@ -31,7 +31,7 @@ public class CourseActivity extends ActionBarActivity {
     private NetworkManager mNetworkManager;
     private ProgressDialog mProgressDialog;
 
-    private String[] mTabLabels = { "Information", "Schedule" };
+    private String[] mTabLabels = { "Details", "Schedule" };
 
     private Course course;
     private String courseJson;
@@ -95,12 +95,18 @@ public class CourseActivity extends ActionBarActivity {
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.activity_open_scale, R.anim.activity_close_translate);
+    }
+
     public void loadCourse(final String subject, final String catalog_number) {
         mNetworkManager.getCourse(subject, catalog_number, new CourseListener() {
             @Override
             public void onSuccess(Course course) {
                 TabsPagerAdapter adapter = (TabsPagerAdapter) mViewPager.getAdapter();
-                CourseInfoFragment fragment = (CourseInfoFragment) adapter.getFragment(1);
+                CourseDetailFragment fragment = (CourseDetailFragment) adapter.getFragment(1);
 
                 if (fragment != null) {
                     fragment.setView(course);

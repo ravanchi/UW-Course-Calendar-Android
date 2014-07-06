@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.alirezatr.uwcalendar.fragments.CourseInfoFragment;
+import com.alirezatr.uwcalendar.fragments.CourseDetailFragment;
 import com.alirezatr.uwcalendar.fragments.CourseScheduleFragment;
 
 import java.util.HashMap;
@@ -25,7 +25,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 Bundle bundle = new Bundle();
                 bundle.putString("course", course);
-                Fragment fragment = new CourseInfoFragment();
+                Fragment fragment = new CourseDetailFragment();
                 fragment.setArguments(bundle);
                 pageReference.put(1, fragment);
                 return fragment;

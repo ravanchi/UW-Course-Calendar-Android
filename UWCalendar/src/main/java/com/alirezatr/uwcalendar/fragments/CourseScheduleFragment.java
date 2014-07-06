@@ -1,6 +1,5 @@
 package com.alirezatr.uwcalendar.fragments;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,14 +25,14 @@ public class CourseScheduleFragment extends Fragment {
     }
 
     public void addClassView(Class courseClass) {
-        if (courseClass.getRoom() != null || courseClass.getInstructor() != null || courseClass.getLocation() != null) {
+        if (courseClass.getInstructor() != null && getActivity() != null) {
             TextView tv = new TextView(getActivity());
             tv.setPadding(30, 5, 30, 0);
             tv.setTextColor(Color.DKGRAY);
-            if(courseClass.getLocation() == "null"){
+            if(courseClass.getLocation() == null){
                 courseClass.setLocation("");
             }
-            if(courseClass.getRoom() == "null") {
+            if(courseClass.getRoom() == null) {
                 courseClass.setRoom("");
             }
             tv.setText(courseClass.getSection() + " " + courseClass.getInstructor() + "\n" + courseClass.getWeekdays() + " " +
