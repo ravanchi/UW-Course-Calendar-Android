@@ -16,8 +16,6 @@ import java.lang.reflect.Type;
 
 public class CourseInfoFragment extends Fragment {
     View rootView;
-    public Course course;
-    final Type courseType = new TypeToken<Course>(){}.getType();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -25,8 +23,11 @@ public class CourseInfoFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.course_information_fragment, container, false);
         Bundle bundle = this.getArguments();
-        course = new Gson().fromJson(bundle.getString("course"), courseType);
-        setView(course);
+        final Type courseType = new TypeToken<Course>(){}.getType();
+        Course course = new Gson().fromJson(bundle.getString("course"), courseType);
+        if(course != null) {
+            setView(course);
+        }
         return rootView;
     }
 

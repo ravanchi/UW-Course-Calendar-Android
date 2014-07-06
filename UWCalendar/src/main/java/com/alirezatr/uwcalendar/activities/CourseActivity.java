@@ -8,7 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.alirezatr.uwcalendar.R;
 import com.alirezatr.uwcalendar.adapters.TabsPagerAdapter;
@@ -39,8 +38,6 @@ public class CourseActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        final Type courseType = new TypeToken<Course>(){}.getType();
-
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.activity_open_translate, R.anim.activity_close_scale);
         setContentView(R.layout.course);
@@ -57,6 +54,7 @@ public class CourseActivity extends ActionBarActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             courseJson = extras.getString("course");
+            final Type courseType = new TypeToken<Course>(){}.getType();
             course = new Gson().fromJson(courseJson, courseType);
             mActionBar.setTitle(course.getSubject() + course.getCatalogNumber());
         }
@@ -103,8 +101,8 @@ public class CourseActivity extends ActionBarActivity {
             public void onSuccess(Course course) {
                 TabsPagerAdapter adapter = (TabsPagerAdapter) mViewPager.getAdapter();
                 CourseInfoFragment fragment = (CourseInfoFragment) adapter.getFragment(1);
+
                 if (fragment != null) {
-                    fragment.course = course;
                     fragment.setView(course);
                 }
                 loadCourseClass(subject, catalog_number);
@@ -119,14 +117,13 @@ public class CourseActivity extends ActionBarActivity {
 
     public void loadCourseClass(String subject, String catalog_number) {
         mNetworkManager.getCourseClass(subject, catalog_number, new ClassesListener() {
+            CourseScheduleFragment fragment = (CourseScheduleFragment) mAdapter.getFragment(2);
+
             @Override
             public void onSuccess(ArrayList<Class> classes) {
-                LinearLayout layout = (LinearLayout) findViewById(R.id.linlayout);
                 for (Class courseClass : classes) {
-                    TabsPagerAdapter adapter = (TabsPagerAdapter) mViewPager.getAdapter();
-                    CourseScheduleFragment fragment = (CourseScheduleFragment) adapter.getFragment(2);
                     if (fragment != null) {
-                        fragment.setView(courseClass, getApplicationContext(), layout);
+                        fragment.addClassView(courseClass);
                     }
                 }
             }
