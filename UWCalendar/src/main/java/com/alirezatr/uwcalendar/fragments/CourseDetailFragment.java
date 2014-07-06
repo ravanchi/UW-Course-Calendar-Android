@@ -14,7 +14,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
-public class CourseInfoFragment extends Fragment {
+public class CourseDetailFragment extends Fragment {
     View rootView;
 
     @Override

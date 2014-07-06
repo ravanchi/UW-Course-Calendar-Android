@@ -15,7 +15,8 @@
         android:layout_marginTop="1dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"/>
+        android:textColor="@drawable/listview_headers_colors"
+        android:text="Heading"/>
 
     <TextView
         android:id="@+id/courses_description"
@@ -25,7 +26,7 @@
         android:maxLines="2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView2"
-        android:textColor="@drawable/listview_click_colors"/>
+        android:text="Description"
+        android:textColor="@drawable/listview_details_colors"/>
 
 </LinearLayout>

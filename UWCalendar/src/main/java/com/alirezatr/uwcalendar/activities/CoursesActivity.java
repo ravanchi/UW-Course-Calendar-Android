@@ -3,8 +3,10 @@ package com.alirezatr.uwcalendar.activities;
 import android.app.ActionBar;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -47,8 +49,15 @@ public class CoursesActivity extends ListActivity {
 
         networkManager = new NetworkManager(this);
         mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setCancelable(false);
+        mProgressDialog.setCancelable(true);
         mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                networkManager.resetRequestQueue();
+                onBackPressed();
+            }
+        });
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {

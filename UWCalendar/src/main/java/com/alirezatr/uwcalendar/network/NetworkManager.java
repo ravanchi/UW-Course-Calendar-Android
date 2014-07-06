@@ -33,6 +33,15 @@ public class NetworkManager {
         this.requestQueue = Volley.newRequestQueue(context);
     }
 
+    public void resetRequestQueue() {
+        requestQueue.cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                return true;
+            }
+        });
+    }
+
     public void getSubjects(final SubjectsListener completionHandler) {
         final Type subjectListType = new TypeToken<ArrayList<Subject>>(){}.getType();
         String url = StringUtils.generateUrl(RequestTypes.SUBJECTS_LIST);
