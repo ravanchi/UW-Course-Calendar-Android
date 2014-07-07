@@ -40,7 +40,7 @@ public class CourseActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.activity_open_translate, R.anim.activity_close_scale);
-        setContentView(R.layout.course);
+        setContentView(R.layout.course_activity);
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -109,7 +109,7 @@ public class CourseActivity extends ActionBarActivity {
                 CourseDetailFragment fragment = (CourseDetailFragment) adapter.getFragment(1);
 
                 if (fragment != null) {
-                    fragment.setView(course);
+                    fragment.populateView(course);
                 }
                 loadCourseClass(subject, catalog_number);
             }

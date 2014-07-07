@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/course_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/course_title"
+                android:textStyle="bold"
+                android:textSize="23sp"
+                android:paddingTop="20dp" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/course_description"
+                android:textSize="14sp"
+                android:paddingTop="10dp"/>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/course_prerequisites_title"
+                    android:visibility="gone"
+                    android:text="Prerequisites: "
+                    android:singleLine="true"
+                    android:textColor="@android:color/black"
+                    android:textSize="11sp"
+                    android:textStyle="bold|italic" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic"
+                    android:textSize="12sp"
+                    android:textColor="#787878"
+                    android:id="@+id/course_prerequisites" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/course_antirequisites_title"
+                    android:text="Antirequisites: "
+                    android:textSize="11sp"
+                    android:textColor="@android:color/black"
+                    android:visibility="gone"
+                    android:singleLine="true"
+                    android:textStyle="bold|italic" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic"
+                    android:textSize="12sp"
+                    android:textColor="#787878"
+                    android:id="@+id/course_antirequisites" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="10dp"/>
+
+            <!--<View-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:background="#E5E5E5" />-->
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="10dp">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.50"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/terms_title"
+                            android:text="Terms Offered"
+                            android:textSize="11sp"
+                            android:textStyle="italic"
+                            android:textColor="#858585"/>
+
+                        <TextView
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/terms_title"
+                            android:text="n/a"
+                            android:id="@+id/course_terms_textView"
+                            android:textSize="14sp"
+                            android:textStyle="italic"
+                            android:textColor="#5d5d5d" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.15"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="75dp"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/units_title"
+                            android:text="Units"
+                            android:textSize="11sp"
+                            android:textStyle="italic"
+                            android:textColor="#858585"/>
+
+                        <TextView
+                            android:layout_width="75dp"
+                            android:layout_height="wrap_content"
+                            android:text="n/a"
+                            android:layout_below="@id/units_title"
+                            android:id="@+id/course_units"
+                            android:textSize="14sp"
+                            android:textStyle="italic"
+                            android:textColor="#5d5d5d" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.50"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/components_title"
+                            android:text="Components"
+                            android:textSize="11sp"
+                            android:textStyle="italic"
+                            android:textColor="#858585"/>
+
+                        <TextView
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/components_title"
+                            android:text="n/a"
+                            android:id="@+id/course_instructions"
+                            android:textSize="14sp"
+                            android:textStyle="italic"
+                            android:textColor="#5d5d5d" />
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.15"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="75dp"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/online_title"
+                            android:text="Online"
+                            android:textSize="11sp"
+                            android:textStyle="italic"
+                            android:textColor="#858585"/>
+
+                        <TextView
+                            android:layout_width="75dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/online_title"
+                            android:id="@+id/course_offer_online"
+                            android:text="Yes"
+                            android:textSize="14sp"
+                            android:textStyle="italic"
+                            android:textColor="#5d5d5d"/>
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/course_url"
+                    android:paddingTop="10dp"
+                    android:visibility="visible"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/course_url_title"
+                            android:text="Web Url"
+                            android:textSize="11sp"
+                            android:textStyle="italic"
+                            android:textColor="#858585" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/course_url_textView"
+                            android:layout_below="@id/course_url_title"
+                            android:text="n/a"
+                            android:autoLink="web"
+                            android:textSize="12sp"
+                            android:textStyle="italic"
+                            android:textColor="#5d5d5d"/>
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--<View-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:background="#E5E5E5" />-->
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:id="@+id/course_notes"
+                android:paddingTop="10dp"
+                android:textSize="12sp"
+                android:textStyle="italic"
+                android:textColor="#5d5d5d" />
+
+            <Space
+                android:layout_width="fill_parent"
+                android:layout_height="20dp"></Space>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
