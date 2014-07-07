@@ -15,24 +15,27 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Type;
 
 public class CourseDetailFragment extends Fragment {
     TextView title;
     TextView description;
-    TextView prerequisitesTitle;
     TextView prerequisites;
     TextView antirequisites;
-    TextView antirequisitesTitle;
     TextView termsOfferedText;
-    TextView instructionsTitle;
     TextView instructionsText;
     TextView notes;
     TextView courseUrlTextView;
     TextView courseUnits;
+    TextView courseOnline;
 
-    LinearLayout termsOffered;
-    LinearLayout courseUrl;
+    LinearLayout courseDetails;
+    LinearLayout loading;
+
+    TextView loadingText;
+    TextView networkError;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,15 +43,17 @@ public class CourseDetailFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.course_details_fragment, container, false);
 
+        courseDetails = (LinearLayout) rootView.findViewById(R.id.course_details);
+        loading = (LinearLayout) rootView.findViewById(R.id.loading);
 
-        courseUrl = (LinearLayout) rootView.findViewById(R.id.course_url);
+        loadingText = (TextView) rootView.findViewById(R.id.loading_text);
+        networkError = (TextView) rootView.findViewById(R.id.loading_fail);
         title = (TextView) rootView.findViewById(R.id.course_title);
+        courseOnline = (TextView) rootView.findViewById(R.id.course_offer_online);
         description = (TextView) rootView.findViewById(R.id.course_description);
         courseUnits = (TextView) rootView.findViewById(R.id.course_units);
-        prerequisitesTitle = (TextView) rootView.findViewById(R.id.course_prerequisites_title);
         prerequisites = (TextView) rootView.findViewById(R.id.course_prerequisites);
         antirequisites = (TextView) rootView.findViewById(R.id.course_antirequisites);
-        antirequisitesTitle = (TextView) rootView.findViewById(R.id.course_antirequisites_title);
         termsOfferedText = (TextView) rootView.findViewById(R.id.course_terms_textView);
         instructionsText = (TextView) rootView.findViewById(R.id.course_instructions);
         courseUrlTextView = (TextView) rootView.findViewById(R.id.course_url_textView);
@@ -73,14 +78,32 @@ public class CourseDetailFragment extends Fragment {
         }
     }
 
-    public void populateView(Course course) {
-        prerequisitesTitle.setVisibility(View.VISIBLE);
-        String prerequisiteText = (course.getPrerequisites()==null)? "none" : course.getPrerequisites();
-        prerequisites.setText(prerequisiteText);
+    public void showError() {
+        courseDetails.setVisibility(View.GONE);
+        loading.setVisibility(View.GONE);
+        loadingText.setVisibility(View.GONE);
+        networkError.setVisibility(View.VISIBLE);
+    }
 
-        antirequisitesTitle.setVisibility(View.VISIBLE);
-        String antirequisiteText = (course.getAntirequisites()==null)? "none" : course.getAntirequisites();
-        antirequisites.setText(antirequisiteText);
+    public void populateDetailsView(Course course) {
+        courseDetails.setVisibility(View.VISIBLE);
+        loading.setVisibility(View.GONE);
+        loadingText.setVisibility(View.GONE);
+        networkError.setVisibility(View.GONE);
+
+        if(course.getOfferings() != null && course.getOfferings().size() != 0) {
+            if(course.getOfferings().get("online")){
+                courseOnline.setText("Yes");
+            }
+        }
+
+        if(course.getPrerequisites() != null) {
+            prerequisites.setText(course.getPrerequisites());
+        }
+
+        if(course.getAntirequisites() != null) {
+            antirequisites.setText(course.getAntirequisites());
+        }
 
         if(course.getNotes() != null) {
             notes.setVisibility(View.VISIBLE);
@@ -98,7 +121,6 @@ public class CourseDetailFragment extends Fragment {
         }
 
         if(course.getUrl() != null) {
-            courseUrl.setVisibility(View.VISIBLE);
             courseUrlTextView.setText(course.getUrl());
         }
 

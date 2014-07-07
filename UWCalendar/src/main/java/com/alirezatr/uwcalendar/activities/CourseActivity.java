@@ -107,16 +107,19 @@ public class CourseActivity extends ActionBarActivity {
             public void onSuccess(Course course) {
                 TabsPagerAdapter adapter = (TabsPagerAdapter) mViewPager.getAdapter();
                 CourseDetailFragment fragment = (CourseDetailFragment) adapter.getFragment(1);
-
                 if (fragment != null) {
-                    fragment.populateView(course);
+                    fragment.populateDetailsView(course);
                 }
                 loadCourseClass(subject, catalog_number);
             }
 
             @Override
             public void onError(Exception error) {
-                error.printStackTrace();
+                TabsPagerAdapter adapter = (TabsPagerAdapter) mViewPager.getAdapter();
+                CourseDetailFragment fragment = (CourseDetailFragment) adapter.getFragment(1);
+                if(fragment != null) {
+                    fragment.showError();
+                }
             }
         });
     }

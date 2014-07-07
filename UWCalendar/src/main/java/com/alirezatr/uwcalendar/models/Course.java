@@ -1,5 +1,7 @@
 package com.alirezatr.uwcalendar.models;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Course {
@@ -19,6 +21,7 @@ public class Course {
     private String calendar_year;
     private String url;
     private String academic_level;
+    private HashMap<String, Boolean> offerings;
 
     public Course(String course_id, String subject, String catalog_number, String title, String description) {
         this.course_id = course_id;
@@ -30,13 +33,14 @@ public class Course {
 
     public Course(String course_id, String subject, String catalog_number, String title, double units, String description,
                   List<String> instructions, String prerequisites, String antirequisites, String corequisites,
-                  String crosslistings, List<String> terms_offered, String notes, String calendar_year, String url,
+                  String crosslistings, List<String> terms_offered, String notes, HashMap<String, Boolean> offerings, String calendar_year, String url,
                   String academic_level) {
         this(course_id, subject, catalog_number, title, description);
         this.instructions = instructions;
         this.prerequisites = prerequisites;
         this.antirequisites = antirequisites;
         this.notes = notes;
+        this.offerings = offerings;
         this.units = units;
         this.terms_offered = terms_offered;
         this.url = url;
@@ -77,4 +81,6 @@ public class Course {
     public String getCrosslistings() { return this.crosslistings; }
 
     public String getCalendarYear() { return this.calendar_year; }
+
+    public HashMap<String, Boolean> getOfferings() { return this.offerings; }
 }

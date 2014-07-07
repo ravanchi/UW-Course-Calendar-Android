@@ -30,14 +30,13 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/course_description"
                 android:textSize="14sp"
-                android:paddingTop="10dp"/>
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="10dp"/>
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"/>
 
             <LinearLayout
                 android:layout_width="fill_parent"
+                android:id="@+id/course_details"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingBottom="10dp">
@@ -151,7 +150,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/online_title"
                             android:id="@+id/course_offer_online"
-                            android:text="Yes"
+                            android:text="No"
                             android:textSize="14sp"
                             android:textStyle="italic"
                             android:textColor="#5d5d5d"/>
@@ -163,7 +162,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
-                    android:visibility="visible"
                     android:orientation="horizontal">
 
                     <RelativeLayout
@@ -175,7 +173,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/course_prerequisites_title"
-                            android:visibility="visible"
                             android:text="Prerequisites"
                             android:singleLine="true"
                             android:textSize="11sp"
@@ -199,7 +196,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
-                    android:visibility="visible"
                     android:orientation="horizontal">
 
                     <RelativeLayout
@@ -214,7 +210,6 @@
                             android:text="Antirequisites"
                             android:textSize="11sp"
                             android:textColor="#858585"
-                            android:visibility="visible"
                             android:singleLine="true"
                             android:textStyle="italic" />
 
@@ -237,7 +232,6 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/course_url"
                     android:paddingTop="10dp"
-                    android:visibility="visible"
                     android:orientation="horizontal">
 
                     <RelativeLayout
@@ -268,16 +262,50 @@
                     </RelativeLayout>
                 </LinearLayout>
 
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/course_notes"
+                    android:paddingTop="10dp"
+                    android:visibility="gone"
+                    android:textSize="12sp"
+                    android:textStyle="italic"
+                    android:textColor="#5d5d5d" />
+
             </LinearLayout>
 
-            <TextView
-                android:layout_width="fill_parent"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:id="@+id/course_notes"
-                android:textSize="12sp"
-                android:textStyle="italic"
-                android:textColor="#5d5d5d" />
+                android:id="@+id/loading"
+                android:visibility="visible"
+                android:orientation="vertical">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    style="@android:style/Widget.Holo.Light.ProgressBar"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:gravity="center"
+                    android:id="@+id/loading_text"
+                    android:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:textColor="#5d5d5d"
+                    android:text="Loading Course Details"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:gravity="center"
+                    android:id="@+id/loading_fail"
+                    android:visibility="gone"
+                    android:textColor="#5d5d5d"
+                    android:layout_width="match_parent"
+                    android:text="Network connection failed"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
 
             <Space
                 android:layout_width="fill_parent"
