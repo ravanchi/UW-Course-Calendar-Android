@@ -95,6 +95,10 @@ public class CoursesActivity extends ListActivity {
             course = courses.get(i);
             String firstDigit = course.getCatalogNumber().substring(0, 1);
 
+            if(Integer.parseInt(firstDigit) >= 6) {
+                break;
+            }
+
             if (previousDigit != null && !firstDigit.equals(previousDigit)) {
                 end = rows.size() - 1;
                 tmpIndexItem = new Object[2];

@@ -14,9 +14,6 @@ import com.alirezatr.uwcalendar.models.Course;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-
-import org.w3c.dom.Text;
-
 import java.lang.reflect.Type;
 
 public class CourseDetailFragment extends Fragment {
