@@ -62,7 +62,7 @@ public class SubjectsActivity extends ListActivity {
 
     public void loadSubjects() {
         final Type subjectListType = new TypeToken<ArrayList<Subject>>(){}.getType();
-        TextView mLoadingError = (TextView) findViewById(R.id.loading_fail);
+        TextView mLoadingError = (TextView) findViewById(R.id.loading);
 
         mProgressDialog.setMessage(getResources().getString(R.string.loading_subjects));
         mProgressDialog.show();

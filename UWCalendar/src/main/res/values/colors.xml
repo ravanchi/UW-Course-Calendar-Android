@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="uw_gold">#FFD74F</color>
-    <color name="uw_gold_light">#fff5d3</color>
-    <!--<color name="uw_gold_light">#fffbed</color>-->
+    <!--<color name="uw_gold_light">#fff5d3</color>-->
+    <color name="uw_gold_light">#fffbed</color>
 </resources>

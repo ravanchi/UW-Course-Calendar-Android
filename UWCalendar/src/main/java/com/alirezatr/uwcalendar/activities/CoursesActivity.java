@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -96,6 +95,10 @@ public class CoursesActivity extends ListActivity {
             course = courses.get(i);
             String firstDigit = course.getCatalogNumber().substring(0, 1);
 
+            if(Integer.parseInt(firstDigit) >= 6) {
+                break;
+            }
+
             if (previousDigit != null && !firstDigit.equals(previousDigit)) {
                 end = rows.size() - 1;
                 tmpIndexItem = new Object[2];
@@ -127,7 +130,7 @@ public class CoursesActivity extends ListActivity {
     }
 
     public void loadCourses(String subject) {
-        mNetworkError = (TextView) findViewById(R.id.loading_fail);
+        mNetworkError = (TextView) findViewById(R.id.loading);
         String loadingString = getResources().getString(R.string.loading_courses);
         mProgressDialog.setMessage(String.format(loadingString, subject));
         mProgressDialog.show();
