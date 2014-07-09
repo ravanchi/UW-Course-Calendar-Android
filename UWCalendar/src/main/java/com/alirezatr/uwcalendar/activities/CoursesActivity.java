@@ -36,7 +36,7 @@ public class CoursesActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.activity_open_translate, R.anim.activity_close_scale);
-        setContentView(R.layout.main_list);
+        setContentView(R.layout.list_activity);
 
         ActionBar actionBar = getActionBar();
         actionBar.setIcon(R.drawable.actionbar);
