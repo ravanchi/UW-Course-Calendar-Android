@@ -90,13 +90,20 @@ public class CoursesActivity extends ListActivity {
         String previousDigit = null;
         Object[] tmpIndexItem;
         Course course;
+        String firstDigit;
+        int catalogNumberLength;
 
         for(int i = 0; i < courses.size(); i++) {
             course = courses.get(i);
-            String firstDigit = course.getCatalogNumber().substring(0, 1);
+            catalogNumberLength = course.getCatalogNumber().length();
+            firstDigit = course.getCatalogNumber().substring(0, 1);
 
-            if(Integer.parseInt(firstDigit) >= 6) {
+            if(catalogNumberLength == 3 && Integer.parseInt(firstDigit) >= 6) {
                 break;
+            }
+
+            if(catalogNumberLength < 3) {
+                firstDigit = "0";
             }
 
             if (previousDigit != null && !firstDigit.equals(previousDigit)) {
