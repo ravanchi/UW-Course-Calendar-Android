@@ -1,5 +1,6 @@
 package com.alirezatr.uwcalendar.activities;
 
+import android.content.Context;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.FragmentTransaction;
 import android.app.ProgressDialog;
@@ -7,7 +8,10 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alirezatr.uwcalendar.R;
 import com.alirezatr.uwcalendar.adapters.TabsPagerAdapter;
@@ -22,7 +26,15 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardExpand;
+import it.gmariotti.cardslib.library.internal.CardHeader;
+import it.gmariotti.cardslib.library.view.CardView;
 
 public class CourseActivity extends ActionBarActivity {
     private ActionBar mActionBar;
@@ -30,6 +42,8 @@ public class CourseActivity extends ActionBarActivity {
     private TabsPagerAdapter mAdapter;
     private NetworkManager mNetworkManager;
     private ProgressDialog mProgressDialog;
+    private ArrayList<Card> cards = new ArrayList<Card>();
+
 
     private String[] mTabLabels = { "Details", "Schedule" };
 
@@ -131,9 +145,32 @@ public class CourseActivity extends ActionBarActivity {
             @Override
             public void onSuccess(ArrayList<Class> classes) {
                 for (Class courseClass : classes) {
-                    if (fragment != null) {
-                        fragment.addClassView(courseClass);
+                    Card card = new Card(getApplicationContext());
+                    CardExpandInsideSquare expand = new CardExpandInsideSquare(getApplicationContext(), 1);
+                    CardHeader header = new CardHeader(getApplicationContext());
+
+                    SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+                    SimpleDateFormat of = new SimpleDateFormat("hh:mm");
+                    Date startTime = new Date();
+                    Date endTime = new Date();
+                    try {
+                        startTime = df.parse(courseClass.getStartTime());
+                        endTime = df.parse(courseClass.getEndTime());
+                    } catch (Exception e) {
+
                     }
+
+                    String headerString = courseClass.getSection() + " " + of.format(startTime)  + " - " + of.format(endTime) + " " + courseClass.getWeekdays();
+                    header.setTitle(headerString);
+                    header.setButtonExpandVisible(true);
+                    card.addCardHeader(header);
+                    card.addCardExpand(expand);
+                    card.setBackgroundResourceId(R.drawable.openGreen);
+                    cards.add(card);
+                }
+
+                if (fragment != null) {
+                    fragment.addClassView(cards);
                 }
             }
 
@@ -152,6 +189,35 @@ public class CourseActivity extends ActionBarActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    class CardExpandInsideSquare extends CardExpand {
+
+        int randomNumber;
+
+        public CardExpandInsideSquare(Context context,int randomNumber) {
+            super(context, R.layout.card_inner_layout);
+            this.randomNumber = randomNumber;
+        }
+
+        @Override
+        public void setupInnerViewElements(ViewGroup parent, View view) {
+
+
+            TextView tx = (TextView) view.findViewById(R.id.carddemo_inside_text);
+            TextView tx1 = (TextView) view.findViewById(R.id.carddemo_inside_image_title1);
+            TextView tx2 = (TextView) view.findViewById(R.id.carddemo_inside_image_title2);
+
+            if (tx != null)
+                tx.setText(""+randomNumber);
+
+            if (tx1 != null)
+                tx1.setText("Detail............");
+
+            if (tx2 != null)
+                tx2.setText("xxxx xxx xxxx xxxxx");
+
         }
     }
 }

@@ -20,6 +20,7 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:19+'
+    compile 'com.github.gabrielemariotti.cards:library:1.7.3'
     compile files('libs/volley.jar')
     compile files('libs/gson-2.2.4.jar')
 }

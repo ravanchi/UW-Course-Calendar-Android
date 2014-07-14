@@ -3,4 +3,5 @@
     <color name="uw_gold">#FFD74F</color>
     <!--<color name="uw_gold_light">#fff5d3</color>-->
     <color name="uw_gold_light">#fffbed</color>
+    <drawable name="openGreen">#E1F7E1</drawable>
 </resources>

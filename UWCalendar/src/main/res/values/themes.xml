@@ -3,4 +3,9 @@
     <style name="UWTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowBackground">@color/uw_gold_light</item>
     </style>
+    <style name="card.header_simple_title">
+        <item name="android:textSize">18sp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingLeft">10dp</item>
+    </style>
 </resources>
