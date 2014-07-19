@@ -29,12 +29,10 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardExpand;
 import it.gmariotti.cardslib.library.internal.CardHeader;
-import it.gmariotti.cardslib.library.view.CardView;
 
 public class CourseActivity extends ActionBarActivity {
     private ActionBar mActionBar;
@@ -203,8 +201,6 @@ public class CourseActivity extends ActionBarActivity {
 
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
-
-
             TextView tx = (TextView) view.findViewById(R.id.carddemo_inside_text);
             TextView tx1 = (TextView) view.findViewById(R.id.carddemo_inside_image_title1);
             TextView tx2 = (TextView) view.findViewById(R.id.carddemo_inside_image_title2);
