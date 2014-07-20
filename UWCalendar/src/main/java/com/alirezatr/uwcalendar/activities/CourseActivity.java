@@ -2,7 +2,6 @@ package com.alirezatr.uwcalendar.activities;
 
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.FragmentTransaction;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -29,7 +28,6 @@ public class CourseActivity extends ActionBarActivity {
     private ViewPager mViewPager;
     private TabsPagerAdapter mAdapter;
     private NetworkManager mNetworkManager;
-    private ProgressDialog mProgressDialog;
 
     private String[] mTabLabels = { "Details", "Schedule" };
 
@@ -86,13 +84,16 @@ public class CourseActivity extends ActionBarActivity {
         view.setPadding(5, 0, 10, 0);
 
         mNetworkManager = new NetworkManager(this);
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setCancelable(false);
-        mProgressDialog.setCanceledOnTouchOutside(false);
 
         if(course != null) {
             loadCourse(course.getSubject(), course.getCatalogNumber());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mNetworkManager.resetRequestQueue();
     }
 
     @Override
@@ -117,7 +118,7 @@ public class CourseActivity extends ActionBarActivity {
             public void onError(Exception error) {
                 TabsPagerAdapter adapter = (TabsPagerAdapter) mViewPager.getAdapter();
                 CourseDetailFragment fragment = (CourseDetailFragment) adapter.getFragment(1);
-                if(fragment != null) {
+                if (fragment != null) {
                     fragment.showError();
                 }
             }
@@ -130,16 +131,18 @@ public class CourseActivity extends ActionBarActivity {
 
             @Override
             public void onSuccess(ArrayList<Class> classes) {
-                for (Class courseClass : classes) {
-                    if (fragment != null) {
-                        fragment.addClassView(courseClass);
-                    }
+                if (fragment != null) {
+                    fragment.populateScheduleView(classes);
                 }
             }
 
             @Override
             public void onError(Exception error) {
-                error.printStackTrace();
+                TabsPagerAdapter adapter = (TabsPagerAdapter) mViewPager.getAdapter();
+                CourseScheduleFragment fragment = (CourseScheduleFragment) adapter.getFragment(2);
+                if (fragment != null) {
+                    fragment.showError();
+                }
             }
         });
     }

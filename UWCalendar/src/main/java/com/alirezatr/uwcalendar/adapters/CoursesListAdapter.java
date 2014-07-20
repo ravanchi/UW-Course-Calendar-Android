@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alirezatr.uwcalendar.R;
-import com.alirezatr.uwcalendar.models.Course;
+import com.alirezatr.uwcalendar.models.*;
 import com.alirezatr.uwcalendar.views.PinnedSectionListView;
 
 import java.util.List;
@@ -43,11 +43,16 @@ public class CoursesListAdapter extends BaseAdapter implements PinnedSectionList
                 view = (LinearLayout) inflater.inflate(R.layout.courses_row_item, null, false);
             }
 
-            Item item = (Item) getItem(i);
-            TextView textView = (TextView) view.findViewById(R.id.courses_title);
-            textView.setText(item.course.getSubject() + item.course.getCatalogNumber() + " - " + item.course.getTitle());
-            TextView textView2 = (TextView) view.findViewById(R.id.courses_description);
-            textView2.setText(item.course.getDescription());
+            TextView courseTitleTextView = (TextView) view.findViewById(R.id.courses_title);
+            TextView courseDescriptionTextView = (TextView) view.findViewById(R.id.courses_description);
+            TextView catalogNumberTextView = (TextView) view.findViewById(R.id.courses_catalogNum);
+
+            ListItem item = (ListItem) getItem(i);
+            if(item != null && item.course != null) {
+                catalogNumberTextView.setText(item.course.getSubject() + item.course.getCatalogNumber());
+                courseTitleTextView.setText(item.course.getTitle());
+                courseDescriptionTextView.setText(item.course.getDescription());
+            }
         }
         else {
             if(view == null) {
@@ -56,7 +61,7 @@ public class CoursesListAdapter extends BaseAdapter implements PinnedSectionList
                 view = (LinearLayout) inflater.inflate(R.layout.row_section, null, false);
             }
 
-            Section section = (Section) getItem(i);
+            ListHeader section = (ListHeader) getItem(i);
             TextView textView = (TextView) view.findViewById(R.id.section_title);
             textView.setText(section.text);
         }
@@ -71,11 +76,21 @@ public class CoursesListAdapter extends BaseAdapter implements PinnedSectionList
 
     @Override
     public int getItemViewType(int position) {
-        if(getItem(position) instanceof Section) {
+        if(getItem(position) instanceof ListHeader) {
             return 1;
         }
         else {
             return 0;
+        }
+    }
+
+    @Override
+    public boolean isEnabled(int position) {
+        if(getItem(position) instanceof ListHeader) {
+            return false;
+        }
+        else {
+            return true;
         }
     }
 
@@ -88,21 +103,5 @@ public class CoursesListAdapter extends BaseAdapter implements PinnedSectionList
 
     public void setRows(List rows) {
         this.rows = rows;
-    }
-
-    public static final class Section extends Row {
-        public final String text;
-
-        public Section(String text) {
-            this.text = text;
-        }
-    }
-
-    public static final class Item extends Row {
-        public final Course course;
-
-        public Item(Course course) {
-            this.course = course;
-        }
     }
 }

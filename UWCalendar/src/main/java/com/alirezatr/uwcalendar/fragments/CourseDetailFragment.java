@@ -1,7 +1,7 @@
 package com.alirezatr.uwcalendar.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +16,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
-public class CourseDetailFragment extends Fragment {
+public class CourseDetailFragment extends ListFragment {
     TextView title;
     TextView description;
     TextView prerequisites;
@@ -41,10 +41,10 @@ public class CourseDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.course_details_fragment, container, false);
 
         courseDetails = (LinearLayout) rootView.findViewById(R.id.course_details);
-        loading = (LinearLayout) rootView.findViewById(R.id.loading);
+        loading = (LinearLayout) rootView.findViewById(R.id.list_loading_text);
 
         loadingText = (TextView) rootView.findViewById(R.id.loading_text);
-        networkError = (TextView) rootView.findViewById(R.id.loading_fail);
+        networkError = (TextView) rootView.findViewById(R.id.list_load_fail_text);
         title = (TextView) rootView.findViewById(R.id.course_title);
         courseOnline = (TextView) rootView.findViewById(R.id.course_offer_online);
         description = (TextView) rootView.findViewById(R.id.course_description);

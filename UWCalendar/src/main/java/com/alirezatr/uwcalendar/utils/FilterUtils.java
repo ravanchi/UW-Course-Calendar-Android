@@ -13,6 +13,7 @@ public class FilterUtils {
             restrictedSubjects.add("ACINTY");
             restrictedSubjects.add("ADMGT");
             restrictedSubjects.add("AES");
+            restrictedSubjects.add("AHS");
             restrictedSubjects.add("ARCHL");
             restrictedSubjects.add("ART");
             restrictedSubjects.add("ASIAN");
@@ -69,6 +70,7 @@ public class FilterUtils {
             restrictedSubjects.add("MI");
             restrictedSubjects.add("MISC");
             restrictedSubjects.add("MSE");
+            restrictedSubjects.add("NANO");
             restrictedSubjects.add("NATST");
             restrictedSubjects.add("NES");
             restrictedSubjects.add("PAS");

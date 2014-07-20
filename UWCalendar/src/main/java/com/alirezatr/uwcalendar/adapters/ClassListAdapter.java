@@ -13,9 +13,11 @@ import com.alirezatr.uwcalendar.models.ListHeader;
 import com.alirezatr.uwcalendar.models.ListItem;
 import com.alirezatr.uwcalendar.views.PinnedSectionListView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
-public class SubjectsListAdapter extends BaseAdapter implements PinnedSectionListView.PinnedSectionListAdapter {
+public class ClassListAdapter extends BaseAdapter implements PinnedSectionListView.PinnedSectionListAdapter {
     private List rows;
 
     @Override
@@ -41,14 +43,58 @@ public class SubjectsListAdapter extends BaseAdapter implements PinnedSectionLis
             if(view == null) {
                 LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService
                         (Context.LAYOUT_INFLATER_SERVICE);
-                view = (LinearLayout) inflater.inflate(R.layout.subjects_row_item, null, false);
+                view = (LinearLayout) inflater.inflate(R.layout.class_row_item, null, false);
             }
 
             ListItem item = (ListItem) getItem(i);
-            TextView textView = (TextView) view.findViewById(R.id.section_title);
-            textView.setText(item.subject.getSubject());
-            TextView textView2 = (TextView) view.findViewById(R.id.subjects_description);
-            textView2.setText(item.subject.getDescription());
+
+            SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+            SimpleDateFormat of = new SimpleDateFormat("h:mm");
+            Date startTime = new Date();
+            Date endTime = new Date();
+            try {
+                startTime = df.parse(item.clazz.getStartTime());
+                endTime = df.parse(item.clazz.getEndTime());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            String time;
+            if(item.clazz.getWeekdays() != null && !item.clazz.getWeekdays().contains("null")) {
+                time = of.format(startTime) + " - " + of.format(endTime) + " " + item.clazz.getWeekdays();
+            } else {
+                time = of.format(startTime) + " - " + of.format(endTime);
+            }
+
+
+            String room = item.clazz.getLocation() + item.clazz.getRoom();
+            String instructor = item.clazz.getInstructor();
+            if(instructor != null || !instructor.contains("null")) {
+                int commaIndex = instructor.indexOf(",");
+                if(commaIndex != -1) {
+                    instructor = instructor.substring(commaIndex + 1) + " " + instructor.substring(0, commaIndex);
+                }
+            }
+            TextView textView = (TextView) view.findViewById(R.id.class_lecture);
+            textView.setText(item.clazz.getSection());
+
+            TextView textView2 = (TextView) view.findViewById(R.id.class_instructor);
+
+            if(instructor.contains("null")) {
+                textView2.setVisibility(view.GONE);
+            } else {
+                textView2.setText(instructor);
+            }
+
+            TextView textView3 = (TextView) view.findViewById(R.id.class_time);
+            textView3.setText(time);
+
+            TextView textView4 = (TextView) view.findViewById(R.id.class_room);
+            if(room.contains("null")) {
+                textView4.setVisibility(View.GONE);
+            } else {
+                textView4.setText(room);
+            }
         }
         else {
             if(view == null) {
@@ -94,8 +140,6 @@ public class SubjectsListAdapter extends BaseAdapter implements PinnedSectionLis
     public boolean isItemViewTypePinned(int viewType) {
         return viewType == 1;
     }
-
-    public static abstract class Row {}
 
     public void setRows(List rows) {
         this.rows = rows;

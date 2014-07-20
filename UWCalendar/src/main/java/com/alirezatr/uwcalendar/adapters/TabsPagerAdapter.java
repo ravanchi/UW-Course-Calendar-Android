@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.ListFragment;
+
 
 import com.alirezatr.uwcalendar.fragments.CourseDetailFragment;
 import com.alirezatr.uwcalendar.fragments.CourseScheduleFragment;
@@ -20,18 +22,18 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public Fragment getItem(int index) {
+    public ListFragment getItem(int index) {
         switch (index) {
             case 0:
                 Bundle bundle = new Bundle();
                 bundle.putString("course", course);
-                Fragment fragment = new CourseDetailFragment();
+                ListFragment fragment = new CourseDetailFragment();
                 fragment.setArguments(bundle);
                 pageReference.put(1, fragment);
                 return fragment;
 
             case 1:
-                Fragment fragment2 =  new CourseScheduleFragment();
+                ListFragment fragment2 =  new CourseScheduleFragment();
                 pageReference.put(2, fragment2);
                 return fragment2;
         }
