@@ -27,7 +27,7 @@ public class StringUtils {
         }
         if(requestTypes.equals(RequestTypes.CLASS)) {
             //TODO: Add the ability to change terms
-            return CLASS_REQUEST_URL + "1141" + "/" + subject + "/" + catalog_number + "/schedule." + REQUEST_FORMAT + "?key=" + API_KEY;
+            return CLASS_REQUEST_URL + "1149" + "/" + subject + "/" + catalog_number + "/schedule." + REQUEST_FORMAT + "?key=" + API_KEY;
         }
         if(requestTypes.equals(RequestTypes.SUBJECTS_LIST)) {
             return SUBJECTS_REQUEST_URL + "?key=" + API_KEY;

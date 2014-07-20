@@ -2,26 +2,49 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
+              android:layout_height="fill_parent"
               android:orientation="vertical">
     <com.alirezatr.uwcalendar.views.PinnedSectionListView
         android:id="@android:id/list"
         android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:fastScrollEnabled="true"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:id="@+id/loading_modal"
+            style="@android:style/Widget.Holo.Light.ProgressBar"
+            android:layout_gravity="center"/>
 
         <TextView
-            android:id="@+id/loading"
-            android:visibility="invisible"
             android:gravity="center"
+            android:id="@+id/loading"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:textColor="#5d5d5d"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/loading_fail"
+            android:visibility="gone"
+            android:textColor="#5d5d5d"
             android:layout_width="match_parent"
             android:text="Network connection failed"
             android:layout_height="wrap_content"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="20dp"/>
     </LinearLayout>
 </LinearLayout>

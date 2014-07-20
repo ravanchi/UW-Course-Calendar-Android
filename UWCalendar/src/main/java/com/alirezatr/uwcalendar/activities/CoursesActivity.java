@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alirezatr.uwcalendar.R;
@@ -29,8 +31,9 @@ public class CoursesActivity extends ListActivity {
     private HashMap<String, Integer> sections = new HashMap<String, Integer>();
     private NetworkManager networkManager;
     private String subject;
-    ProgressDialog mProgressDialog;
     TextView mNetworkError;
+    TextView mLoading;
+    ProgressBar loadingModal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +50,8 @@ public class CoursesActivity extends ListActivity {
         view.setPadding(5, 0, 10, 0);
 
         networkManager = new NetworkManager(this);
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setCancelable(true);
-        mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialogInterface) {
-                networkManager.resetRequestQueue();
-                onBackPressed();
-            }
-        });
+        mLoading = (TextView) findViewById(R.id.loading);
+        loadingModal = (ProgressBar) findViewById(R.id.loading_modal);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -64,6 +59,12 @@ public class CoursesActivity extends ListActivity {
             actionBar.setTitle(subject);
             loadCourses(subject);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        networkManager.resetRequestQueue();
     }
 
     @Override
@@ -137,28 +138,30 @@ public class CoursesActivity extends ListActivity {
     }
 
     public void loadCourses(String subject) {
-        mNetworkError = (TextView) findViewById(R.id.loading);
+        mNetworkError = (TextView) findViewById(R.id.loading_fail);
         String loadingString = getResources().getString(R.string.loading_courses);
-        mProgressDialog.setMessage(String.format(loadingString, subject));
-        mProgressDialog.show();
+        mLoading.setText(String.format(loadingString, subject));
         networkManager.getCourses(subject, new CoursesListener() {
             @Override
             public void onSuccess(ArrayList<Course> courses) {
                 if(courses.size() == 0) {
                     mNetworkError.setVisibility(View.VISIBLE);
-                    mProgressDialog.dismiss();
+                    loadingModal.setVisibility(View.GONE);
+                    mLoading.setVisibility(View.GONE);
                 } else {
                     setAdapter(courses);
                     ListView mListView = (ListView) findViewById(android.R.id.list);
                     mListView.setVisibility(View.VISIBLE);
-                    mProgressDialog.dismiss();
+                    loadingModal.setVisibility(View.GONE);
+                    mLoading.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onError(Exception error) {
+                mLoading.setVisibility(View.GONE);
+                loadingModal.setVisibility(View.GONE);
                 mNetworkError.setVisibility(View.VISIBLE);
-                mProgressDialog.dismiss();
             }
         });
     }

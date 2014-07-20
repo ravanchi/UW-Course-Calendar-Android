@@ -1,7 +1,7 @@
 package com.alirezatr.uwcalendar.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +16,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
-public class CourseDetailFragment extends Fragment {
+public class CourseDetailFragment extends ListFragment {
     TextView title;
     TextView description;
     TextView prerequisites;

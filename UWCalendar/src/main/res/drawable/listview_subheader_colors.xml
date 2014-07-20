@@ -3,5 +3,5 @@
     <item android:state_focused="true" android:color="#F5F5F5" /> <!-- focused -->
     <item android:state_focused="true" android:state_pressed="true" android:color="#F5F5F5" /> <!-- focused and pressed-->
     <item android:state_pressed="true" android:color="#F5F5F5" /> <!-- pressed -->
-    <item android:color="#858585" /> <!-- default -->
+    <item android:color="#3D3D3D" /> <!-- default -->
 </selector> 
