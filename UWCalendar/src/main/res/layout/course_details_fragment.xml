@@ -63,7 +63,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/terms_title"
                             android:text="Terms Offered"
-                            android:textSize="11sp"
+                            android:textSize="12sp"
                             android:textStyle="italic"
                             android:textColor="#858585"/>
 
@@ -89,7 +89,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/units_title"
                             android:text="Units"
-                            android:textSize="11sp"
+                            android:textSize="12sp"
                             android:textStyle="italic"
                             android:textColor="#858585"/>
 
@@ -122,7 +122,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/components_title"
                             android:text="Components"
-                            android:textSize="11sp"
+                            android:textSize="12sp"
                             android:textStyle="italic"
                             android:textColor="#858585"/>
 
@@ -148,7 +148,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/online_title"
                             android:text="Online"
-                            android:textSize="11sp"
+                            android:textSize="12sp"
                             android:textStyle="italic"
                             android:textColor="#858585"/>
 
@@ -284,7 +284,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/loading"
+                android:id="@+id/list_loading_text"
                 android:visibility="visible"
                 android:orientation="vertical">
 
@@ -306,7 +306,7 @@
 
                 <TextView
                     android:gravity="center"
-                    android:id="@+id/loading_fail"
+                    android:id="@+id/list_load_fail_text"
                     android:visibility="gone"
                     android:textColor="#5d5d5d"
                     android:layout_width="match_parent"

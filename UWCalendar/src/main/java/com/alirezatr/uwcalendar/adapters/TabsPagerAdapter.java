@@ -11,7 +11,6 @@ import com.alirezatr.uwcalendar.fragments.CourseDetailFragment;
 import com.alirezatr.uwcalendar.fragments.CourseScheduleFragment;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter {
     public String course;

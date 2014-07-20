@@ -9,7 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alirezatr.uwcalendar.R;
-import com.alirezatr.uwcalendar.models.Subject;
+import com.alirezatr.uwcalendar.models.ListHeader;
+import com.alirezatr.uwcalendar.models.ListItem;
 import com.alirezatr.uwcalendar.views.PinnedSectionListView;
 
 import java.util.List;
@@ -43,7 +44,7 @@ public class SubjectsListAdapter extends BaseAdapter implements PinnedSectionLis
                 view = (LinearLayout) inflater.inflate(R.layout.subjects_row_item, null, false);
             }
 
-            Item item = (Item) getItem(i);
+            ListItem item = (ListItem) getItem(i);
             TextView textView = (TextView) view.findViewById(R.id.section_title);
             textView.setText(item.subject.getSubject());
             TextView textView2 = (TextView) view.findViewById(R.id.subjects_description);
@@ -56,7 +57,7 @@ public class SubjectsListAdapter extends BaseAdapter implements PinnedSectionLis
                 view = (LinearLayout) inflater.inflate(R.layout.row_section, null, false);
             }
 
-            Section section = (Section) getItem(i);
+            ListHeader section = (ListHeader) getItem(i);
             TextView textView = (TextView) view.findViewById(R.id.section_title);
             textView.setText(section.text);
         }
@@ -71,11 +72,21 @@ public class SubjectsListAdapter extends BaseAdapter implements PinnedSectionLis
 
     @Override
     public int getItemViewType(int position) {
-        if(getItem(position) instanceof Section) {
+        if(getItem(position) instanceof ListHeader) {
             return 1;
         }
         else {
             return 0;
+        }
+    }
+
+    @Override
+    public boolean isEnabled(int position) {
+        if(getItem(position) instanceof ListHeader) {
+            return false;
+        }
+        else {
+            return true;
         }
     }
 
@@ -88,21 +99,5 @@ public class SubjectsListAdapter extends BaseAdapter implements PinnedSectionLis
 
     public void setRows(List rows) {
         this.rows = rows;
-    }
-
-    public static final class Section extends Row {
-        public final String text;
-
-        public Section(String text) {
-            this.text = text;
-        }
-    }
-
-    public static final class Item extends Row {
-        public final Subject subject;
-
-        public Item(Subject subject) {
-            this.subject = subject;
-        }
     }
 }

@@ -2,14 +2,11 @@ package com.alirezatr.uwcalendar.activities;
 
 import android.app.ActionBar;
 import android.app.ListActivity;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,6 +15,8 @@ import com.alirezatr.uwcalendar.R;
 import com.alirezatr.uwcalendar.adapters.CoursesListAdapter;
 import com.alirezatr.uwcalendar.listeners.CoursesListener;
 import com.alirezatr.uwcalendar.models.Course;
+import com.alirezatr.uwcalendar.models.ListHeader;
+import com.alirezatr.uwcalendar.models.ListItem;
 import com.alirezatr.uwcalendar.network.NetworkManager;
 import com.google.gson.Gson;
 
@@ -31,9 +30,9 @@ public class CoursesActivity extends ListActivity {
     private HashMap<String, Integer> sections = new HashMap<String, Integer>();
     private NetworkManager networkManager;
     private String subject;
-    TextView mNetworkError;
-    TextView mLoading;
-    ProgressBar loadingModal;
+    TextView mLoadingErrorTextView;
+    TextView mLoadingTextView;
+    ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +49,9 @@ public class CoursesActivity extends ListActivity {
         view.setPadding(5, 0, 10, 0);
 
         networkManager = new NetworkManager(this);
-        mLoading = (TextView) findViewById(R.id.loading);
-        loadingModal = (ProgressBar) findViewById(R.id.loading_modal);
+        mLoadingTextView = (TextView) findViewById(R.id.list_loading_text);
+        mProgressBar = (ProgressBar) findViewById(R.id.list_progress_bar);
+        mLoadingErrorTextView = (TextView) findViewById(R.id.list_load_fail_text);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -118,11 +118,11 @@ public class CoursesActivity extends ListActivity {
             }
 
             if (!firstDigit.equals(previousDigit)) {
-                rows.add(new CoursesListAdapter.Section(subject + firstDigit + "00s"));
+                rows.add(new ListHeader(subject + firstDigit + "00s"));
                 sections.put(subject + firstDigit + "00's", start);
             }
 
-            rows.add(new CoursesListAdapter.Item(course));
+            rows.add(new ListItem(course));
             previousDigit = firstDigit;
         }
 
@@ -138,30 +138,29 @@ public class CoursesActivity extends ListActivity {
     }
 
     public void loadCourses(String subject) {
-        mNetworkError = (TextView) findViewById(R.id.loading_fail);
         String loadingString = getResources().getString(R.string.loading_courses);
-        mLoading.setText(String.format(loadingString, subject));
+        mLoadingTextView.setText(String.format(loadingString, subject));
         networkManager.getCourses(subject, new CoursesListener() {
             @Override
             public void onSuccess(ArrayList<Course> courses) {
                 if(courses.size() == 0) {
-                    mNetworkError.setVisibility(View.VISIBLE);
-                    loadingModal.setVisibility(View.GONE);
-                    mLoading.setVisibility(View.GONE);
+                    mLoadingErrorTextView.setVisibility(View.VISIBLE);
+                    mProgressBar.setVisibility(View.GONE);
+                    mLoadingTextView.setVisibility(View.GONE);
                 } else {
                     setAdapter(courses);
                     ListView mListView = (ListView) findViewById(android.R.id.list);
                     mListView.setVisibility(View.VISIBLE);
-                    loadingModal.setVisibility(View.GONE);
-                    mLoading.setVisibility(View.GONE);
+                    mProgressBar.setVisibility(View.GONE);
+                    mLoadingTextView.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onError(Exception error) {
-                mLoading.setVisibility(View.GONE);
-                loadingModal.setVisibility(View.GONE);
-                mNetworkError.setVisibility(View.VISIBLE);
+                mLoadingTextView.setVisibility(View.GONE);
+                mProgressBar.setVisibility(View.GONE);
+                mLoadingErrorTextView.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -169,7 +168,7 @@ public class CoursesActivity extends ListActivity {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        CoursesListAdapter.Item rowItem = (CoursesListAdapter.Item) this.getListAdapter().getItem(position);
+        ListItem rowItem = (ListItem) this.getListAdapter().getItem(position);
         Course course = rowItem.course;
         Intent intent = new Intent(getListView().getContext(), CourseActivity.class);
         intent.putExtra("course", new Gson().toJson(course));

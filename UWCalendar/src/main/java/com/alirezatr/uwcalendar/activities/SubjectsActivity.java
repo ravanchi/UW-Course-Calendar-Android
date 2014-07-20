@@ -2,19 +2,18 @@ package com.alirezatr.uwcalendar.activities;
 
 import android.app.ActionBar;
 import android.app.ListActivity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alirezatr.uwcalendar.R;
 import com.alirezatr.uwcalendar.adapters.SubjectsListAdapter;
-import com.alirezatr.uwcalendar.adapters.SubjectsListAdapter.Item;
+import com.alirezatr.uwcalendar.models.ListHeader;
+import com.alirezatr.uwcalendar.models.ListItem;
 import com.alirezatr.uwcalendar.models.Subject;
 import com.alirezatr.uwcalendar.utils.FilterUtils;
 import com.google.gson.Gson;
@@ -60,9 +59,9 @@ public class SubjectsActivity extends ListActivity {
 
     public void loadSubjects() {
         final Type subjectListType = new TypeToken<ArrayList<Subject>>(){}.getType();
-        TextView mLoading = (TextView) findViewById(R.id.loading);
-        ProgressBar loadingModal = (ProgressBar) findViewById(R.id.loading_modal);
-        TextView mLoadingError = (TextView) findViewById(R.id.loading_fail);
+        TextView mLoading = (TextView) findViewById(R.id.list_loading_text);
+        ProgressBar loadingModal = (ProgressBar) findViewById(R.id.list_progress_bar);
+        TextView mLoadingError = (TextView) findViewById(R.id.list_load_fail_text);
 
         mLoading.setText("Loading Subjects");
         String json = null;
@@ -131,11 +130,11 @@ public class SubjectsActivity extends ListActivity {
                 }
 
                 if (!firstLetter.equals(previousLetter)) {
-                    rows.add(new SubjectsListAdapter.Section(firstLetter));
+                    rows.add(new ListHeader(firstLetter));
                     sections.put(firstLetter, start);
                 }
 
-                rows.add(new Item(subject));
+                rows.add(new ListItem(subject));
                 previousLetter = firstLetter;
             }
         }
@@ -155,7 +154,7 @@ public class SubjectsActivity extends ListActivity {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        SubjectsListAdapter.Item rowItem = (SubjectsListAdapter.Item) this.getListAdapter().getItem(position);
+        ListItem rowItem = (ListItem) this.getListAdapter().getItem(position);
         Intent intent = new Intent(getListView().getContext(), CoursesActivity.class);
         intent.putExtra("subject", rowItem.subject.getSubject());
         getListView().getContext().startActivity(intent);

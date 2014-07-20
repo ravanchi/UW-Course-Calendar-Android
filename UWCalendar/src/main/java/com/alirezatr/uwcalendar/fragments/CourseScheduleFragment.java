@@ -1,21 +1,19 @@
 package com.alirezatr.uwcalendar.fragments;
 
 import android.support.v4.app.ListFragment;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alirezatr.uwcalendar.R;
 import com.alirezatr.uwcalendar.adapters.ClassListAdapter;
-import com.alirezatr.uwcalendar.adapters.CoursesListAdapter;
 import com.alirezatr.uwcalendar.models.Class;
-import com.alirezatr.uwcalendar.models.ClassItem;
+import com.alirezatr.uwcalendar.models.ListHeader;
+import com.alirezatr.uwcalendar.models.ListItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,9 +23,9 @@ public class CourseScheduleFragment extends ListFragment {
     ListView mListView;
     private ClassListAdapter adapter = new ClassListAdapter();
     private HashMap<String, Integer> sections = new HashMap<String, Integer>();
-    TextView mLoading;
-    TextView mNetworkError;
-    ProgressBar loadingModal;
+    TextView mLoadingTextView;
+    TextView mLoadingErrorTextView;
+    ProgressBar mProgressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,17 +35,17 @@ public class CourseScheduleFragment extends ListFragment {
         mListView = (ListView) rootView.findViewById(android.R.id.list);
         mListView.setVisibility(View.GONE);
 
-        mNetworkError = (TextView) rootView.findViewById(R.id.loading_fail);
-        mLoading = (TextView) rootView.findViewById(R.id.loading);
-        mLoading.setText("Loading Schedule");
-        loadingModal = (ProgressBar) rootView.findViewById(R.id.loading_modal);
+        mLoadingErrorTextView = (TextView) rootView.findViewById(R.id.list_load_fail_text);
+        mLoadingTextView = (TextView) rootView.findViewById(R.id.list_loading_text);
+        mLoadingTextView.setText("Loading Schedule");
+        mProgressBar = (ProgressBar) rootView.findViewById(R.id.list_progress_bar);
         return rootView;
     }
 
-    public void addClassView(ArrayList<Class> classes) {
+    public void populateScheduleView(ArrayList<Class> classes) {
         mListView.setVisibility(View.VISIBLE);
-        loadingModal.setVisibility(View.GONE);
-        mLoading.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.GONE);
+        mLoadingTextView.setVisibility(View.GONE);
         if(classes.size() > 0) {
             List rows = new ArrayList();
             int start = 0;
@@ -79,11 +77,11 @@ public class CourseScheduleFragment extends ListFragment {
                 }
 
                 if (!currentClassType.equals(previousClassType)) {
-                    rows.add(new ClassListAdapter.Header(currentClassType));
+                    rows.add(new ListHeader(currentClassType));
                     sections.put(currentClassType, start);
                 }
 
-                rows.add(new ClassItem(clazz));
+                rows.add(new ListItem(clazz));
                 previousClassType = currentClassType;
             }
 
@@ -92,15 +90,15 @@ public class CourseScheduleFragment extends ListFragment {
             setListAdapter(adapter);
         } else {
             mListView.setVisibility(View.GONE);
-            mNetworkError.setText("No classes found");
-            mNetworkError.setVisibility(View.VISIBLE);
+            mLoadingErrorTextView.setText("No classes found");
+            mLoadingErrorTextView.setVisibility(View.VISIBLE);
         }
     }
 
     public void showError() {
-        mLoading.setVisibility(View.GONE);
+        mLoadingTextView.setVisibility(View.GONE);
         mListView.setVisibility(View.GONE);
-        loadingModal.setVisibility(View.GONE);
-        mNetworkError.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.GONE);
+        mLoadingErrorTextView.setVisibility(View.VISIBLE);
     }
 }

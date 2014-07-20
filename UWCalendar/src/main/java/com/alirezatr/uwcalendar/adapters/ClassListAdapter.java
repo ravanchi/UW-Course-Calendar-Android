@@ -9,9 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alirezatr.uwcalendar.R;
-import com.alirezatr.uwcalendar.models.Class;
-import com.alirezatr.uwcalendar.models.ClassItem;
-import com.alirezatr.uwcalendar.models.Row;
+import com.alirezatr.uwcalendar.models.ListHeader;
+import com.alirezatr.uwcalendar.models.ListItem;
 import com.alirezatr.uwcalendar.views.PinnedSectionListView;
 
 import java.text.SimpleDateFormat;
@@ -47,7 +46,7 @@ public class ClassListAdapter extends BaseAdapter implements PinnedSectionListVi
                 view = (LinearLayout) inflater.inflate(R.layout.class_row_item, null, false);
             }
 
-            ClassItem item = (ClassItem) getItem(i);
+            ListItem item = (ListItem) getItem(i);
 
             SimpleDateFormat df = new SimpleDateFormat("HH:mm");
             SimpleDateFormat of = new SimpleDateFormat("h:mm");
@@ -75,17 +74,13 @@ public class ClassListAdapter extends BaseAdapter implements PinnedSectionListVi
                 if(commaIndex != -1) {
                     instructor = instructor.substring(commaIndex + 1) + " " + instructor.substring(0, commaIndex);
                 }
-
-            } else {
-                instructor = "";
             }
-
             TextView textView = (TextView) view.findViewById(R.id.class_lecture);
             textView.setText(item.clazz.getSection());
 
             TextView textView2 = (TextView) view.findViewById(R.id.class_instructor);
 
-            if(instructor == "") {
+            if(instructor.contains("null")) {
                 textView2.setVisibility(view.GONE);
             } else {
                 textView2.setText(instructor);
@@ -108,7 +103,7 @@ public class ClassListAdapter extends BaseAdapter implements PinnedSectionListVi
                 view = (LinearLayout) inflater.inflate(R.layout.row_section, null, false);
             }
 
-            Header section = (Header) getItem(i);
+            ListHeader section = (ListHeader) getItem(i);
             TextView textView = (TextView) view.findViewById(R.id.section_title);
             textView.setText(section.text);
         }
@@ -123,11 +118,21 @@ public class ClassListAdapter extends BaseAdapter implements PinnedSectionListVi
 
     @Override
     public int getItemViewType(int position) {
-        if(getItem(position) instanceof Header) {
+        if(getItem(position) instanceof ListHeader) {
             return 1;
         }
         else {
             return 0;
+        }
+    }
+
+    @Override
+    public boolean isEnabled(int position) {
+        if(getItem(position) instanceof ListHeader) {
+            return false;
+        }
+        else {
+            return true;
         }
     }
 
@@ -138,13 +143,5 @@ public class ClassListAdapter extends BaseAdapter implements PinnedSectionListVi
 
     public void setRows(List rows) {
         this.rows = rows;
-    }
-
-    public static final class Header extends Row {
-        public final String text;
-
-        public Header(String text) {
-            this.text = text;
-        }
     }
 }

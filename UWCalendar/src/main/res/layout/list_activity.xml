@@ -22,13 +22,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:id="@+id/loading_modal"
+            android:id="@+id/list_progress_bar"
             style="@android:style/Widget.Holo.Light.ProgressBar"
             android:layout_gravity="center"/>
 
         <TextView
             android:gravity="center"
-            android:id="@+id/loading"
+            android:id="@+id/list_loading_text"
             android:visibility="visible"
             android:layout_width="match_parent"
             android:textColor="#5d5d5d"
@@ -36,7 +36,7 @@
 
         <TextView
             android:gravity="center"
-            android:id="@+id/loading_fail"
+            android:id="@+id/list_load_fail_text"
             android:visibility="gone"
             android:textColor="#5d5d5d"
             android:layout_width="match_parent"

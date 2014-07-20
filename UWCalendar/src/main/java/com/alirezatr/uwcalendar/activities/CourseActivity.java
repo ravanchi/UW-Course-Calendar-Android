@@ -2,18 +2,13 @@ package com.alirezatr.uwcalendar.activities;
 
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.FragmentTransaction;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.alirezatr.uwcalendar.R;
-import com.alirezatr.uwcalendar.adapters.ClassListAdapter;
-import com.alirezatr.uwcalendar.adapters.CoursesListAdapter;
 import com.alirezatr.uwcalendar.adapters.TabsPagerAdapter;
 import com.alirezatr.uwcalendar.fragments.CourseDetailFragment;
 import com.alirezatr.uwcalendar.fragments.CourseScheduleFragment;
@@ -27,7 +22,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CourseActivity extends ActionBarActivity {
     private ActionBar mActionBar;
@@ -91,8 +85,6 @@ public class CourseActivity extends ActionBarActivity {
 
         mNetworkManager = new NetworkManager(this);
 
-        TextView mLoading = (TextView) findViewById(R.id.loading);
-
         if(course != null) {
             loadCourse(course.getSubject(), course.getCatalogNumber());
         }
@@ -140,7 +132,7 @@ public class CourseActivity extends ActionBarActivity {
             @Override
             public void onSuccess(ArrayList<Class> classes) {
                 if (fragment != null) {
-                    fragment.addClassView(classes);
+                    fragment.populateScheduleView(classes);
                 }
             }
 
