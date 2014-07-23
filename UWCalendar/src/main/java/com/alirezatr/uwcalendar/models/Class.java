@@ -3,6 +3,7 @@ package com.alirezatr.uwcalendar.models;
 public class Class {
     private String subject;
     private String catalog_number;
+    private int class_number;
     private String section;
     private int enrollment_capacity;
     private int enrollment_total;
@@ -15,9 +16,10 @@ public class Class {
     private String room;
     private String instructor;
 
-    public Class(String section, int enrollment_capacity, int enrollment_total, String start_time, String end_time,
+    public Class(String section, int class_number, int enrollment_capacity, int enrollment_total, String start_time, String end_time,
                  String weekdays, String location, String room, String instructor, int waiting_capacity, String waiting_total) {
         this.section = section;
+        this.class_number = class_number;
         this.enrollment_capacity = enrollment_capacity;
         this.enrollment_total = enrollment_total;
         this.waiting_capacity = waiting_capacity;
@@ -31,6 +33,8 @@ public class Class {
     }
 
     public String getSection() { return this.section; }
+
+    public int getClassNumber() { return this.class_number; }
 
     public int getEnrollmentCapacity() { return this.enrollment_capacity; }
 

@@ -78,6 +78,9 @@ public class ClassListAdapter extends BaseAdapter implements PinnedSectionListVi
             TextView textView = (TextView) view.findViewById(R.id.class_lecture);
             textView.setText(item.clazz.getSection());
 
+            TextView classNumber = (TextView) view.findViewById(R.id.class_number);
+            classNumber.setText("(" + item.clazz.getClassNumber() + ")");
+
             TextView textView2 = (TextView) view.findViewById(R.id.class_instructor);
 
             if(instructor.contains("null")) {

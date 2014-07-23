@@ -27,6 +27,7 @@ public class NetworkUtils {
                     if(courseData != null && courseData.getJSONArray(CLASSES) != null) {
                         classData = courseData.getJSONArray(CLASSES).getJSONObject(0);
                         classModel = new Class(courseData.getString(SECTION),
+                                               courseData.getInt(CLASS_NUMBER),
                                                courseData.getInt(ENROLLMENT_CAPACITY),
                                                courseData.getInt(ENROLLMENT_TOTAL),
                                                classData.getJSONObject(DATE).getString(START_TIME),
