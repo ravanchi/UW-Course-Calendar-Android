@@ -24,6 +24,7 @@ public class RequestKeys {
     public static final String END_TIME = "end_time";
     public static final String WEEKDAYS = "weekdays";
     public static final String SECTION = "section";
+    public static final String CLASS_NUMBER = "class_number";
     public static final String ENROLLMENT_CAPACITY = "enrollment_capacity";
     public static final String ENROLLMENT_TOTAL = "enrollment_total";
     public static final String WAITING_TOTAL = "waiting_total";
