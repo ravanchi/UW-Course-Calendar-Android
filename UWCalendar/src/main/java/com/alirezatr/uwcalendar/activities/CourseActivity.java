@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
@@ -111,7 +113,7 @@ public class CourseActivity extends ActionBarActivity {
                 if (fragment != null) {
                     fragment.populateDetailsView(course);
                 }
-                loadCourseClass(subject, catalog_number);
+                loadCourseClass(course.getSubject(), course.getCatalogNumber());
             }
 
             @Override
@@ -147,11 +149,41 @@ public class CourseActivity extends ActionBarActivity {
         });
     }
 
+    // inflate for action bar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                return true;
+            case R.id.menu_load:
+                if(mViewPager.getCurrentItem() == 0) {
+                    TabsPagerAdapter adapter = (TabsPagerAdapter) mViewPager.getAdapter();
+                    CourseDetailFragment fragment = (CourseDetailFragment) adapter.getFragment(1);
+                    if(fragment != null) {
+                        fragment.showLoading();
+                    }
+                    if (course != null) {
+                        loadCourse(course.getSubject(), course.getCatalogNumber());
+                    }
+                } else if(mViewPager.getCurrentItem() == 1) {
+                    TabsPagerAdapter adapter = (TabsPagerAdapter) mViewPager.getAdapter();
+                    CourseScheduleFragment fragment = (CourseScheduleFragment) adapter.getFragment(2);
+                    if(fragment != null) {
+                        fragment.showLoading();
+                    }
+                    if (course != null) {
+                        loadCourseClass(course.getSubject(), course.getCatalogNumber());
+                        fragment.showLoading();
+                    }
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
