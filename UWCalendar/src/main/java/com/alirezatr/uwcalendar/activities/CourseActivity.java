@@ -62,7 +62,7 @@ public class CourseActivity extends ActionBarActivity {
 
         mViewPager.setAdapter(mAdapter);
 
-        mActionBar.setIcon(R.drawable.actionbar);
+//        mActionBar.setIcon(R.drawable.actionbar);
         mActionBar.setSubtitle(getResources().getString(R.string.app_name));
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);

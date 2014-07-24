@@ -45,7 +45,7 @@ public class CoursesActivity extends ListActivity {
         setContentView(R.layout.list_activity);
 
         ActionBar actionBar = getActionBar();
-        actionBar.setIcon(R.drawable.actionbar);
+//        actionBar.setIcon(R.drawable.actionbar);
         actionBar.setSubtitle(getResources().getString(R.string.app_name));
         actionBar.setDisplayHomeAsUpEnabled(true);
 
