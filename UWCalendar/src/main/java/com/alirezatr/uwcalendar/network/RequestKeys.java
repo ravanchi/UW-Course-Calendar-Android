@@ -20,6 +20,7 @@ public class RequestKeys {
     public static final String ROOM = "room";
     public static final String DATE = "date";
     public static final String START_TIME = "start_time";
+    public static final String START_DATE = "start_date";
     public static final String INSTRUCTORS = "instructors";
     public static final String END_TIME = "end_time";
     public static final String WEEKDAYS = "weekdays";
