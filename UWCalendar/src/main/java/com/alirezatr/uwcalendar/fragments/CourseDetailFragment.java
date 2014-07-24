@@ -82,6 +82,13 @@ public class CourseDetailFragment extends ListFragment {
         networkError.setVisibility(View.VISIBLE);
     }
 
+    public void showLoading() {
+        courseDetails.setVisibility(View.GONE);
+        loading.setVisibility(View.VISIBLE);
+        loadingText.setVisibility(View.VISIBLE);
+        networkError.setVisibility(View.GONE);
+    }
+
     public void populateDetailsView(Course course) {
         courseDetails.setVisibility(View.VISIBLE);
         loading.setVisibility(View.GONE);

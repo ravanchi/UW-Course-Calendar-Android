@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -30,8 +31,11 @@ public class CoursesActivity extends ListActivity {
     private HashMap<String, Integer> sections = new HashMap<String, Integer>();
     private NetworkManager networkManager;
     private String subject;
+    LinearLayout mParent;
     TextView mLoadingErrorTextView;
     TextView mLoadingTextView;
+    TextView mRetryTextView;
+    ListView mListView;
     ProgressBar mProgressBar;
 
     @Override
@@ -49,9 +53,12 @@ public class CoursesActivity extends ListActivity {
         view.setPadding(5, 0, 10, 0);
 
         networkManager = new NetworkManager(this);
+        mParent = (LinearLayout) findViewById(R.id.parent_layout);
+        mListView = (ListView) findViewById(android.R.id.list);
         mLoadingTextView = (TextView) findViewById(R.id.list_loading_text);
         mProgressBar = (ProgressBar) findViewById(R.id.list_progress_bar);
         mLoadingErrorTextView = (TextView) findViewById(R.id.list_load_fail_text);
+        mRetryTextView = (TextView) findViewById(R.id.list_load_fail__refresh_text);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -144,23 +151,43 @@ public class CoursesActivity extends ListActivity {
             @Override
             public void onSuccess(ArrayList<Course> courses) {
                 if(courses.size() == 0) {
-                    mLoadingErrorTextView.setVisibility(View.VISIBLE);
-                    mProgressBar.setVisibility(View.GONE);
-                    mLoadingTextView.setVisibility(View.GONE);
+                    showError();
                 } else {
                     setAdapter(courses);
-                    ListView mListView = (ListView) findViewById(android.R.id.list);
+                    mParent.setOnClickListener(null);
                     mListView.setVisibility(View.VISIBLE);
                     mProgressBar.setVisibility(View.GONE);
                     mLoadingTextView.setVisibility(View.GONE);
+                    mLoadingErrorTextView.setVisibility(View.GONE);
+                    mRetryTextView.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onError(Exception error) {
-                mLoadingTextView.setVisibility(View.GONE);
-                mProgressBar.setVisibility(View.GONE);
-                mLoadingErrorTextView.setVisibility(View.VISIBLE);
+                showError();
+            }
+        });
+    }
+
+    public void showError() {
+        mListView.setVisibility(View.GONE);
+        mLoadingTextView.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.GONE);
+        mLoadingErrorTextView.setVisibility(View.VISIBLE);
+        mRetryTextView.setVisibility(View.VISIBLE);
+
+        mParent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListView.setVisibility(View.GONE);
+                mLoadingTextView.setVisibility(View.VISIBLE);
+                mProgressBar.setVisibility(View.VISIBLE);
+                mLoadingErrorTextView.setVisibility(View.GONE);
+                mRetryTextView.setVisibility(View.GONE);
+                if(subject != null && !subject.isEmpty()) {
+                    loadCourses(subject);
+                }
             }
         });
     }

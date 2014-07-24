@@ -101,4 +101,11 @@ public class CourseScheduleFragment extends ListFragment {
         mProgressBar.setVisibility(View.GONE);
         mLoadingErrorTextView.setVisibility(View.VISIBLE);
     }
+
+    public void showLoading() {
+        mLoadingTextView.setVisibility(View.VISIBLE);
+        mListView.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
+        mLoadingErrorTextView.setVisibility(View.GONE);
+    }
 }

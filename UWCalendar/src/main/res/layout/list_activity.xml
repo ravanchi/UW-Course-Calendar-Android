@@ -3,6 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
+              android:id="@+id/parent_layout"
               android:orientation="vertical">
     <com.alirezatr.uwcalendar.views.PinnedSectionListView
         android:id="@android:id/list"
@@ -41,6 +42,15 @@
             android:textColor="#5d5d5d"
             android:layout_width="match_parent"
             android:text="Network connection failed"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/list_load_fail__refresh_text"
+            android:visibility="gone"
+            android:textColor="#5d5d5d"
+            android:layout_width="match_parent"
+            android:text="Please Tap to Retry"
             android:layout_height="wrap_content"/>
 
         <View
