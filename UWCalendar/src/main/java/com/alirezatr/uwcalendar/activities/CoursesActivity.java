@@ -4,9 +4,6 @@ import android.app.ActionBar;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,17 +14,12 @@ import android.widget.TextView;
 
 import com.alirezatr.uwcalendar.R;
 import com.alirezatr.uwcalendar.adapters.CoursesListAdapter;
-import com.alirezatr.uwcalendar.adapters.TabsPagerAdapter;
-import com.alirezatr.uwcalendar.fragments.CourseDetailFragment;
-import com.alirezatr.uwcalendar.fragments.CourseScheduleFragment;
 import com.alirezatr.uwcalendar.listeners.CoursesListener;
 import com.alirezatr.uwcalendar.models.Course;
 import com.alirezatr.uwcalendar.models.ListHeader;
 import com.alirezatr.uwcalendar.models.ListItem;
 import com.alirezatr.uwcalendar.network.NetworkManager;
 import com.google.gson.Gson;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
