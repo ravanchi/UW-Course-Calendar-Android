@@ -131,12 +131,13 @@ public class ClassListAdapter extends BaseAdapter implements PinnedSectionListVi
 
     @Override
     public boolean isEnabled(int position) {
-        if(getItem(position) instanceof ListHeader) {
-            return false;
-        }
-        else {
-            return true;
-        }
+//        if(getItem(position) instanceof ListHeader) {
+//            return false;
+//        }
+//        else {
+//            return true;
+//        }
+        return false;
     }
 
     @Override
