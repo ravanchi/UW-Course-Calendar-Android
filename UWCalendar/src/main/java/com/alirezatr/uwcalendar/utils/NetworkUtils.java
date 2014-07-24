@@ -31,6 +31,7 @@ public class NetworkUtils {
                                                courseData.getInt(ENROLLMENT_CAPACITY),
                                                courseData.getInt(ENROLLMENT_TOTAL),
                                                classData.getJSONObject(DATE).getString(START_TIME),
+                                               classData.getJSONObject(DATE).getString(START_DATE),
                                                classData.getJSONObject(DATE).getString(END_TIME),
                                                classData.getJSONObject(DATE).getString(WEEKDAYS),
                                                classData.getJSONObject(LOCATION).getString(BUILDING),

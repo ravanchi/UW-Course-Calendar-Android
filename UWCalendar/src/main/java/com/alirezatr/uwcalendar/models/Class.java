@@ -15,9 +15,11 @@ public class Class {
     private String location;
     private String room;
     private String instructor;
+    private String start_date;
 
-    public Class(String section, int class_number, int enrollment_capacity, int enrollment_total, String start_time, String end_time,
-                 String weekdays, String location, String room, String instructor, int waiting_capacity, String waiting_total) {
+    public Class(String section, int class_number, int enrollment_capacity, int enrollment_total, String start_time, String start_date,
+                 String end_time, String weekdays, String location, String room, String instructor, int waiting_capacity,
+                 String waiting_total) {
         this.section = section;
         this.class_number = class_number;
         this.enrollment_capacity = enrollment_capacity;
@@ -30,6 +32,7 @@ public class Class {
         this.location = location;
         this.room = room;
         this.instructor = instructor;
+        this.start_date = start_date;
     }
 
     public String getSection() { return this.section; }
@@ -43,6 +46,8 @@ public class Class {
     public String getStartTime() { return start_time; }
 
     public String getEndTime() { return end_time; }
+
+    public String getStartDate() { return start_date; }
 
     public String getWeekdays() { return weekdays; }
 

@@ -35,6 +35,13 @@
                 android:layout_marginTop="-2dp"
                 android:textColor="@drawable/listview_details_colors"/>
 
+            <View android:id="@+id/class_enrollment_indicator"
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/class_enrollment_idicator_default"/>
+
         </LinearLayout>
 
         <TextView

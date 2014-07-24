@@ -21,7 +21,7 @@ import java.util.List;
 
 public class CourseScheduleFragment extends ListFragment {
     ListView mListView;
-    private ClassListAdapter adapter = new ClassListAdapter();
+    private ClassListAdapter adapter;
     private HashMap<String, Integer> sections = new HashMap<String, Integer>();
     TextView mLoadingTextView;
     TextView mLoadingErrorTextView;
@@ -34,6 +34,8 @@ public class CourseScheduleFragment extends ListFragment {
         View rootView = inflater.inflate(R.layout.list_activity, container, false);
         mListView = (ListView) rootView.findViewById(android.R.id.list);
         mListView.setVisibility(View.GONE);
+
+        adapter = new ClassListAdapter(getActivity());
 
         mLoadingErrorTextView = (TextView) rootView.findViewById(R.id.list_load_fail_text);
         mLoadingTextView = (TextView) rootView.findViewById(R.id.list_loading_text);
