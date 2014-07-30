@@ -108,10 +108,7 @@ public class SubjectsActivity extends ListActivity {
 
         for(int i = 0; i < subjects.size(); i++) {
             subject = subjects.get(i);
-            if(blacklist.contains(subject.getSubject())) {
-                subjects.remove(subject);
-            }
-            else {
+            if(!blacklist.contains(subject.getSubject())) {
                 String firstLetter = subject.getSubject().substring(0, 1);
 
                 if (numberPattern.matcher(firstLetter).matches()) {
