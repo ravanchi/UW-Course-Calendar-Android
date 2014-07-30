@@ -17,6 +17,7 @@ public class FilterUtils {
             restrictedSubjects.add("ARCHL");
             restrictedSubjects.add("ART");
             restrictedSubjects.add("ASIAN");
+            restrictedSubjects.add("ASTRN");
             restrictedSubjects.add("BE");
             restrictedSubjects.add("BOT");
             restrictedSubjects.add("CCIV");
@@ -36,6 +37,7 @@ public class FilterUtils {
             restrictedSubjects.add("DES");
             restrictedSubjects.add("DEVIS");
             restrictedSubjects.add("DM");
+            restrictedSubjects.add("EBUS");
             restrictedSubjects.add("ELE");
             restrictedSubjects.add("ELPE");
             restrictedSubjects.add("EVSY");
@@ -51,6 +53,7 @@ public class FilterUtils {
             restrictedSubjects.add("HEBRW");
             restrictedSubjects.add("HRCS");
             restrictedSubjects.add("HS");
+            restrictedSubjects.add("HSG");
             restrictedSubjects.add("HUNGN");
             restrictedSubjects.add("IFS");
             restrictedSubjects.add("INTERN");
