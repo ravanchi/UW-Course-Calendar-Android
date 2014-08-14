@@ -36,9 +36,7 @@ public class NetworkUtils {
                                                classData.getJSONObject(DATE).getString(WEEKDAYS),
                                                classData.getJSONObject(LOCATION).getString(BUILDING),
                                                classData.getJSONObject(LOCATION).getString(ROOM),
-                                               classData.getJSONArray(INSTRUCTORS).optString(0),
-                                               courseData.optInt(WAITING_TOTAL),
-                                               courseData.getString(WAITING_CAPACITY));
+                                               classData.getJSONArray(INSTRUCTORS).optString(0));
                         classList.add(classModel);
                     }
                 } catch(JSONException exception) {

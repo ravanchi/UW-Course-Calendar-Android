@@ -1,11 +1,9 @@
 package com.alirezatr.uwcalendar.models;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class Course {
-    private String course_id;
     private String subject;
     private String catalog_number;
     private String title;
@@ -14,43 +12,10 @@ public class Course {
     private List<String> instructions;
     private String prerequisites;
     private String antirequisites;
-    private String corequisites;
-    private String crosslistings;
     private List<String> terms_offered;
     private String notes;
-    private String calendar_year;
     private String url;
-    private String academic_level;
     private HashMap<String, Boolean> offerings;
-
-    public Course(String course_id, String subject, String catalog_number, String title, String description) {
-        this.course_id = course_id;
-        this.subject = subject;
-        this.catalog_number = catalog_number;
-        this.title = title;
-        this.description = description;
-    }
-
-    public Course(String course_id, String subject, String catalog_number, String title, double units, String description,
-                  List<String> instructions, String prerequisites, String antirequisites, String corequisites,
-                  String crosslistings, List<String> terms_offered, String notes, HashMap<String, Boolean> offerings, String calendar_year, String url,
-                  String academic_level) {
-        this(course_id, subject, catalog_number, title, description);
-        this.instructions = instructions;
-        this.prerequisites = prerequisites;
-        this.antirequisites = antirequisites;
-        this.notes = notes;
-        this.offerings = offerings;
-        this.units = units;
-        this.terms_offered = terms_offered;
-        this.url = url;
-        this.academic_level = academic_level;
-        this.crosslistings = crosslistings;
-        this.corequisites = corequisites;
-        this.calendar_year = calendar_year;
-    }
-
-    public String getCourseId() { return this.course_id; }
 
     public String getSubject() { return this.subject; }
 
@@ -73,14 +38,6 @@ public class Course {
     public List<String> getTermsOffered() { return this.terms_offered; }
 
     public String getUrl() { return this.url; }
-
-    public String getAcademicLevel() { return this.academic_level; }
-
-    public String getCorequisites() { return this.corequisites; }
-
-    public String getCrosslistings() { return this.crosslistings; }
-
-    public String getCalendarYear() { return this.calendar_year; }
 
     public HashMap<String, Boolean> getOfferings() { return this.offerings; }
 }

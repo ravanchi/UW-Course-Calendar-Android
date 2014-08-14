@@ -18,7 +18,7 @@ import com.alirezatr.uwcalendar.listeners.CoursesListener;
 import com.alirezatr.uwcalendar.models.Course;
 import com.alirezatr.uwcalendar.models.ListHeader;
 import com.alirezatr.uwcalendar.models.ListItem;
-import com.alirezatr.uwcalendar.network.NetworkManager;
+import com.alirezatr.uwcalendar.network.NetworkClient;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class CoursesActivity extends ListActivity {
     private CoursesListAdapter adapter = new CoursesListAdapter();
     private List<Object[]> alphabet = new ArrayList<Object[]>();
     private HashMap<String, Integer> sections = new HashMap<String, Integer>();
-    private NetworkManager networkManager;
+    private NetworkClient networkClient;
     private String subject;
     LinearLayout mParent;
     TextView mLoadingErrorTextView;
@@ -45,14 +45,13 @@ public class CoursesActivity extends ListActivity {
         setContentView(R.layout.list_activity);
 
         ActionBar actionBar = getActionBar();
-//        actionBar.setIcon(R.drawable.actionbar);
         actionBar.setSubtitle(getResources().getString(R.string.app_name));
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         ImageView view = (ImageView)findViewById(android.R.id.home);
         view.setPadding(5, 0, 10, 0);
 
-        networkManager = new NetworkManager(this);
+        networkClient = new NetworkClient(this);
         mParent = (LinearLayout) findViewById(R.id.parent_layout);
         mListView = (ListView) findViewById(android.R.id.list);
         mLoadingTextView = (TextView) findViewById(R.id.list_loading_text);
@@ -64,14 +63,14 @@ public class CoursesActivity extends ListActivity {
         if (extras != null) {
             subject = extras.getString("subject");
             actionBar.setTitle(subject);
-            loadCourses(subject);
+            fetchCourses(subject);
         }
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        networkManager.resetRequestQueue();
+        networkClient.cancelAllRequests();
     }
 
     @Override
@@ -144,13 +143,13 @@ public class CoursesActivity extends ListActivity {
         setListAdapter(adapter);
     }
 
-    public void loadCourses(String subject) {
+    public void fetchCourses(String subject) {
         String loadingString = getResources().getString(R.string.loading_courses);
         mLoadingTextView.setText(String.format(loadingString, subject));
-        networkManager.getCourses(subject, new CoursesListener() {
+        networkClient.fetchSubjectCourses(subject, new CoursesListener() {
             @Override
             public void onSuccess(ArrayList<Course> courses) {
-                if(courses.size() == 0) {
+                if (courses.size() == 0) {
                     showError();
                 } else {
                     setAdapter(courses);
@@ -186,7 +185,7 @@ public class CoursesActivity extends ListActivity {
                 mLoadingErrorTextView.setVisibility(View.GONE);
                 mRetryTextView.setVisibility(View.GONE);
                 if(subject != null && !subject.isEmpty()) {
-                    loadCourses(subject);
+                    fetchCourses(subject);
                 }
             }
         });
