@@ -9,7 +9,6 @@ public class RequestKeys {
     public static final String REQUEST_FORMAT = "json";
     public static final String REQUEST_TERM = "1149";
 
-    public static final String SUBJECTS_REQUEST_URL = "https://api.uwaterloo.ca/v2/codes/subjects.json";
     public static final String COURSES_REQUEST_URL = "https://api.uwaterloo.ca/v2/courses/";
     public static final String CLASS_REQUEST_URL = "https://api.uwaterloo.ca/v2/terms/";
 

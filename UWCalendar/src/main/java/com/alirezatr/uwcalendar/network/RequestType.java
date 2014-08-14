@@ -1,7 +1,6 @@
 package com.alirezatr.uwcalendar.network;
 
-public enum RequestTypes {
-    SUBJECTS_LIST,
+public enum RequestType {
     COURSES_LIST,
     COURSE,
     CLASS

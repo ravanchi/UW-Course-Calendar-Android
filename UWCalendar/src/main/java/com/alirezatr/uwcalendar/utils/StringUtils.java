@@ -1,37 +1,29 @@
 package com.alirezatr.uwcalendar.utils;
 
-import com.alirezatr.uwcalendar.network.RequestTypes;
+import com.alirezatr.uwcalendar.network.RequestType;
 
 import static com.alirezatr.uwcalendar.network.RequestKeys.API_KEY;
 import static com.alirezatr.uwcalendar.network.RequestKeys.CLASS_REQUEST_URL;
 import static com.alirezatr.uwcalendar.network.RequestKeys.COURSES_REQUEST_URL;
 import static com.alirezatr.uwcalendar.network.RequestKeys.REQUEST_FORMAT;
 import static com.alirezatr.uwcalendar.network.RequestKeys.REQUEST_TERM;
-import static com.alirezatr.uwcalendar.network.RequestKeys.SUBJECTS_REQUEST_URL;
 
 public class StringUtils {
 
-    public static String generateUrl(RequestTypes requestTypes, String subject) {
-        return generateUrl(requestTypes, subject, null);
+    public static String generateRequestUrl(RequestType requestType, String subject) {
+        return generateRequestUrl(requestType, subject, null);
     }
 
-    public static String generateUrl(RequestTypes requestTypes) {
-        return generateUrl(requestTypes, null, null);
-    }
-
-    public static String generateUrl(RequestTypes requestTypes, String subject, String catalog_number) {
-        if(requestTypes.equals(RequestTypes.COURSE)) {
-            return COURSES_REQUEST_URL + subject + "/" + catalog_number + "." + REQUEST_FORMAT + "?key=" + API_KEY;
+    public static String generateRequestUrl(RequestType requestType, String courseSubject, String catalog_number) {
+        if(requestType.equals(RequestType.COURSE)) {
+            return COURSES_REQUEST_URL + courseSubject + "/" + catalog_number + "." + REQUEST_FORMAT + "?key=" + API_KEY;
         }
-        if(requestTypes.equals(RequestTypes.COURSES_LIST)) {
-            return COURSES_REQUEST_URL + subject + "." + REQUEST_FORMAT + "?key=" + API_KEY;
+        if(requestType.equals(RequestType.COURSES_LIST)) {
+            return COURSES_REQUEST_URL + courseSubject + "." + REQUEST_FORMAT + "?key=" + API_KEY;
         }
-        if(requestTypes.equals(RequestTypes.CLASS)) {
+        if(requestType.equals(RequestType.CLASS)) {
             //TODO: Add the ability to change terms
-            return CLASS_REQUEST_URL + REQUEST_TERM + "/" + subject + "/" + catalog_number + "/schedule." + REQUEST_FORMAT + "?key=" + API_KEY;
-        }
-        if(requestTypes.equals(RequestTypes.SUBJECTS_LIST)) {
-            return SUBJECTS_REQUEST_URL + "?key=" + API_KEY;
+            return CLASS_REQUEST_URL + REQUEST_TERM + "/" + courseSubject + "/" + catalog_number + "/schedule." + REQUEST_FORMAT + "?key=" + API_KEY;
         }
         return "";
     }

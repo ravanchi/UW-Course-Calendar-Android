@@ -17,7 +17,7 @@ import com.alirezatr.uwcalendar.listeners.ClassesListener;
 import com.alirezatr.uwcalendar.listeners.CourseListener;
 import com.alirezatr.uwcalendar.models.Class;
 import com.alirezatr.uwcalendar.models.Course;
-import com.alirezatr.uwcalendar.network.NetworkManager;
+import com.alirezatr.uwcalendar.network.NetworkClient;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -28,7 +28,7 @@ public class CourseActivity extends ActionBarActivity {
     private ActionBar mActionBar;
     private ViewPager mViewPager;
     private TabsPagerAdapter mAdapter;
-    private NetworkManager mNetworkManager;
+    private NetworkClient mNetworkClient;
 
     private String[] mTabLabels = { "Details", "Schedule" };
 
@@ -62,7 +62,6 @@ public class CourseActivity extends ActionBarActivity {
 
         mViewPager.setAdapter(mAdapter);
 
-//        mActionBar.setIcon(R.drawable.actionbar);
         mActionBar.setSubtitle(getResources().getString(R.string.app_name));
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -84,17 +83,17 @@ public class CourseActivity extends ActionBarActivity {
         ImageView view = (ImageView)findViewById(android.R.id.home);
         view.setPadding(5, 0, 10, 0);
 
-        mNetworkManager = new NetworkManager(this);
+        mNetworkClient = new NetworkClient(this);
 
         if(course != null) {
-            loadCourse(course.getSubject(), course.getCatalogNumber());
+            fetchCourse(course.getSubject(), course.getCatalogNumber());
         }
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        mNetworkManager.resetRequestQueue();
+        mNetworkClient.cancelAllRequests();
     }
 
     @Override
@@ -103,8 +102,8 @@ public class CourseActivity extends ActionBarActivity {
         overridePendingTransition(R.anim.activity_open_scale, R.anim.activity_close_translate);
     }
 
-    public void loadCourse(final String subject, final String catalog_number) {
-        mNetworkManager.getCourse(subject, catalog_number, new CourseListener() {
+    public void fetchCourse(final String subject, final String catalog_number) {
+        mNetworkClient.fetchCourse(subject, catalog_number, new CourseListener() {
             @Override
             public void onSuccess(Course course) {
                 TabsPagerAdapter adapter = (TabsPagerAdapter) mViewPager.getAdapter();
@@ -112,7 +111,7 @@ public class CourseActivity extends ActionBarActivity {
                 if (fragment != null) {
                     fragment.populateDetailsView(course);
                 }
-                loadCourseClass(course.getSubject(), course.getCatalogNumber());
+                fetchCourseClass(course.getSubject(), course.getCatalogNumber());
             }
 
             @Override
@@ -126,8 +125,8 @@ public class CourseActivity extends ActionBarActivity {
         });
     }
 
-    public void loadCourseClass(String subject, String catalog_number) {
-        mNetworkManager.getCourseClass(subject, catalog_number, new ClassesListener() {
+    public void fetchCourseClass(String subject, String catalog_number) {
+        mNetworkClient.fetchCourseClass(subject, catalog_number, new ClassesListener() {
             CourseScheduleFragment fragment = (CourseScheduleFragment) mAdapter.getFragment(2);
 
             @Override
@@ -170,7 +169,7 @@ public class CourseActivity extends ActionBarActivity {
                         fragment.showLoading();
                     }
                     if (course != null) {
-                        loadCourse(course.getSubject(), course.getCatalogNumber());
+                        fetchCourse(course.getSubject(), course.getCatalogNumber());
                     }
                 } else if(mViewPager.getCurrentItem() == 1) {
                     TabsPagerAdapter adapter = (TabsPagerAdapter) mViewPager.getAdapter();
@@ -179,7 +178,7 @@ public class CourseActivity extends ActionBarActivity {
                         fragment.showLoading();
                     }
                     if (course != null) {
-                        loadCourseClass(course.getSubject(), course.getCatalogNumber());
+                        fetchCourseClass(course.getSubject(), course.getCatalogNumber());
                         fragment.showLoading();
                     }
                 }

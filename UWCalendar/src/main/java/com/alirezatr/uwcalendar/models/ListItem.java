@@ -1,9 +1,9 @@
 package com.alirezatr.uwcalendar.models;
 
 public final class ListItem extends ListRow {
-    public Class clazz = null;
-    public Course course = null;
-    public Subject subject = null;
+    public Class clazz;
+    public Course course;
+    public Subject subject;
 
     public ListItem(Class clazz) {
         this.clazz = clazz;

@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.alirezatr.uwcalendar.listeners.*;
 import com.alirezatr.uwcalendar.models.Course;
-import com.alirezatr.uwcalendar.models.Subject;
 import com.alirezatr.uwcalendar.utils.NetworkUtils;
 import com.alirezatr.uwcalendar.utils.StringUtils;
 import com.android.volley.Request;
@@ -25,15 +24,15 @@ import java.util.ArrayList;
 
 import static com.alirezatr.uwcalendar.network.RequestKeys.DATA;
 
-public class NetworkManager {
+public class NetworkClient {
     private RequestQueue requestQueue;
     private Gson gson = new Gson();
 
-    public NetworkManager(Context context) {
+    public NetworkClient(Context context) {
         this.requestQueue = Volley.newRequestQueue(context);
     }
 
-    public void resetRequestQueue() {
+    public void cancelAllRequests() {
         requestQueue.cancelAll(new RequestQueue.RequestFilter() {
             @Override
             public boolean apply(Request<?> request) {
@@ -42,69 +41,16 @@ public class NetworkManager {
         });
     }
 
-    public void getSubjects(final SubjectsListener completionHandler) {
-        final Type subjectListType = new TypeToken<ArrayList<Subject>>(){}.getType();
-        String url = StringUtils.generateUrl(RequestTypes.SUBJECTS_LIST);
-
-        NetworkResponseListener callback = new NetworkResponseListener() {
-            @Override
-            public void onSuccess(JSONObject response) {
-                try {
-                    JSONArray dataArray = response.getJSONArray(DATA);
-                    String data = dataArray.toString();
-                    ArrayList<Subject> subjectList = gson.fromJson(dataArray.toString(), subjectListType);
-                    completionHandler.onSuccess(subjectList);
-                } catch (JSONException exception) {
-                    onError(exception);
-                }
-            }
-            @Override
-            public void onError(Exception exception) {
-                completionHandler.onError(exception);
-            }
-        };
-
-        JsonObjectRequest newRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                successListener(callback), errorListener(callback));
-        requestQueue.add(newRequest);
-    }
-
-    public void getCourses(String subject, final CoursesListener completionHandler) {
+    public void fetchSubjectCourses(String courseSubject, final CoursesListener completionHandler) {
         final Type coursesListType = new TypeToken<ArrayList<Course>>(){}.getType();
-        String url = StringUtils.generateUrl(RequestTypes.COURSES_LIST, subject);
+        String url = StringUtils.generateRequestUrl(RequestType.COURSES_LIST, courseSubject);
 
-        NetworkResponseListener callback = new NetworkResponseListener() {
+        NetworkResponseListener requestCallback = new NetworkResponseListener() {
             @Override
-            public void onSuccess(JSONObject response) {
+            public void onSuccess(JSONObject networkResponse) {
                 try {
-                    JSONArray dataArray = response.getJSONArray(DATA);
-                    ArrayList<Course> coursesList = gson.fromJson(dataArray.toString(), coursesListType);
-                    completionHandler.onSuccess(coursesList);
-                } catch (JSONException exception) {
-                    onError(exception);
-                }
-            }
-            @Override
-            public void onError(Exception exception) {
-                completionHandler.onError(exception);
-            }
-        };
-
-        JsonObjectRequest newRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                successListener(callback), errorListener(callback));
-        requestQueue.add(newRequest);
-    }
-
-    public void getCourse(String subject, String catalog_number, final CourseListener completionHandler) {
-        final Type courseType = new TypeToken<Course>(){}.getType();
-        String url = StringUtils.generateUrl(RequestTypes.COURSE, subject, catalog_number);
-
-        NetworkResponseListener callback = new NetworkResponseListener() {
-            @Override
-            public void onSuccess(JSONObject response) {
-                try {
-                    JSONObject dataObject = response.getJSONObject(DATA);
-                    Course courses = gson.fromJson(dataObject.toString(), courseType);
+                    JSONArray dataArray = networkResponse.getJSONArray(DATA);
+                    ArrayList<Course> courses = gson.fromJson(dataArray.toString(), coursesListType);
                     completionHandler.onSuccess(courses);
                 } catch (JSONException exception) {
                     onError(exception);
@@ -117,18 +63,44 @@ public class NetworkManager {
         };
 
         JsonObjectRequest newRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                successListener(callback), errorListener(callback));
+                successListener(requestCallback), errorListener(requestCallback));
         requestQueue.add(newRequest);
     }
 
-    public void getCourseClass(String subject, String catalog_number, final ClassesListener completionHandler) {
-        String url = StringUtils.generateUrl(RequestTypes.CLASS, subject, catalog_number);
+    public void fetchCourse(String courseSubject, String courseCatalogNumber, final CourseListener completionHandler) {
+        final Type courseType = new TypeToken<Course>(){}.getType();
+        String requestUrl = StringUtils.generateRequestUrl(RequestType.COURSE, courseSubject, courseCatalogNumber);
 
-        NetworkResponseListener callback = new NetworkResponseListener() {
+        NetworkResponseListener requestCallback = new NetworkResponseListener() {
             @Override
-            public void onSuccess(JSONObject response) {
+            public void onSuccess(JSONObject networkResponse) {
                 try {
-                    JSONArray dataArray = response.getJSONArray(DATA);
+                    JSONObject dataObject = networkResponse.getJSONObject(DATA);
+                    Course courses = gson.fromJson(dataObject.toString(), courseType);
+                    completionHandler.onSuccess(courses);
+                } catch (JSONException exception) {
+                    onError(exception);
+                }
+            }
+            @Override
+            public void onError(Exception exception) {
+                completionHandler.onError(exception);
+            }
+        };
+
+        JsonObjectRequest courseRequest = new JsonObjectRequest(Request.Method.GET, requestUrl, null,
+                successListener(requestCallback), errorListener(requestCallback));
+        requestQueue.add(courseRequest);
+    }
+
+    public void fetchCourseClass(String courseSubject, String courseCatalogNumber, final ClassesListener completionHandler) {
+        String url = StringUtils.generateRequestUrl(RequestType.CLASS, courseSubject, courseCatalogNumber);
+
+        NetworkResponseListener requestCallback = new NetworkResponseListener() {
+            @Override
+            public void onSuccess(JSONObject networkResponse) {
+                try {
+                    JSONArray dataArray = networkResponse.getJSONArray(DATA);
                     completionHandler.onSuccess(NetworkUtils.parseClassList(dataArray));
                 } catch (JSONException exception) {
                     onError(exception);
@@ -140,9 +112,9 @@ public class NetworkManager {
             }
         };
 
-        JsonObjectRequest newRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                successListener(callback), errorListener(callback));
-        requestQueue.add(newRequest);
+        JsonObjectRequest courseClassRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                successListener(requestCallback), errorListener(requestCallback));
+        requestQueue.add(courseClassRequest);
     }
 
     private Response.Listener<JSONObject> successListener(final NetworkResponseListener callback) {
