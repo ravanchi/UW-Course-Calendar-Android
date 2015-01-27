@@ -22,6 +22,14 @@ public class ClassListAdapter extends BaseAdapter implements PinnedSectionListVi
     private List rows;
     private Context context;
 
+    private TextView classLectureTextView;
+    private TextView classNumberTextView;
+    private TextView classInstructorTextView;
+    private TextView classTimeTextView;
+    private TextView classEnrollmentTextView;
+    private TextView classRoomTextView;
+    private TextView sectionTitleTextView;
+
     String[] months = {"January",
             "February",
             "March",
@@ -67,77 +75,72 @@ public class ClassListAdapter extends BaseAdapter implements PinnedSectionListVi
 
             View enrollmentView = (View) view.findViewById(R.id.class_enrollment_indicator);
 
-            ListItem item = (ListItem) getItem(i);
+            ListItem course = (ListItem) getItem(i);
 
-            if(!item.clazz.getSection().contains("TST")) {
-                Drawable enrollmentIndicator;
-                if (item.clazz.getEnrollmentTotal() >= item.clazz.getEnrollmentCapacity()) {
-                    enrollmentIndicator = context.getResources().getDrawable(R.drawable.class_enrollment_idicator_closed);
-                } else if (item.clazz.getEnrollmentTotal() < item.clazz.getEnrollmentCapacity()) {
-                    enrollmentIndicator = context.getResources().getDrawable(R.drawable.class_enrollment_idicator_open);
-                } else {
-                    enrollmentIndicator = context.getResources().getDrawable(R.drawable.class_enrollment_idicator_default);
-                }
-                enrollmentView.setBackgroundDrawable(enrollmentIndicator);
+            Drawable enrollmentIndicator;
+            if (course.courseClass.getEnrollmentTotal() >= course.courseClass.getEnrollmentCapacity()) {
+                enrollmentIndicator = context.getResources().getDrawable(R.drawable.class_enrollment_idicator_closed);
+            } else if (course.courseClass.getEnrollmentTotal() < course.courseClass.getEnrollmentCapacity()) {
+                enrollmentIndicator = context.getResources().getDrawable(R.drawable.class_enrollment_idicator_open);
+            } else {
+                enrollmentIndicator = context.getResources().getDrawable(R.drawable.class_enrollment_idicator_default);
             }
-            else {
-                enrollmentView.setVisibility(View.GONE);
-            }
+            enrollmentView.setBackgroundDrawable(enrollmentIndicator);
 
             SimpleDateFormat df = new SimpleDateFormat("HH:mm");
             SimpleDateFormat of = new SimpleDateFormat("h:mm");
             Date startTime = new Date();
             Date endTime = new Date();
             try {
-                startTime = df.parse(item.clazz.getStartTime());
-                endTime = df.parse(item.clazz.getEndTime());
+                startTime = df.parse(course.courseClass.getStartTime());
+                endTime = df.parse(course.courseClass.getEndTime());
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             String time;
-            if(item.clazz.getWeekdays() != null && !item.clazz.getWeekdays().contains("null")) {
-                time = of.format(startTime) + " - " + of.format(endTime) + " " + item.clazz.getWeekdays();
+            if(course.courseClass.getWeekdays() != null && !course.courseClass.getWeekdays().contains("null")) {
+                time = of.format(startTime) + " - " + of.format(endTime) + " " + course.courseClass.getWeekdays();
             } else {
                 time = of.format(startTime) + " - " + of.format(endTime);
             }
 
 
-            String room = item.clazz.getLocation() + item.clazz.getRoom();
-            String instructor = item.clazz.getInstructor();
+            String room = course.courseClass.getLocation() + course.courseClass.getRoom();
+            String instructor = course.courseClass.getInstructor();
             if(instructor != null || !instructor.contains("null")) {
                 int commaIndex = instructor.indexOf(",");
                 if(commaIndex != -1) {
                     instructor = instructor.substring(commaIndex + 1) + " " + instructor.substring(0, commaIndex);
                 }
             }
-            TextView textView = (TextView) view.findViewById(R.id.class_lecture);
-            textView.setText(item.clazz.getSection());
+            classLectureTextView = (TextView) view.findViewById(R.id.class_lecture);
+            classLectureTextView.setText(course.courseClass.getSection());
 
-            TextView classNumber = (TextView) view.findViewById(R.id.class_number);
-            classNumber.setText("(" + item.clazz.getClassNumber() + ")");
+            classNumberTextView = (TextView) view.findViewById(R.id.class_number);
+            classNumberTextView.setText("(" + course.courseClass.getClassNumber() + ")");
 
-            TextView textView2 = (TextView) view.findViewById(R.id.class_instructor);
+            classInstructorTextView = (TextView) view.findViewById(R.id.class_instructor);
+            classInstructorTextView.setText(instructor);
 
-            if(instructor.contains("null") || instructor.isEmpty()) {
-                    textView2.setVisibility(view.GONE);
-            } else {
-                textView2.setText(instructor);
-            }
+            classTimeTextView = (TextView) view.findViewById(R.id.class_time);
+            classTimeTextView.setText(time);
 
-            TextView textView3 = (TextView) view.findViewById(R.id.class_time);
-            textView3.setText(time);
+            classEnrollmentTextView = (TextView) view.findViewById(R.id.class_enrollment);
+            classEnrollmentTextView.setText("Capacity: (" + course.courseClass.getEnrollmentTotal() + "/" + course.courseClass.getEnrollmentCapacity() + ")");
 
-            TextView textView4 = (TextView) view.findViewById(R.id.class_room);
+            classRoomTextView = (TextView) view.findViewById(R.id.class_room);
+
+            //TODO: Clean up code
             if(room.contains("null")) {
-                if(item.clazz.getSection().contains("TST") && item.clazz.getStartDate() != "null") {
-                    String month = item.clazz.getStartDate().substring(0,2);
-                    textView4.setText(months[Integer.parseInt(month) - 1] + " " + item.clazz.getStartDate().substring(3));
+                if(course.courseClass.getSection().contains("TST") && course.courseClass.getStartDate() != "null") {
+                    String month = course.courseClass.getStartDate().substring(0,2);
+                    classRoomTextView.setText(months[Integer.parseInt(month) - 1] + " " + course.courseClass.getStartDate().substring(3));
                 } else {
-                    textView4.setVisibility(View.GONE);
+                    classRoomTextView.setVisibility(View.GONE);
                 }
             } else {
-                textView4.setText(room);
+                classRoomTextView.setText(room);
             }
         }
         else {
@@ -148,8 +151,8 @@ public class ClassListAdapter extends BaseAdapter implements PinnedSectionListVi
             }
 
             ListHeader section = (ListHeader) getItem(i);
-            TextView textView = (TextView) view.findViewById(R.id.section_title);
-            textView.setText(section.text);
+            sectionTitleTextView = (TextView) view.findViewById(R.id.section_title);
+            sectionTitleTextView.setText(section.text);
         }
 
         return view;
@@ -162,6 +165,7 @@ public class ClassListAdapter extends BaseAdapter implements PinnedSectionListVi
 
     @Override
     public int getItemViewType(int position) {
+        //TODO: Make enums
         if(getItem(position) instanceof ListHeader) {
             return 1;
         }
@@ -172,17 +176,12 @@ public class ClassListAdapter extends BaseAdapter implements PinnedSectionListVi
 
     @Override
     public boolean isEnabled(int position) {
-//        if(getItem(position) instanceof ListHeader) {
-//            return false;
-//        }
-//        else {
-//            return true;
-//        }
         return false;
     }
 
     @Override
     public boolean isItemViewTypePinned(int viewType) {
+        //TODO: Use enum
         return viewType == 1;
     }
 

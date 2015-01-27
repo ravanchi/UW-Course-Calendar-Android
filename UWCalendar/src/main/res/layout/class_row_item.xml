@@ -41,7 +41,6 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="7dp"
                 android:background="@drawable/class_enrollment_idicator_default"/>
-
         </LinearLayout>
 
         <TextView
@@ -52,7 +51,6 @@
             android:textColor="@drawable/listview_details_colors"
             android:layout_alignParentRight="true"
             android:text="Heading"/>
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -78,7 +76,19 @@
             android:textColor="@drawable/listview_details_colors"
             android:layout_alignParentRight="true"
             android:text="Heading"/>
-
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/class_enrollment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3dp"
+            android:textSize="13dp"
+            android:layout_marginTop="-2dp"
+            android:textColor="@drawable/listview_details_colors"/>
+    </RelativeLayout>
 </LinearLayout>

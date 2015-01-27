@@ -17,6 +17,10 @@ import java.util.List;
 public class CoursesListAdapter extends BaseAdapter implements PinnedSectionListView.PinnedSectionListAdapter {
     private List rows;
 
+    TextView courseTitleTextView;
+    TextView courseDescriptionTextView;
+    TextView catalogNumberTextView;
+
     @Override
     public int getCount() {
         return rows.size();
@@ -43,15 +47,15 @@ public class CoursesListAdapter extends BaseAdapter implements PinnedSectionList
                 view = (LinearLayout) inflater.inflate(R.layout.courses_row_item, null, false);
             }
 
-            TextView courseTitleTextView = (TextView) view.findViewById(R.id.courses_title);
-            TextView courseDescriptionTextView = (TextView) view.findViewById(R.id.courses_description);
-            TextView catalogNumberTextView = (TextView) view.findViewById(R.id.courses_catalogNum);
+            courseTitleTextView = (TextView) view.findViewById(R.id.courses_title);
+            courseDescriptionTextView = (TextView) view.findViewById(R.id.courses_description);
+            catalogNumberTextView = (TextView) view.findViewById(R.id.courses_catalogNum);
 
-            ListItem item = (ListItem) getItem(i);
-            if(item != null && item.course != null) {
-                catalogNumberTextView.setText(item.course.getSubject() + item.course.getCatalogNumber());
-                courseTitleTextView.setText(item.course.getTitle());
-                courseDescriptionTextView.setText(item.course.getDescription());
+            ListItem subject = (ListItem) getItem(i);
+            if(subject != null && subject.course != null) {
+                catalogNumberTextView.setText(subject.course.getSubject() + subject.course.getCatalogNumber());
+                courseTitleTextView.setText(subject.course.getTitle());
+                courseDescriptionTextView.setText(subject.course.getDescription());
             }
         }
         else {
